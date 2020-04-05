@@ -1,0 +1,83 @@
+// 02/08/2019
+// Doom
+
+.form-answer-review-mode {
+
+    &__text {
+
+        &.-false {
+            color: $light-red-1;
+        }
+
+        &.-true {
+            color: $dark-blue-1;
+
+            .fa-check {
+                color: $green-1;
+            }
+
+        }
+
+    }
+
+    &__text-answer {
+        color: $dark-blue-1;
+
+        // margin-left: $margin-4;
+    }
+}
+
+.test-listening {
+    .choose_correct {
+
+        .check_box {
+            .check-review-test-listening {
+                display: inline-block;
+                margin-right: $margin-3;
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 18px;
+                cursor: pointer;
+            }
+            
+            &.-true {
+                .check-review-test-listening {
+                    background-color: $dark-blue-1;
+                    color: $white-1;
+                }
+                .question-answer {
+                    color: $dark-blue-1;
+                            .fa-check {
+                                color: $green-1;
+                            }
+                }
+            }
+
+            &.-false {
+                .check-review-test-listening {
+                    background: $light-red-1;
+                    color: $white-1;
+                }
+                .question-answer {
+                    color: $light-red-1;
+                }
+            }
+
+            &.-normal {
+                .check-review-test-listening {
+                border: 1px solid $light-red-1;
+                color: $light-red-1;
+
+                }
+            }
+        }
+
+        label {
+            margin-bottom: $margin-2;
+            display: block;
+        }
+    }
+}

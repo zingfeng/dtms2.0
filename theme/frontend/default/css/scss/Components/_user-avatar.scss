@@ -1,0 +1,55 @@
+#header {
+    .my_user {
+        .ava {
+            .user-avatar {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+               
+
+                position: relative;
+
+                &.-color-random-1 {
+                    background-color: $color-random-1;
+                }
+                &.-color-random-2 {
+                    background-color: $color-random-2;
+                }
+                &.-color-random-3 {
+                    background-color: $color-random-3;
+                }
+                &.-color-random-4 {
+                    background-color: $color-random-4;
+                }
+                &.-color-random-5 {
+                    background-color: $color-random-5;
+                }
+                &.-color-random-6 {
+                    background-color: $color-random-6;
+                }
+                &.-color-random-7 {
+                    background-color: $color-random-7;
+                }
+                &.-color-random-8 {
+                    background-color: $color-random-8;
+                }
+                &.-color-random-9 {
+                    background-color: $color-random-9;
+                }
+
+                .avatar-name {
+                    position: absolute;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    font-size: 1rem;
+
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    color: $color-7;
+                }
+            }
+
+        }
+    }
+}

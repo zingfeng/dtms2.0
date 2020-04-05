@@ -1,0 +1,145 @@
+// Resonsive mixin
+
+/*
+Responsive manager
+2401+ big-screen (2k-8k screen)
+-------------------------
+1600 -2400 desktop 2
+1301 -1599 desktop 1
+-------------------------
+1300 laptop-3
+1200 laptop-2
+1150 laptop-1 
+-------------------------
+1024 tablet 6
+992 tablet 5
+980 tablet 4
+950 tablet 3
+860 tablet 2
+767 tablet 1
+-------------------------
+640 mobile 5
+590 mobile 4
+480 mobile 3
+420 mobile 2
+320 mobile 1
+-------------------------
+*/
+
+@mixin respond ($breakpoint) {
+    //bắt đầu desktop
+    @if $breakpoint==desktop-2 {
+        @media screen and (min-device-width: 1600px) and (max-device-width: 2400px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==desktop-1 {
+        @media screen and (min-device-width: 1301px) and (max-device-width: 1599px) {
+            @content
+        }
+        ;
+    }
+    //kết thúc desktop
+    // -------------------------
+    //bắt đầu laptop
+    @if $breakpoint==laptop-3 {
+        @media (max-width: 1300px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==laptop-2 {
+        @media (max-width: 1200px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==laptop-1 {
+        @media (max-width: 1150px) {
+            @content
+        }
+        ;
+    }
+    //kết thúc laptop
+    // -------------------------
+    //bắt đầu tablet
+    @if $breakpoint==tablet-6 {
+        @media (max-width: 1024px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tablet-5 {
+        @media (max-width: 991px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tablet-4 {
+        @media (max-width: 980px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tablet-3 {
+        @media (max-width: 950px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tablet-2 {
+        @media (max-width: 860px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tablet-1 {
+        @media (max-width: 767px) {
+            @content
+        }
+        ;
+    }
+    //kết thúc tablet
+    // -------------------------
+    //bắt đầu mobile
+    @if $breakpoint==mobile-5 {
+        @media (max-width: 640px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==mobile-4 {
+        @media (max-width: 590px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==mobile-3 {
+        @media (max-width: 480px) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==mobile-2 {
+        @media (max-width: 420px) {
+            @content
+        }
+        ;
+    }
+
+    @if $breakpoint==mobile-1 {
+        @media (max-width: 375px) {
+            @content
+        };
+    }
+    //kết thúc mobile 
+    // -------------------------
+    //màn hình 2k trở lên
+    @if $breakpoint==big-screen {
+        @media (min-width: 2401px) {
+            @content
+        }
+        ;
+    }
+}

@@ -1,0 +1,22 @@
+@import "abstracts/function";
+@import "abstracts/mixin";
+@import "abstracts/variables";
+
+@import "base/animation";
+@import "base/base";
+@import "base/typography";
+
+@import "pages/test-listening";
+@import "pages/test-listening-review";
+@import "pages/test-reading";
+@import "pages/test-reading-review";
+@import "pages/test-writing-result";
+
+@import "components/breadcrum";
+@import "components/button";
+@import "components/question-list";
+@import "components/card";
+@import "components/table";
+
+//icon
+@import "../icomoon";

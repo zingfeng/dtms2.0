@@ -1,0 +1,198 @@
+@import "./var";
+
+
+//----------result listening-----------------
+// #sidebar_left{width: 865px;}
+.result-listen {
+
+    .information {
+        line-height: 1.5;
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__view {
+            font-size: 1rem;
+            color: $text-gray;
+
+            margin-top: 0.5rem;
+        }
+    }
+
+    .result-main {
+        text-align: center;
+
+        &__title {
+            color: $text-black;
+            font-size: 1.8rem;
+            font-weight: bold;
+
+            padding-top: 0.5rem;
+        }
+
+        &__subtitle {
+            font-size: 1rem;
+
+            margin-top: 0.5rem;
+            padding-bottom: 2.25rem;
+
+            .result-main-link-detail {
+                color: $text-gray;
+            }
+        }
+    }
+
+    .circle {
+
+        &__correct-answers {
+            .c100 {
+                float: none;
+                margin: 0 auto 20px;
+                font-size: 150px;
+
+                & > span {
+                    font-weight: bold;
+                    font-size: 40px;
+                    width: 150px;
+                    line-height: 150px;
+                }
+
+                &.number {
+                    & > span {
+                        color: #20c6d8
+                    }
+
+                    .bar,
+                    .fill {
+                        border: 0.08em solid #20c6d8;
+                    }
+                }
+            }
+        }
+
+        &__your-point {
+            .c100 {
+                float: none;
+                margin: 0 auto 20px;
+                font-size: 150px;
+
+                & > span {
+                    font-weight: bold;
+                    font-size: 40px;
+                    width: 150px;
+                    line-height: 150px;
+                }
+
+                &.point {
+                    & > span {
+                        color: #f45b69
+                    }
+
+                    .bar,
+                    .fill {
+                        border: 0.08em solid #f45b69;
+                    }
+                }
+            }
+        }
+
+        &__your-time {
+            .c100 {
+                float: none;
+                margin: 0 auto 20px;
+                font-size: 150px;
+
+                & > span {
+                    font-weight: bold;
+                    font-size: 40px;
+                    width: 150px;
+                    line-height: 150px;
+                }
+
+
+                &.time {
+                    & > span {
+                        color: #3597eb
+                    }
+
+                    .bar,
+                    .fill {
+                        border: 0.08em solid #3597eb;
+                    }
+                }
+            }
+        }
+
+        &__title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+    }
+
+    .result-notification {
+        line-height: 1.5;
+
+        &__title {
+
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__sub-title {
+            font-size: 1rem;
+            color: $text-gray;
+
+            //            margin-top: 0.5rem;
+        }
+    }
+
+    .button-action {
+        display: inline-block;
+
+        padding: 5px 15px;
+        margin: 2.1rem 0 1.1rem 0;
+
+        &__answer {
+            background-color: $colormain2;
+            border-color: $colormain2;
+            color: white;
+
+        }
+
+        &__reset {
+            background-color: #FFFFFF;
+            border: 1px solid #D1D1D1;
+
+            color: $text-gray;
+        }
+    }
+
+
+    .warp_bg {  
+
+        .table {
+            margin-bottom: 0 !important;  
+
+            th,
+            td {
+                text-align: center;
+            }
+
+            .text-true {
+                color: #1890FF;
+            }
+
+            .text-false {
+                color: #F24962;
+            }
+        }  
+    }
+}
+

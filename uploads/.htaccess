@@ -1,0 +1,4 @@
+<FilesMatch "\.(JPG|GIF|PNG|JPEG|DOC|DOCX|FLV|SWF|PDF|XLS|XLSX|MP4|MP3|gif|jpg|jpeg|png|bmp|doc|docx|xls|xlsx|pdf|swf|flv|mp4|mp3)$">
+Order Deny,Allow
+   Allow from all
+</FilesMatch>

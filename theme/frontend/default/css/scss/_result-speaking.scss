@@ -1,0 +1,111 @@
+@import "./var";
+
+.result-speaking {
+    
+    .information {
+        line-height: 1.5;
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__view {
+            font-size: 1rem;
+            color: $text-gray;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .result-notification {
+        text-align: center;
+        line-height: 1.8;
+        &__title {
+            font-size: 1.3rem;
+            font-weight: bold;
+
+            color: $text-black;
+        }
+
+        &__subtitle {
+            font-size: 1rem;
+
+            color: $text-gray;            
+        }
+    }
+
+    .form-information {
+        margin-top: 2rem;
+      
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+
+            width: 80%;
+            &__label {
+                max-width: 40%;
+                width: 40%;
+                text-align: right;
+                padding-right: 1rem;
+                padding-top: 0.5rem;
+            }
+
+            &__input {
+               max-width: 60%;
+            }
+        }
+
+        .error {
+            margin-left: 32%;
+            margin-bottom: 1.5rem;
+        }
+
+        .button-action {
+            margin-left: 32%;
+
+            &__primary {
+                margin-right: 0.5rem;
+
+                color: #fff;
+                background-color: $colormain2;
+                border-color: $colormain2;
+
+                display: inline-block;
+                font-weight: 400;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: .375rem .75rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: .25rem;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            }
+
+            &__secondary {
+
+            }
+            
+        }
+
+        .button-hint {
+            margin-left: 32%;         
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+
+            .hint {
+                color: $colormain2;
+            }
+        }
+    }
+}

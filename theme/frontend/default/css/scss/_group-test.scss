@@ -1,0 +1,108 @@
+section.group-test {
+
+    // title global 
+    .text-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    // color title global 
+    .text-color-white {
+        color: white;
+    }
+
+    //bắt đầu tên nhóm test
+    .information {
+        display: flex;
+
+        .group-test-avatar {
+
+            // avatar nhóm test
+            &__img {
+                width: 16rem;
+                max-width: 16rem;
+
+                height: 9rem;
+                max-height: 9rem;
+
+                margin-right: 1rem;
+            }
+        }
+
+        // Tên và lượt test của nhóm test
+        .group-test-content {
+
+            &__title {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+    // kết thúc tên nhóm test
+
+    // bắt đầu bài test
+    .practive-group {
+
+        &__title {
+            text-align: center;
+
+            background-color: $colormain;
+            width: 100%;
+            padding: 0.5rem 0 0.5rem 0;
+        }
+
+        // bắt đầu danh sách các kỹ năng
+        &__item {
+            display: flex;
+            justify-content: space-between;
+
+            .test-skill {
+
+                // icon kỹ năng
+                &__icon {
+                    text-align: center;
+                    padding: 1rem 0 1rem 0;
+
+                    span {
+                        font-size: 6rem;
+                        color: $text-gray;
+                    }
+
+                }
+
+                // Tên kỹ năng
+                &__name {
+                    display: inline-block;                    
+                    text-align: center;
+
+                    background-color: $background-skill-name;
+                    padding: 0.8rem 1rem 0.8rem 1rem;
+                    width: 10rem;
+                    border-radius: 0.4rem;
+
+                }
+
+                // bắt đầu trường hợp test xong sẽ hiển thị như này
+                &.-test-done {
+
+                    .test-skill__icon {
+                        span {
+                            color: $colormain;
+                        }
+                    }
+
+                    .test-skill__name {
+                        background-color: $color1;
+                        font-weight: bold;
+                        color: white;
+                    }
+                }
+
+                // kết thúc trường hợp test xong sẽ hiển thị như này
+            }
+        }
+
+        // Kết thúc danh sách các kỹ năng
+    }
+
+    // kết thúc bài test
+}

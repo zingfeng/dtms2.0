@@ -1,0 +1,10 @@
+.section-breadcrumb {
+    .custom-breadcrumb {
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: .75rem 0;       
+        list-style: none;
+        border-radius: .25rem;
+    }
+}

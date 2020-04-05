@@ -1,0 +1,813 @@
+section.comment {
+    margin-top: 1.5rem;
+    background-color: white;
+    border: 1px solid $background-skill-point;
+    padding: 20px;
+    border-radius: 6px;
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        .show-more-comment {
+            color: $colormain;
+        }
+        .total-comment {
+            color: $color-5;
+        }
+    }
+    // danh sách comment
+    .comment-list {
+        //bắt đầu comment cấp 1
+        .comment-block {
+            //bắt đầu nội dung comment
+            display: flex;
+            margin-top: 1rem;
+            //bắt đầu avatar user
+            &__avatar {
+                // background, kích thước cho avatar
+                position: relative;
+                border-radius: 50%;
+                border: 1px solid $color-8;
+                width: 50px;
+                max-width: 50px;
+                max-height: 50px;
+                height: 50px;
+                //bắt đầu random color cho avatar user
+                &.-color-random-1 {
+                    background-color: $color-random-1;
+                }
+                &.-color-random-2 {
+                    background-color: $color-random-2;
+                }
+                &.-color-random-3 {
+                    background-color: $color-random-3;
+                }
+                &.-color-random-4 {
+                    background-color: $color-random-4;
+                }
+                &.-color-random-5 {
+                    background-color: $color-random-5;
+                }
+                &.-color-random-6 {
+                    background-color: $color-random-6;
+                }
+                &.-color-random-7 {
+                    background-color: $color-random-7;
+                }
+                &.-color-random-8 {
+                    background-color: $color-random-8;
+                }
+                &.-color-random-9 {
+                    background-color: $color-random-9;
+                }
+                // kết thúc random color cho avatar
+                .text-avatar {
+                    // chữ cái đầu tiên trong tên người dùng để làm avatar
+                    position: absolute;
+                    transform: translate(-50%, -50%);
+                    top: 50%;
+                    left: 50%;
+                    color: white;
+                    font-size: 2rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    &.-comment-reply {
+                        // thay đổi font chữ cho phần trả lời bình luận
+                        font-size: 1.5rem
+                    }
+                }
+                &.-comment-reply {
+                    // thay đổi kích thước avatar cho phần trả lời bình luận
+                    width: 40px;
+                    max-width: 40px;
+                    max-height: 40px;
+                    height: 40px;                  
+                }
+            }
+            // kết thúc avatar user
+            &__content {
+                //nội dung commen, button like, trả lời bình luận
+                .user-comment {
+                    display: flex;
+                    align-items: center;
+                    &__text {
+                        //background cho phần bình luận
+                        padding: 15px 20px;
+                        background-color: $background-color-3;
+                        border: 1px solid $border-2;
+                        border-radius: 1.7rem;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        // độ dài tối của ô comment
+                        // max-width: 46.6rem;
+
+                       
+                        @include respond (desktop-2) {
+                            //1600-2400                          
+                            // độ dài tối của ô comment
+                            max-width: 46.6rem;
+                        }
+                        @include respond (desktop-1) {
+                            //1301-1599
+                            // độ dài tối của ô comment
+                            max-width: 46.6rem;
+                        }
+                        @include respond (laptop-3) {
+                            //1300
+                            // độ dài tối của ô comment
+                            max-width: 46.6rem;
+                        }
+                        @include respond (laptop-2) {
+                            //1200
+                            // độ dài tối của ô comment
+                            max-width: 43rem;
+                        }
+                        @include respond (laptop-1) {
+                            //1150
+                            // độ dài tối của ô comment
+                            max-width: 37rem;
+                        }
+                        @include respond (tablet-6) {
+                            //1024
+                            // độ dài tối của ô comment
+                            max-width: 36rem;
+                        }
+                        @include respond (tablet-5) {
+                            //991
+                            // độ dài tối của ô comment
+                            max-width: 59rem;
+                        }
+                        @include respond (tablet-4) {
+                            //980
+                            // độ dài tối của ô comment
+                            max-width: 57rem;
+                        }
+                        @include respond (tablet-3) {
+                            //950
+                            // độ dài tối của ô comment
+                            max-width: 50rem;
+                        }
+                        @include respond (tablet-2) {
+                            //860
+                            // độ dài tối của ô comment
+                            max-width: 30rem;
+                        }
+                        @include respond (tablet-1) {
+                            //767
+                            margin-right: 10px;
+                            // độ dài tối của ô comment
+                            max-width: 30rem;
+                        }
+                        @include respond (mobile-5) {
+                            //640
+                            // độ dài tối của ô comment
+                            max-width: 30rem;
+                        }
+                        @include respond (mobile-4) {
+                            //590
+                            // độ dài tối của ô comment
+                            max-width: 22rem;
+                        }
+                        @include respond (mobile-3) {
+                            //480
+                            // độ dài tối của ô comment
+                            max-width: 20rem;
+                        }
+                        @include respond (mobile-2) {
+                            //420
+                            // độ dài tối của ô comment
+                            max-width: 16rem;
+                        }
+                        @include respond (mobile-1) {
+                            //375
+                            // độ dài tối của ô comment
+                            max-width: 15rem;
+                        }
+                        @include respond (big-screen) {
+                            //2401+ (2k-8k)                          
+                            // độ dài tối của ô comment
+                            max-width: 46.6rem;
+                        }
+                        .text-content {
+                            // cắt text trong phần bình luận khi quá dài
+                            // max-height: 50px;
+                            overflow-y: hidden;
+                            text-overflow: ellipsis;
+                            
+                            .username {
+                                // tên người dùng trước nội dung bình luận
+                                color: $colormain;
+                                font-weight: bold;
+                                max-width: 5rem;                              
+                            }
+                            &.-custom-answer {
+                                // xóa phần outline, max-height cho phần trả lời bình luận                              
+                                outline: none;
+                                max-height: none;
+                                overflow: visible;
+                            }
+                            .tag-username {
+                                // tag user-name, dùng cho phần trả lời bình luận
+                                margin-right: 0.5rem;
+                                color: $colormain;
+                                padding: 0px 2px;
+                                background-color: $color-6;
+                                border: 1px solid $color-6;
+                                border-radius: 2px;                             
+                            }
+                            #placeholder-replace-text {
+                                // đổi màu placeholder ở ô bình luận
+                                color: $color-5;
+                            }
+                        }
+                        &.-comment-reply {
+                            // giới hạn đồ dài của phần trả lời bình luận
+                            // max-width: 43rem;
+                            // width: 43rem;
+                            padding: 10px 20px;
+                            @include respond (desktop-2) {
+                                //1600-2400
+                                max-width: 43rem;
+                            }
+                            @include respond (desktop-1) {
+                                //1301-1599
+                                max-width: 43rem;
+                            }
+                            @include respond (laptop-3) {
+                                //1300
+                                max-width: 43rem;
+                            }
+                            @include respond (laptop-2) {
+                                //1200
+                                max-width: 40rem;
+                            }
+                            @include respond (laptop-1) {
+                                //1150
+                                max-width: 34rem;
+                            }
+                            @include respond (tablet-6) {
+                                //1024
+                                max-width: 32rem;
+                            }
+                            @include respond (tablet-5) {
+                                //992
+                                max-width: 56rem;
+                                // width: 100%;
+                            }
+                            @include respond (tablet-4) {
+                                //980
+                                max-width: 53rem;
+                            }
+                            @include respond (tablet-3) {
+                                //950
+                                max-width: 43rem;
+                            }
+                            @include respond (tablet-2) {
+                                //860
+                                max-width: 27rem;
+                                // width: 100%;
+                            }
+                            @include respond (tablet-1) {
+                                //767
+                                max-width: 27rem;
+                            }
+                            @include respond (mobile-5) {
+                                //640
+                                max-width: 27rem;
+                            }
+                            @include respond (mobile-4) {
+                                //590
+                                max-width: 20rem;
+                            }
+                            @include respond (mobile-3) {
+                                //480
+                                max-width: 16rem;
+                            }
+                            @include respond (mobile-2) {
+                                //420
+                                max-width: 13rem;
+                            }
+                            @include respond (mobile-1) {
+                                //375
+                                max-width: 12rem;
+                            }
+                            @include respond (big-screen) {
+                                //2401+ (2k-8k)
+                                max-width: 43rem;
+                            }
+                        }
+                        &.-form-comment {
+                            // giới hạn đồ dài của ô bình luận
+                            // width: 46.7rem;
+                            // max-width: 46.7rem;
+                            @include respond (desktop-2) {
+                                //1600-2400
+                                width: 46.7rem;
+                                max-width: 46.7rem;
+                            }
+                            @include respond (desktop-1) {
+                                //1301-1599
+                                width: 46.7rem;
+                                max-width: 46.7rem;
+                            }
+                            @include respond (laptop-3) {
+                                //1300
+                                width: 46.7rem;
+                                max-width: 46.7rem;
+                            }
+                            @include respond (laptop-2) {
+                                //1200
+                                width: 45rem;
+                                max-width: 45rem;
+                            }
+                            @include respond (laptop-1) {
+                                //1150
+                                width: 39rem;
+                                max-width: 39rem;
+                            }
+                            @include respond (tablet-6) {
+                                //1024
+                                width: 38rem;
+                                max-width: 38rem;
+                            }
+                            @include respond (tablet-5) {
+                                //991
+                                width: 60rem;
+                                max-width: 60rem;
+                            }
+                            @include respond (tablet-4) {
+                                //980
+                                width: 59rem;
+                                max-width: 59rem;
+                            }
+                            @include respond (tablet-3) {
+                                //950
+                                width: 52rem;
+                                max-width: 52rem;
+                            }
+                            @include respond (tablet-2) {
+                                //860
+                                width: 33rem;
+                                max-width: 33rem;
+                            }
+                            @include respond (tablet-1) {
+                                //767
+                                width: 33rem;
+                                max-width: 33rem;
+                            }
+                            @include respond (mobile-5) {
+                                //640
+                                width: 33rem;
+                                max-width: 33rem;
+                            }
+                            @include respond (mobile-4) {
+                                //590
+                                width: 25rem;
+                                max-width: 25rem;
+                            }
+                            @include respond (mobile-3) {
+                                //480
+                                width: 22rem;
+                                max-width: 22rem;
+                            }
+                            @include respond (mobile-2) {
+                                //420
+                                width: 18rem;
+                                max-width: 18rem;
+                            }
+                            @include respond (mobile-1) {
+                                //375
+                                width: 17rem;
+                                max-width: 17rem;
+                            }
+                            @include respond (big-screen) {
+                                //2401+ (2k-8k)
+                                width: 46.7rem;
+                                max-width: 46.7rem;
+                            }
+                        }
+                        &.-custom-answer {
+                            // giới hạn độ dài của phần trả lời bình luận không có tag name user
+                            padding: 10px 15px;
+                            // max-width: 43rem;
+                            // width: 43rem;
+                            @include respond (desktop-2) {
+                                //1600-2400
+                                width: 43rem;
+                                max-width: 43rem;
+                            }
+                            @include respond (desktop-1) {
+                                //1301-1599
+                                max-width: 43rem;
+                                width: 43rem;
+                            }
+                            @include respond (laptop-3) {
+                                //1300
+                                max-width: 43rem;
+                                width: 43rem;
+                            }
+                            @include respond (laptop-2) {
+                                //1200
+                                max-width: 40rem;
+                                width: 40rem;
+                            }
+                            @include respond (laptop-1) {
+                                //1150
+                                max-width: 34rem;
+                                width: 34rem;
+                            }
+                            @include respond (tablet-6) {
+                                //1024
+                                max-width: 32rem;
+                                width: 32rem;
+                            }
+                            @include respond (tablet-5) {
+                                //992
+                                max-width: 56rem;
+                                width: 56rem;
+                            }
+                            @include respond (tablet-4) {
+                                //980
+                                max-width: 53rem;
+                                width: 53rem;
+                            }
+                            @include respond (tablet-3) {
+                                //950
+                                max-width: 43rem;
+                                width: 43rem;
+                            }
+                            @include respond (tablet-2) {
+                                //860
+                                max-width: 27rem;
+                                width: 27rem;
+                            }
+                            @include respond (tablet-1) {
+                                //767
+                                max-width: 27rem;
+                                width: 27rem;
+                            }
+                            @include respond (mobile-5) {
+                                //640
+                                max-width: 27rem;
+                                width: 27rem;
+                            }
+                            @include respond (mobile-4) {
+                                //590
+                                max-width: 20rem;
+                                width: 20rem;
+                            }
+                            @include respond (mobile-3) {
+                                //480
+                                max-width: 16rem;
+                                width: 16rem;
+                            }
+                            @include respond (mobile-2) {
+                                //420
+                                max-width: 13rem;
+                                width: 13rem;
+                            }
+                            @include respond (mobile-1) {
+                                //375
+                                max-width: 11rem;
+                                width: 11rem;
+                            }
+                            @include respond (big-screen) {
+                                //2401+ (2k-8k)
+                                max-width: 43rem;
+                                width: 43rem;
+                            }
+                        }
+                    }
+                    &__btn-more {
+                        // dùng cho nút xóa, sửa lại bình luân, hiện tại chưa dùng
+                        // display: none;
+                        cursor: pointer;
+                        display: flex;
+                        position: relative;
+                        .button-more {
+                            font-size: 2rem;
+                            color: $color-4;
+                          
+                        }
+                    }
+                }
+                .button {
+                    // căn trái nút like, trả lời, thời gian bình luận, xem nhiều phản hồi
+                    // margin-left: 30px;
+                    // margin-top: 10px;
+                    @include respond (desktop-2) {
+                        //1600-2400
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (desktop-1) {
+                        //1301-1599
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (laptop-3) {
+                        //1300
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (laptop-2) {
+                        //1200
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (laptop-1) {
+                        //1150
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-6) {
+                        //1024
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-5) {
+                        //992
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-4) {
+                        //980
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-3) {
+                        //950
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-2) {
+                        //860
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (tablet-1) {
+                        //767
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (mobile-4) {
+                        //640
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (mobile-3) {
+                        //590
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (mobile-2) {
+                        //480
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (mobile-1) {
+                        //420
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    @include respond (big-screen) {
+                        //2401+ (2k-8k)
+                        margin-left: 30px;
+                        margin-top: 10px;
+                    }
+                    .custom-margin {
+                        // margin-right: 1rem;
+                        @include respond (desktop-2) {
+                            //1600-2400
+                            margin-right: 1rem;
+                        }
+                        @include respond (desktop-1) {
+                            //1301-1599
+                            margin-right: 1rem;
+                        }
+                        @include respond (laptop-3) {
+                            //1300
+                            margin-right: 1rem;
+                        }
+                        @include respond (laptop-2) {
+                            //1200
+                            margin-right: 1rem;
+                        }
+                        @include respond (laptop-1) {
+                            //1150
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-6) {
+                            //1024
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-5) {
+                            //992
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-4) {
+                            //980
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-3) {
+                            //950
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-2) {
+                            //860
+                            margin-right: 1rem;
+                        }
+                        @include respond (tablet-1) {
+                            //767
+                            margin-right: 1rem;
+                        }
+                        @include respond (mobile-4) {
+                            //640
+                            margin-right: 1rem;
+                        }
+                        @include respond (mobile-3) {
+                            //590
+                            margin-right: 1rem;
+                        }
+                        @include respond (mobile-2) {
+                            //480
+                            margin-right: 1rem;
+                        }
+                        @include respond (mobile-1) {
+                            //420
+                            margin-right: 1rem;
+                        }
+                        @include respond (big-screen) {
+                            //2401+ (2k-8k)
+                            margin-right: 1rem;
+                        }
+                    }
+                    .date-comment {
+                        color: $color-5;
+                    }
+                    &__like-reply-time {
+                        // nút like, trả lời, thời gian bình luận
+                        .button-action {
+                            color: $colormain;
+                            &.-active {
+                                // khi ấn like, sẽ chuyển sang dạng bold
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                    &__multi-reply {
+                        // nút xem nhiều phản hồi
+                        display: flex;
+                        align-items: center;
+                        // margin-top: 10px;
+                        @include respond (desktop-2) {
+                            //1600-2400
+                            margin-top: 10px;
+                        }
+                        @include respond (desktop-1) {
+                            //1301-1599
+                            margin-top: 10px;
+                        }
+                        @include respond (laptop-3) {
+                            //1300
+                            margin-top: 10px;
+                        }
+                        @include respond (laptop-2) {
+                            //1200
+                            margin-top: 10px;
+                        }
+                        @include respond (laptop-1) {
+                            //1150
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-6) {
+                            //1024
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-5) {
+                            //992
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-4) {
+                            //980
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-3) {
+                            //950
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-2) {
+                            //860
+                            margin-top: 10px;
+                        }
+                        @include respond (tablet-1) {
+                            //767
+                            margin-top: 10px;
+                        }
+                        @include respond (mobile-4) {
+                            //640
+                            margin-top: 10px;
+                        }
+                        @include respond (mobile-3) {
+                            //590
+                            margin-top: 10px;
+                        }
+                        @include respond (mobile-2) {
+                            //480
+                            margin-top: 10px;
+                        }
+                        @include respond (mobile-1) {
+                            //420
+                            margin-top: 10px;
+                        }
+                        @include respond (big-screen) {
+                            //2401+ (2k-8k)
+                            margin-top: 10px;
+                        }
+                        .button-show-reply {
+                            display: flex;
+                            align-items: center;
+                            color: $colormain;
+                            .icon-baseline-reply-24px {
+                                font-size: 1.6rem;
+                                margin-right: 5px;
+                            }
+                            .number-reply {
+                                // chỉnh lại cho thẳng hàng
+                                margin-top: 3px;
+                            }
+                        }
+                    }
+                }
+            }
+            //kết thúc nội dung comment 1
+            &.-comment-reply {
+                // margin-left: 4.3rem;
+                @include respond (desktop-2) {
+                    //1600-2400
+                    margin-left: 4.3rem;
+                }
+                @include respond (desktop-1) {
+                    //1301-1599
+                    margin-left: 4.3rem;
+                }
+                @include respond (laptop-3) {
+                    //1300
+                    margin-left: 4.3rem;
+                }
+                @include respond (laptop-2) {
+                    //1200
+                    margin-left: 4.3rem;
+                }
+                @include respond (laptop-1) {
+                    //1150
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-6) {
+                    //1024
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-5) {
+                    //992
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-4) {
+                    //980
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-3) {
+                    //950
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-2) {
+                    //860
+                    margin-left: 4.3rem;
+                }
+                @include respond (tablet-1) {
+                    //767
+                    margin-left: 4.3rem;
+                }
+                @include respond (mobile-4) {
+                    //640
+                    margin-left: 4.3rem;
+                }
+                @include respond (mobile-3) {
+                    //590
+                    margin-left: 4.3rem;
+                }
+                @include respond (mobile-2) {
+                    //480
+                    margin-left: 4.3rem;
+                }
+                @include respond (mobile-1) {
+                    //420
+                    margin-left: 4.3rem;
+                }
+                @include respond (big-screen) {
+                    //2401+ (2k-8k)
+                    margin-left: 4.3rem;
+                }
+            }
+        }
+        // kết thúc comment cấp 1
+    }
+}

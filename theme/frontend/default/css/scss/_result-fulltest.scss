@@ -1,0 +1,201 @@
+@import "./var";
+
+
+//----------result listening-----------------
+// #sidebar_left{width: 865px;}
+.result-fulltest {
+
+    .information {
+        line-height: 1.5;
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__view {
+            font-size: 1rem;
+            color: $text-gray;
+
+            margin-top: 0.5rem;
+        }
+    }
+
+    .result-main {
+        text-align: center;
+
+        &__title {
+            color: $text-black;
+            font-size: 1.8rem;
+            font-weight: bold;
+
+            padding-top: 0.5rem;
+        }
+
+        &__subtitle {
+            font-size: 1rem;
+
+            margin-top: 0.5rem;
+            padding-bottom: 2.25rem;
+
+            .result-main-link-detail {
+                color: $text-gray;
+            }
+        }
+    }
+
+    .circle {
+
+        &__your-time {
+            .c100 {
+                float: none;
+                margin: 0 auto 20px;
+                font-size: 150px;
+
+                & > span {
+                    font-weight: bold;
+                    font-size: 40px;
+                    width: 150px;
+                    line-height: 150px;
+                }
+
+
+                &.time {
+                    & > span {
+                        color: #3597eb
+                    }
+
+                    .bar,
+                    .fill {
+                        border: 0.08em solid #3597eb;
+                    }
+                }
+            }
+        }
+
+        &__title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+    }
+
+.list-skill-point {
+
+    .skill-point {
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+
+        width: 18rem;
+        max-width: 18rem;
+        margin-bottom: 1.5rem;
+
+        border-radius: 4rem;
+        padding: 0.4rem 1rem 0.4rem 0.5rem;
+        background-color: $background-skill-point;
+        &__logo {                   
+         
+            margin-right: 1rem;
+            border-radius: 50%;
+            background-color: white;
+
+            &.-custom-logo-1 {
+                padding: 0.7rem 0.8rem 0.7rem 0.8rem;
+            }
+
+            &.-custom-logo-2 {
+                padding: 0.7rem 0.865rem 0.7rem 0.865rem;
+            }
+
+            &.-custom-logo-3 {
+                padding: 0.7rem 1.06rem 0.7rem 1.06rem;
+            }
+
+            .fa {
+                font-size: 1.8rem;
+                color: $background-skill-point;
+            }
+            
+
+
+
+
+           
+        }
+
+        &__content {
+            font-size: 1.2rem;
+
+            .text-blue {
+                color: $text-blue;
+                font-weight: bold;
+            }            
+        }
+    }
+}
+
+    .result-notification {
+        line-height: 1.5;
+
+        &__title {
+
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__sub-title {
+            font-size: 1rem;
+            color: $text-gray;
+
+            //            margin-top: 0.5rem;
+        }
+    }
+
+    .button-action {
+        display: inline-block;
+
+        padding: 5px 15px;
+        margin: 2.1rem 0 1.1rem 0;
+
+        &__answer {
+            background-color: $colormain2;
+            border-color: $colormain2;
+            color: white;
+
+        }
+
+        &__reset {
+            background-color: #FFFFFF;
+            border: 1px solid #D1D1D1;
+
+            color: $text-gray;
+        }
+    }
+
+
+    .warp_bg {  
+
+        .table {
+            margin-bottom: 0 !important;  
+
+            th,
+            td {
+                text-align: center;
+            }
+
+            .text-true {
+                color: #1890FF;
+            }
+
+            .text-false {
+                color: #F24962;
+            }
+        }  
+    }
+}
+

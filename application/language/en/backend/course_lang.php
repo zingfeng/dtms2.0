@@ -1,0 +1,62 @@
+<?php
+$lang['course_topic_title']			= "Quản lý chuyên đề";
+$lang['course_topic_select_parent']	= "Nhóm chính";
+$lang['course_topic_name'] 			= "Tên chuyên đề";
+$lang['course_topic_ordering'] 		= "Thứ tự";
+$lang['course_topic_description']	    = "Mô tả chuyên đề";
+$lang['course_topic_delete_parent']	= "Phái xoá nhóm con trước";
+$lang['course_topic_type']	        = "Loại phụ";
+$lang['course_topic_metakey']	    = "Từ khóa tìm kiếm";
+$lang['course_topic_metadesc']	    = "Mô tả nhóm tin";
+$lang['course_topic_images']	    = "Ảnh";
+$lang['course_topic_all']	    		= "Tất cả các nhóm";
+
+$lang['course_title']			= "Quản lý khóa học";
+$lang['course_name']			= "Tên khóa học";
+$lang['course_sku']			= "Mã khóa học";
+$lang['course_description']	= "Mô tả";
+$lang['course_detail']    	    = "Chi tiết";
+$lang['course_special']		= "Đặc biệt";
+$lang['course_images']         = "Ảnh mô tả";
+$lang['course_hit']            = "Lần xem";
+$lang['course_cate']			= "Nhóm khóa học";
+$lang['course_original_cate']	= "Nhóm chính";
+$lang['course_tags']			= "Từ khoá";
+$lang['course_publish']		= "Xuất bản";
+$lang['course_price']  		= "Giá khóa học";
+$lang['course_price_discount']		= "Giá giảm";
+$lang['course_quantity']		= "Số lượng";
+$lang['course_images_sub']     = "Ảnh phụ";
+$lang['course_date_up']        = "Ngày đăng";
+$lang['course_params']			= "Thông tin thêm";
+$lang['course_params_key']     = "Tên";
+$lang['course_params_value']   = "Giá trị";
+
+$lang['course_seo_title']			= "SEO tiêu đề";
+$lang['course_seo_keyword']		= "SEO từ khóa";
+$lang['course_seo_description']	= "SEO mô tả";
+
+$lang['course_class_title']			= "Quản lý tiết học";
+$lang['course_class_name']			= "Tên tiết học";
+$lang['course_class_sku']			= "Mã khóa học";
+$lang['course_class_description']	= "Mô tả";
+$lang['course_class_detail']    	    = "Chi tiết";
+$lang['course_class_special']		= "Đặc biệt";
+$lang['course_class_images']         = "Ảnh mô tả";
+$lang['course_class_hit']            = "Lần xem";
+$lang['course_class_cate']			= "Nhóm khóa học";
+$lang['course_class_original_cate']	= "Nhóm chính";
+$lang['course_class_tags']			= "Từ khoá";
+$lang['course_class_publish']		= "Xuất bản";
+$lang['course_class_price']  		= "Giá khóa học";
+$lang['course_class_price_discount']		= "Giá giảm";
+$lang['course_class_quantity']		= "Số lượng";
+$lang['course_class_images_sub']     = "Ảnh phụ";
+$lang['course_class_date_up']        = "Ngày đăng";
+$lang['course_class_params']			= "Thông tin thêm";
+$lang['course_class_params_key']     = "Tên";
+$lang['course_class_params_value']   = "Giá trị";
+
+$lang['course_class_seo_title']			= "SEO tiêu đề";
+$lang['course_class_seo_keyword']		= "SEO từ khóa";
+$lang['course_class_seo_description']	= "SEO mô tả";

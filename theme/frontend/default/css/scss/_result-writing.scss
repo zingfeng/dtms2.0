@@ -1,0 +1,266 @@
+@import "./var";
+
+
+//----------result listening-----------------
+// #sidebar_left{width: 865px;}
+
+.result-writing {  
+
+    .information {
+        line-height: 1.5;
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+        }
+
+        &__view {
+            font-size: 1rem;
+            color: $text-gray;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .task-navigation {
+        margin-top: 1.2rem;
+
+        .active {
+            a {
+                color: $text-blue;
+            }
+        }
+    }
+
+    .your-task {
+        margin-top: 1.2rem;
+
+        &__textarea {
+            padding: 15px;
+            border: 1px solid $border-gray;
+            border-radius: 6px;
+
+            height: auto;
+            max-height: 25rem;
+            width: 100%;
+        }
+
+        &__content {
+            overflow-x: hidden;
+            line-height: 2;
+
+            height: 23rem;
+        }
+
+        &__text-false {
+            color: $text-red;
+            text-decoration: underline;
+        }
+    }
+
+    .status-task {
+        margin-top: 1.5rem;
+
+        .total-words {
+
+            &__text {
+                display: inline-block;
+            }
+
+            &__number {
+                display: inline-block;
+                font-weight: bold;
+                color: $text-blue;
+
+                margin-right: 3rem;
+            }
+        }
+
+        .vocab-grammar-errors {
+
+            &__text {
+                display: inline-block;
+            }
+
+            &__number {
+                display: inline-block;
+                font-weight: bold;
+                color: $text-red;
+            }
+        }
+    }
+
+    .button-action {
+        margin-bottom: 1.5rem;
+
+        .btn {
+
+            &.-button-secondary {
+                margin-right: 1rem;
+            }
+
+            &.-button-primary {
+
+                color: #fff;
+                background-color: $colormain2;
+                border-color: $colormain2;
+
+                display: inline-block;
+                font-weight: 400;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: .375rem .75rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: .25rem;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            }
+        }
+
+        .button-next-task {
+            float: right;
+            vertical-align: baseline;
+            padding-top: 0.5rem;
+
+            color: $colormain2;
+        }
+
+    }
+
+    .task-name {
+        margin-bottom: 1.25rem;
+
+        .panel-task {
+            margin-bottom: 0;
+
+            &__title {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+
+            &__body {
+                line-height: 1.5;
+
+                background-color: $background-task;
+            }
+
+
+        }
+    }
+
+    .ideal-vocabulary {
+        margin-bottom: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+
+        .ideal {
+            width: 50%;
+            padding-right: 15px;
+
+        }
+
+        .vocabulary {
+            width: 50%;
+            padding-left: 15px;
+
+            .table {
+                margin-bottom: 0 !important;
+
+                td {
+                    text-align: left;
+                }
+
+                tr,
+                td,
+                th {
+                    border: 0;
+                }
+
+                .icon-voice {
+                    text-align: center;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+
+                    &.-available {
+                        color: $colormain2;
+                    }
+
+                    &.-available:hover {
+                        color: $colorhover;
+                    }
+
+                    &.-disable {
+                        color: $border-gray;
+                    }
+                }
+
+                .vocabulary-text {
+
+                    &__primary {
+                        font-weight: bold;
+                        color: $text-black;
+                    }
+                }
+
+                .text-false {
+                    color: #F24962;
+                }
+            }
+
+        }
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+            border-bottom: 1px solid $border-gray;
+            padding-bottom: 1rem;
+        }
+
+        &__content {
+            margin-top: 1rem;
+            line-height: 1.5;
+
+        }
+
+    }
+
+    .sample-band {        
+        
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-black;
+
+            border-bottom: 1px solid $border-gray;
+            padding-bottom: 1rem;
+        }
+
+        &__content {
+            line-height: 1.5;
+            color: $text-black;
+
+            margin-top: 1rem;
+        }
+    }
+
+
+    .reading-passage {
+        padding: 1.5rem 0 1.5rem 0;
+        clear: both;
+
+        .reading-passage__content {
+            color: $colormain2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+}

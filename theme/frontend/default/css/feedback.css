@@ -1,0 +1,120 @@
+
+.radio_feedback{
+    -webkit-appearance:button;
+    -moz-appearance:button;
+    appearance:button;
+    border:4px solid #ccc;
+    border-top-color:#bbb;
+    border-left-color:#bbb;
+    background:#fff;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    outline: none !important;
+}
+.radio_feedback:checked{
+    border:8px solid #0a9145;
+    outline: none !important;
+}
+.feedback_ruler{
+    font-size: 16px;
+    text-align: center;
+}
+.select_area{
+    display: inline-block;
+    width: 12%;
+}
+.title_ruler_div{
+    display: inline-block;
+    width: 15%;
+}
+
+.select_area:hover{
+    cursor: pointer !important;
+}
+.div_quest{
+    background-color: white;
+    padding: 20px;
+    max-width: 100%;
+    padding-bottom: 28px;
+}
+.quest_title{
+    font-size: 20px;
+
+}
+.radio_feedback_ruler{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+.title_ruler{
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+.div_mono_radio_feedback{
+    text-align: center !important;
+    padding: 5px;
+    background-color: rgba(233, 233, 233, 0.5);
+}
+.title_group_quest{
+    background-color: #0a9145;
+    color: white;
+    padding: 12px;
+    margin-bottom: 0;
+
+}
+.radio_div_feedback{
+    text-align: left;
+    font-size: large;
+    padding: 5px 15px;
+    margin-bottom: 0 !important;
+}
+
+.textarea_text_quest_feedback{
+    resize: none;
+    overflow: auto;
+}
+.select_quest_feedback_select{
+    font-size: large;
+    margin: 0 10px;
+    max-width: 300px;
+}
+
+.radio_div_feedback {
+    display: inline-block;
+}
+
+.btn_send_feedback{
+    border-radius: 0;
+    background-color: #0a9145;
+}
+.btn_send_feedback:hover{
+    cursor: pointer;
+    background-color: #0bb052;
+}
+
+.div_quest_text{
+    padding-bottom: 5px;
+}
+
+.info_class_detail{
+    padding: 8px 20px;
+}
+.title_top{
+    padding: 12px;
+    text-align: center;
+    margin-bottom: 0px;
+    padding-bottom: 0;
+}
+p.description{
+    font-size: 16px;
+    padding: 12px;
+    line-height: 1.5;
+    text-align: center;
+    text-align: center;
+    color: rgba(14, 14, 14, 0.6);
+}
+.class_name_focus{
+    color: #cc2229
+}

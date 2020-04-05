@@ -1,0 +1,54 @@
+body {
+    background-color: #EEF1FA;
+    background-image: url("../images/login/login_bg.jpg");
+    background-repeat: repeat-x; font-size: 12px;
+    margin: 0; font-family: tahoma;
+}
+table.login_main{
+	border: 1px solid #EAE8E8;
+    margin-top: 10%;
+    width: 458px;
+    background: #FFF;
+    margin-top: 10%;
+}
+.login_bottom{
+	background: url("../images/login/login_bottom_form.png") no-repeat;
+	width: 458px; margin: 0 auto;
+	height: 187px;
+}
+.login_title{
+	border-bottom: 2px solid #0A6498;
+    color: #0A6498;
+    font-family: Verdana;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 3px;
+}
+.login_label{
+	color: #555555; font-size: 12px;
+    font-weight: bold;
+    font-family: tahoma;
+}
+input.login_pass, input.login_user{
+	background-color: Transparent;
+    margin: 1px 1px 2px 2px;
+    padding: 0; font-weight: normal;
+    width: 170px; height: 20px;
+    border: 1px solid #AECAF0;
+    font-family: Tahoma; padding: 3px;
+    font-size: 15px;
+}
+input.login_captcha{
+	background-color: Transparent;
+    margin: 1px 1px 2px 2px;
+    padding: 0;
+    width: 78px; height: 25px;
+    border: 1px solid #AECAF0;
+    font-family: Tahoma;
+    font-size: 15px;
+}
+.error{
+	color: red; font-style: italic; margin-bottom: 3px;
+	font-size: 11px;
+}
