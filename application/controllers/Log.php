@@ -443,6 +443,7 @@ class Log extends CI_Controller
 
             if (isset($_REQUEST['class'])) {
                 $class_code = strip_tags($_REQUEST['class']);
+                $params['class_code'] = $class_code;
             }
 
             if (isset($_REQUEST['location'])) {
@@ -484,29 +485,34 @@ class Log extends CI_Controller
         $params = [];
 
 
-        if(count($_REQUEST) > 0) {
-            if (isset($_REQUEST['starttime'])) {
-                $starttime = strtotime(strip_tags($_REQUEST['starttime']));
-            }
-
-            if (isset($_REQUEST['endtime'])) {
-                $endtime = strtotime(strip_tags($_REQUEST['endtime']));
-            }
-
-            if (isset($_REQUEST['class'])) {
-                $class_code = strip_tags($_REQUEST['class']);
-            }
-
-            if (isset($_REQUEST['location'])) {
-                $location = $_REQUEST['location'];
-                $location = json_decode($location, true);
-            }
-
-            if (isset($_REQUEST['area'])) {
-                $area = $_REQUEST['area'];
-                $area = json_decode($area, true);
-            }
+        $dataLink = '';
+        if (isset($_REQUEST['starttime'])) {
+            $starttime = strtotime(strip_tags($_REQUEST['starttime']));
+            $dataLink .= '&starttime='.$starttime;
         }
+
+        if (isset($_REQUEST['endtime'])) {
+            $endtime = strtotime(strip_tags($_REQUEST['endtime']));
+            $dataLink .= '&endtime='.$endtime;
+        }
+
+        if (isset($_REQUEST['class'])) {
+            $class_code = strip_tags($_REQUEST['class']);
+            $dataLink .= '&class='.$class_code;
+        }
+
+        if (isset($_REQUEST['location'])) {
+            $location = $_REQUEST['location'];
+            $dataLink .= '&location='.$location;
+            $location = json_decode($location, true);
+        }
+
+        if (isset($_REQUEST['area'])) {
+            $area = $_REQUEST['area'];
+            $dataLink .= '&area='.$area;
+            $area = json_decode($area, true);
+        }
+
         $params['limit'] = 500;
         $list_fb_phone = $this->fu->get_fb_phone($params);
 

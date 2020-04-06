@@ -106,8 +106,19 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
+
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+        if (isset($params['class_code'])){
+            if (is_array($params['class_code'])){
+                $this->db->where_in('feedback_phone.class_code',$params['class_code']);
+            }else{
+                $this->db->where('feedback_phone.class_code',$params['class_code']);
+            }
+        }
         $this->db->from('feedback_phone');
-        $this->db->join('feedback_class', 'feedback_phone.class_code=feedback_class.class_code', 'left');
+        $this->db->join('feedback_class', 'feedback_phone.class_code=feedback_class.class_code');
         $this->db->join('feedback_teacher', 'feedback_class.main_teacher=feedback_teacher.teacher_id');
         $r = $this->db->get();
         return $r->result_array();
