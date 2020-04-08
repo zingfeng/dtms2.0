@@ -122,48 +122,23 @@ class Bell extends CI_Controller
         // EMAIL MANAGER
         $array_email_manager = array(
             'manager' => array(
-//                'mshoa@imap.edu.vn',
                 'lanphuong@imap.edu.vn',
                 'thanhdat.it@imap.edu.vn',
+                'huyhieu.it@imap.edu.vn'
             ),
             'hn' => array(
-                'havy@imap.edu.vn',
-                'trangnha@imap.edu.vn',
                 'yennhi@imap.edu.vn',
                 'tahoa.dthn@imap.edu.vn',
                 'ductam.dthn@imap.edu.vn',
                 'maido@imap.edu.vn',
-                'bichthuy.dthn@imap.edu.vn',
-                'nhatlinh.dthn@imap.edu.vn',
-                'hongngoc.dthn@imap.edu.vn',
-                'binh.dthn@imap.edu.vn',
-                'maitrang.dthn@imap.edu.vn',
-                'huyhieu.it@imap.edu.vn'
             ),
             'hcm' => array(
-                'xuanthao.dthcm@imap.edu.vn',
                 'trongvinh.dthcm@imap.edu.vn',
-                'phuonguyen.dthcm@imap.edu.vn',
-                'ngochan.dthcm@imap.edu.vn',
-                'tuongduyen.dthcm@imap.edu.vn',
-                'hongtram.dthcm@imap.edu.vn',
-                'kimxuan.dthcm@imap.edu.vn',
-                'vanphuong.dthcm@imap.edu.vn',
-                'lananh.tvv@imap.edu.vn',
-                'bichsen.tvv@imap.edu.vn',
-                'lydung.tvv@imap.edu.vn',
-//                'tuyettrinh@imap.edu.vn', Hạ Vy yêu cầu xóa
-                'hongdoan@imap.edu.vn',
-                'camtu.tvv@imap.edu.vn',
-                'ngoc.thao@imap.edu.vn',
-                'ductam.dthn@imap.edu.vn',
-                'havy@imap.edu.vn',
-                'huyhieu.it@imap.edu.vn'
+                'mylinh.hcdthcm@imap.edu.vn',
             ),
             'dn' => array(
                 'minhhai@imap.edu.vn',
                 'thaohieunt@imap.edu.vn',
-                'huyhieu.it@imap.edu.vn'
             ),
         );
 
