@@ -289,6 +289,21 @@ class Classes extends CI_Controller
         $class_info_raw = $this->feedback->get_list_class_filter($params);
 
         $class_info = array();
+
+        $list_id_location_filter = array();
+        if (isset($_GET['area'])) {
+            $area = $_GET['area'];
+            $area = json_decode($area, true);
+            foreach ($area as $area_mono) {
+                $res_location = $this->feedback->get_list_location($area_mono);
+                foreach ($res_location as $item_location) {
+                    $id_location_this = $item_location['id'];
+                    array_push($list_id_location_filter, $id_location_this);
+                }
+            }
+        }
+
+
         foreach ($class_info_raw as $item) {
             $id_location = $params['location'];
             $list_teacher_live = json_decode($item['list_teacher'], true);
@@ -310,18 +325,6 @@ class Classes extends CI_Controller
             // ============ get list area
 
             if (isset($_GET['area'])) {
-                $area = $_GET['area'];
-                $area = json_decode($area, true);
-
-                $list_id_location_filter = array();
-                foreach ($area as $area_mono) {
-                    $res_location = $this->feedback->get_list_location($area_mono);
-                    foreach ($res_location as $item_location) {
-                        $id_location_this = $item_location['id'];
-                        array_push($list_id_location_filter, $id_location_this);
-                    }
-                }
-
                 if (!in_array($id_location, $list_id_location_filter)) {
                     continue;
                 }
@@ -331,15 +334,9 @@ class Classes extends CI_Controller
         }
 
         foreach ($class_info as &$mono_class_info) {
-            $time_start = $mono_class_info['time_start'];
-            $time_end = $mono_class_info['time_end'];
-            $mono_class_info['time_start_client'] = date('Y-m-d' . '\T' . "H:i", $time_start); // 2000-01-01T00:00:00
-            $mono_class_info['time_end_client'] = date('Y-m-d' . '\T' . "H:i", $time_end);
-
-            $mono_class_info['info_feedback_phone'] = $this->feedback->get_report_phone_paper_by_class_code($mono_class_info['class_code']);
+            $mono_class_info['time_start_client'] = date('Y-m-d' . '\T' . "H:i", $mono_class_info['time_start']); // 2000-01-01T00:00:00
+            $mono_class_info['time_end_client'] = date('Y-m-d' . '\T' . "H:i", $mono_class_info['time_end']);
         }
-
-
 
         $teacher_info = $this->feedback->get_list_info_teacher();
         $location_info = $this->feedback->get_list_location();

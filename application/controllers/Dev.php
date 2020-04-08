@@ -66,7 +66,7 @@ class Dev extends CI_Controller
     }
 
 
-    private function update_number_fb_first_times()
+    public function update_number_fb_first_times()
     {
         ini_set('max_execution_time', '0'); // for infinite time of execution
         $this->db->select('class_code');
