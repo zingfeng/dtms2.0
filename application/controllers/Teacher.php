@@ -88,7 +88,7 @@ class Teacher extends CI_Controller
                 echo '<br>class code: '.$info_class['class_code'];
                 // Get point teacher in feedback Form
 
-                $data_single = $this->feedback->get_data_statistic_class_new($info_class['class_code']);
+                $data_single = $this->feedback->get_data____statistic_class_new($info_class['class_code']);
                 $list_question_answer_form = $data_single['question'];
 
                 $data_point_feedback_form_of_teacher = [];

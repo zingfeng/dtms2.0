@@ -31,20 +31,9 @@ class Feedback_model extends CI_Model
         $this->_tracking_func(__FUNCTION__);
 
         // count class,teacher , feedback,
-        $this->db->select('*');
-        $query = $this->db->get('feedback_class');
-        $arr_res = $query->result_array();
-        $count_class = count($arr_res);
-
-        $this->db->select('*');
-        $query = $this->db->get('feedback_teacher');
-        $arr_res = $query->result_array();
-        $count_teacher = count($arr_res);
-
-        $this->db->select('*');
-        $query = $this->db->get('feedback_paper');
-        $arr_res = $query->result_array();
-        $count_paper = count($arr_res);
+        $count_class = $this->db->count_all('feedback_class');
+        $count_teacher = $this->db->count_all('feedback_teacher');
+        $count_paper = $this->db->count_all('feedback_paper');
 
         return array(
             'count_class' => $count_class,
@@ -59,23 +48,9 @@ class Feedback_model extends CI_Model
         $this->_tracking_func(__FUNCTION__);
 
         // count class,teacher , feedback,
-        $this->db->select('*');
-        $this->db->where('type', $type);
-        $query = $this->db->get('feedback_class');
-        $arr_res = $query->result_array();
-        $count_class = count($arr_res);
-
-        $this->db->select('*');
-        $this->db->where('type', $type);
-        $query = $this->db->get('feedback_paper');
-        $arr_res = $query->result_array();
-        $count_paper = count($arr_res);
-
-        $this->db->select('*');
-        $this->db->where($type, 1);
-        $query = $this->db->get('feedback_teacher');
-        $arr_res = $query->result_array();
-        $count_teacher = count($arr_res);
+        $count_class = $this->db->count_all('feedback_class');
+        $count_teacher = $this->db->count_all('feedback_teacher');
+        $count_paper = $this->db->count_all('feedback_paper');
 
         return array(
             'count_class' => $count_class,
@@ -93,7 +68,8 @@ class Feedback_model extends CI_Model
             $this->db->where('type', $type);
         }
 
-        $this->db->select('*');
+        $this->db->select('class_code'); //zfdev
+        $this->db->limit(100);
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
         return $arr_res;
@@ -146,6 +122,7 @@ class Feedback_model extends CI_Model
         }
         $this->db->where('id_location', $id_location);
         $this->db->select('class_code');
+        $this->db->limit(200);
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
         return $arr_res;
@@ -169,11 +146,7 @@ class Feedback_model extends CI_Model
 
         $arr_res_living = array();
         for ($i = 0; $i < count($arr_res); $i++) {
-            $class_code = $arr_res[$i]['class_code'];
-            $openning_T_F = $this->check_class_code_exist($class_code);
-            if ($openning_T_F) {
-                array_push($arr_res_living, $arr_res[$i]);
-            }
+            array_push($arr_res_living, $arr_res[$i]);
         }
 
         return $arr_res_living;
@@ -214,7 +187,7 @@ class Feedback_model extends CI_Model
             $this->db->where_in("type",$params['type']);
         }
         if ($params['class_code'] != '') {
-            $this->db->where("class_code",$params['class_code']);
+            $this->db->like("class_code",$params['class_code']);
         }
         if ($params['location'] != '') {
             $this->db->where_in("id_location",$params['location']);
@@ -226,12 +199,11 @@ class Feedback_model extends CI_Model
             $this->db->where("average_point <=",$params['max']);
         }
 
-        if ($params['limit'] != '') {
+        if (isset($params['limit']) ) {
             $this->db->limit($params['limit']);
-        }elseif ($params['limit'] != 0) {
-            $this->db->limit(100);
+        }else{
+            $this->db->limit(200); // normal
         }
-        $this->db->limit($params['limit']);
 
         $this->db->select('*');
         $this->db->order_by('class_id', 'DESC');
@@ -255,16 +227,12 @@ class Feedback_model extends CI_Model
         }
 
         $this->db->select('*');
+        $this->db->limit(300);
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
         return $arr_res;
     }
 
-    public function get_list_class_id($type = '')
-    {
-        $this->_tracking_func(__FUNCTION__);
-
-    }
 
     public function insert_teacher($info)
     {
@@ -299,17 +267,14 @@ class Feedback_model extends CI_Model
         $this->_tracking_func(__FUNCTION__);
 
         $this->db->select('class_id,class_code');
+        $this->db->where('class_code',$info['class_code']);
+        $this->db->limit(1);
         $query = $this->db->get('feedback_class');
         $arrClass = $query->result_array();
-        $message = 1;
-        foreach ($arrClass as $class){
-            if($info['class_code'] == $class['class_code']) {
-                $message = 0;
-            }
-        }
-        if($message == 1){
+
+        if(count($arrClass) == 0){
             $this->db->insert('feedback_class', $info);
-            return $message;
+            return 1;
         }
         return 'Mã lớp đã tồn tại, hãy nhập mã lớp khác!';
     }
@@ -346,6 +311,7 @@ class Feedback_model extends CI_Model
         $this->_tracking_func(__FUNCTION__);
 
         $this->db->select('*');
+//        $this->db->limit(300);
         $query = $this->db->get('feedback_teacher');
         $arr_res = $query->result_array();
         return $arr_res;
@@ -470,13 +436,12 @@ class Feedback_model extends CI_Model
 //        $this->db->where('class_code',$class_code);
 //        $this->db->select('*'); // - hehe
         $this->db->select('class_code');
+        $this->db->limit(1);
+        $this->db->where('class_code',$class_code);
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
-        foreach ($arr_res as $mono) {
-            $class_code_target = trim(mb_strtolower($mono['class_code']));
-            if ($class_code_target === $class_code) {
-                return true;
-            }
+        if (count($arr_res) > 0){
+            return true;
         }
         return false;
 
@@ -730,7 +695,7 @@ class Feedback_model extends CI_Model
             $this->db->where('time <', $starttime);
         }
         if(!empty($endtime) && $endtime > 0) {
-            $this->db->where('time < ', $endtime+86400);
+            $this->db->where('time < ', $endtime + 86400);
         }
         $this->db->limit($limit);
         $this->db->order_by('id', 'DESC');
@@ -831,10 +796,10 @@ class Feedback_model extends CI_Model
                 $mono = $list_feedback_form_newest[$i];
                 $type = $mono['type'];
                 $class_code = $mono['class_code'];
-
-                if (!$this->check_class_code_exist($class_code)) {
-                    continue;
-                }
+//
+//                if (!$this->check_class_code_exist($class_code)) {
+//                    continue;
+//                }
                 $mono_json = json_encode(array($type, $class_code));
                 if (!in_array($mono_json, $class_arr)) {
                     array_push($class_arr, $mono_json);
@@ -937,6 +902,7 @@ class Feedback_model extends CI_Model
             $this->db->order_by($order, 'DESC');
         }
 
+        $this->db->limit(300);
         $query = $this->db->get('feedback_paper');
         $arr_res = $query->result_array();
         return $arr_res;
@@ -957,6 +923,8 @@ class Feedback_model extends CI_Model
         if ($order != '') {
             $this->db->order_by($order, 'DESC');
         }
+
+        $this->db->limit(300);
 
         $query = $this->db->get('feedback_ksgv');
         $arr_res = $query->result_array();
@@ -996,12 +964,13 @@ class Feedback_model extends CI_Model
         if ($order != '') {
             $this->db->order_by($order, 'DESC');
         }
-
+        $this->db->limit(300);
         $query = $this->db->get('feedback_slide');
         $arr_res = $query->result_array();
         return $arr_res;
     }
 
+    // deprecated
     public function get_data_statistic_class_new($class_code)
     {
         $this->_tracking_func(__FUNCTION__);
@@ -1125,6 +1094,8 @@ class Feedback_model extends CI_Model
             'time' => $arr_time_length,
         );
     }
+
+    // =============== zfdev đang rà soát tới đây
 
     public function get_data_statistic_class($class_code)
     {

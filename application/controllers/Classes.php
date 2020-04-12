@@ -18,7 +18,7 @@ class Classes extends CI_Controller
 
         $checkParams = count($_GET);
         if($checkParams == 0) {
-            $params['limit'] = 100;
+            $params['limit'] = 200;
         }
 
         if (isset($_GET['min']) && (is_numeric($_GET['min']))) { //done
