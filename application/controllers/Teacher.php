@@ -280,6 +280,152 @@ class Teacher extends CI_Controller
     {
         guard();
         guard_admin_manager();
+        $this->load->model('Feedback_model', 'feedback');
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $params = array();
+
+        if (isset($_REQUEST['min_opening'])) {
+            $params['min_opening'] = strip_tags($_REQUEST['min_opening']);
+        }
+        if (isset($_REQUEST['max_opening'])) {
+            $params['max_opening'] = strip_tags($_REQUEST['max_opening']);
+        }
+
+
+        // 1. Lấy danh sách giáo viên trước đã
+        // 2. Tìm các lớp liên quan đến các giáo viên này
+        // 3. Điểm tính như thế nào ??
+        // Dựa vào điểm feedback phone và 1 số câu hỏi chi tiết trong phần feedback ksgv
+
+        // 1
+        $list_teacher  = $this->fu->get_list_id_teacher_to_info();
+        $arr_teacher_id = array_keys($list_teacher);
+        $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher' );
+
+        $arr_info_view = [];
+        foreach ($arr_teacher_id_to_list_class as $id_main_teacher => $list_class) {
+            $arr_fb_phone_point = [];
+            $arr_class_code = []; // classes belong to this teacher
+            $arr_class_code_and_type = [];
+            $number_class = count($list_class);
+
+            for ($i = 0; $i < count($list_class); $i++) {
+                $mono_class = $list_class[$i];
+                $arr_fb_phone_point[$mono_class['class_code']] = $mono_class['point_phone'];
+                $arr_class_code[] = $mono_class['class_code'];
+                $arr_class_code_and_type[] = [$mono_class['class_code'],$mono_class['type']];
+            }
+
+            $point_fb_ksgv = $this->fu->get_point_fb_ksgv_by_list_class_code($arr_class_code);
+            $average_point_of_1class = [];
+            foreach ($arr_fb_phone_point as $m___class_code => $point_phone_mono){
+                if (isset($point_fb_ksgv[$m___class_code])){
+                    $point_fb_ksgv_mono = $point_fb_ksgv[$m___class_code];
+                    $average_point_of_1class[] = tbc([$point_fb_ksgv_mono,$point_phone_mono],false,10);
+                }else{
+                    $average_point_of_1class[]  = $point_phone_mono;
+                }
+            }
+            $average_point_of_teacher = tbc ($average_point_of_1class);
+            $arr_info_view[] = array(
+                'teacher_id' =>$id_main_teacher,
+                'teacher_info' => $list_teacher[$id_main_teacher],
+                'number_class' => $number_class,
+                'arr_class_code_and_type' => $arr_class_code_and_type,
+                'average_point_of_teacher' => $average_point_of_teacher,
+            );
+        }
+
+//        $today = date('Y-m-d', time());
+//        $one_month = date('Y-m-d', time() - 1 * 30 * 24 * 60 * 60);
+//        $two_month = date('Y-m-d', time() - 2 * 30 * 24 * 60 * 60);
+//        $three_month = date('Y-m-d', time() - 3 * 30 * 24 * 60 * 60);
+//        $six_month = date('Y-m-d', time() - 6 * 30 * 24 * 60 * 60);
+//        $one_year = date('Y-m-d', time() - 365 * 24 * 60 * 60);
+
+//        $data = array(
+//            'arr_info_view' => $arr_info_view,
+//            'today' => $today,
+//            'one_month' => $one_month,
+//            'two_month' => $two_month,
+//            'three_month' => $three_month,
+//            'six_month' => $six_month,
+//            'one_year' => $one_year,
+//        );
+
+        $filename = 'Export-teacher-'.date('d-m-Y').'.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+        foreach($arr_info_view as $m){
+            $count = $baseRow + $i;
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "ID")
+                    ->setCellValue('B'.$i, "Tên giáo viên")
+                    ->setCellValue('C'.$i, "Số lượng lớp")
+                    ->setCellValue('D'.$i, "Điểm trung bình")
+                    ->setCellValue('E'.$i, "Danh sách lớp")
+                    ->setCellValue('F'.$i, "Xếp loại");
+//                    ->setCellValue('G'.$i, "Khu vực");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+            // List class
+            $xeploai = '';
+            switch (true){
+                case ($m['average_point_of_teacher'] >=9.5):
+                    $xeploai = 'Xuất sắc';
+                    break;
+                case ($m['average_point_of_teacher'] >=9):
+                    $xeploai = 'Giỏi';
+                    break;
+                case ($m['average_point_of_teacher'] >=8.6):
+                    $xeploai = 'Khá';
+                    break;
+                case ($m['average_point_of_teacher'] >=8):
+                    $xeploai = 'Trung bình';
+                    break;
+                default:
+                    $xeploai = 'Yếu';
+                    break;
+            }
+            $list_class = '';
+            for ($i = 0; $i < count($m['arr_class_code_and_type']); $i++) {
+                $class_info_mono = $m['arr_class_code_and_type'][$i];
+                $list_class .= $class_info_mono[0].' | ';
+            }
+
+            if ($m['average_point_of_teacher'] == 0){
+                $xeploai = '';
+            }
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $m['teacher_id'])
+                ->setCellValue('B'.$count, $m['teacher_info'])
+                ->setCellValue('C'.$count, $m['number_class'])
+                ->setCellValue('D'.$count, $m['average_point_of_teacher'])
+                ->setCellValue('E'.$count, $list_class)
+                ->setCellValue('F'.$count, $xeploai);
+//                ->setCellValue('G'.$count, $area_text);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+
+    }
+    
+    public function export_teacher_point_old()
+    {
+        guard();
+        guard_admin_manager();
 
 //        $this->_mark_all_class('');
         $params = array();
