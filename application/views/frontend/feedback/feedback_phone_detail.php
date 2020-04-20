@@ -41,6 +41,16 @@
                     ?>">
                 </div>
             </div>
+            <div class="col col-sm-2">
+                <div class="form-group">
+                    <label>Tên giáo viên :</label>
+                    <input type="input" class="form-control" name="teacher_name" id="teacher_name" value="<?php
+                    if (isset($_REQUEST['teacher_name'])){
+                        echo $_REQUEST['teacher_name'];
+                    }
+                    ?>">
+                </div>
+            </div>
             <div class="col col-sm-3">
                 <p class="title_filter">by branch  </p>
                 <div>
@@ -281,6 +291,14 @@
         console.log(class_code);
         if (class_code !== ''){
             query_string += '&class=' + class_code;
+        }
+
+        var teacher = $('#teacher_name').val();
+
+        console.log("teacher");
+        console.log(teacher);
+        if (teacher !== ''){
+            query_string += '&teacher_name=' + teacher;
         }
 
         var arr_branch = [];

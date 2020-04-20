@@ -102,13 +102,14 @@ class Feed_upgrade_model extends CI_Model{
     }
 
     public function get_fb_phone($params){
-        $this->db->select("feedback_phone.id, feedback_phone.class_code, feedback_phone.times,feedback_phone.time, feedback_phone.comment, feedback_phone.point, feedback_phone.name_feeder, feedback_class.main_teacher, feedback_teacher.name ");
+        $this->db->select("feedback_phone.id, feedback_phone.class_code, feedback_phone.times,feedback_phone.time, feedback_phone.comment, feedback_phone.point, feedback_phone.name_feeder, feedback_class.main_teacher,feedback_class.id_location, feedback_teacher.name ");
+
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
 
-        if (isset($params['limit'])){
-            $this->db->limit($params['limit']);
+        if (isset($params['teacher_name'])){
+            $this->db->like('feedback_teacher.name', $params['teacher_name']);
         }
         if (isset($params['class_code'])){
             if (is_array($params['class_code'])){
@@ -117,9 +118,26 @@ class Feed_upgrade_model extends CI_Model{
                 $this->db->where('feedback_phone.class_code',$params['class_code']);
             }
         }
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('feedback_phone.time >', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('feedback_phone.time < ', $params['endtime'] + 86400);
+        }
+        if (isset($params['location'])){
+            $this->db->where_in("feedback_class.id_location",$params['location']);
+        }
+
         $this->db->from('feedback_phone');
         $this->db->join('feedback_class', 'feedback_phone.class_code=feedback_class.class_code');
         $this->db->join('feedback_teacher', 'feedback_class.main_teacher=feedback_teacher.teacher_id');
+
+        if (isset($params['area'])){
+            $this->db->where_in("feedback_location.area",$params['area']);
+            $this->db->join('feedback_location','feedback_class.id_location = feedback_location.id');
+        }
+
+        $this->db->order_by("feedback_phone.id",'DESC');
         $r = $this->db->get();
         return $r->result_array();
     }
