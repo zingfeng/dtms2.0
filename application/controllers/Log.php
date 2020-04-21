@@ -453,12 +453,12 @@ class Log extends CI_Controller
 
             if (isset($_REQUEST['location'])) {
                 $location = $_REQUEST['location'];
-                $location = json_decode($location, true);
+                $params['location'] = json_decode($location, true);
             }
 
             if (isset($_REQUEST['area'])) {
                 $area = $_REQUEST['area'];
-                $area = json_decode($area, true);
+                $params['area'] = json_decode($area, true);
             }
         }
         $location_info = $this->feedback->get_list_location();
@@ -495,33 +495,34 @@ class Log extends CI_Controller
         $dataLink = '';
         if (isset($_REQUEST['starttime'])) {
             $params['starttime'] = strtotime(strip_tags($_REQUEST['starttime']));
-            $dataLink .= '&starttime='.$starttime;
+            $dataLink .= '&starttime='.$params['starttime'];
         }
 
         if (isset($_REQUEST['endtime'])) {
             $params['endtime'] = strtotime(strip_tags($_REQUEST['endtime']));
-            $dataLink .= '&endtime='.$endtime;
+            $dataLink .= '&endtime='.$params['endtime'];
         }
 
         if (isset($_REQUEST['class'])) {
             $class_code = strip_tags($_REQUEST['class']);
+            $params['class_code'] = $class_code;
             $dataLink .= '&class='.$class_code;
         }
 
         if (isset($_REQUEST['location'])) {
             $location = $_REQUEST['location'];
             $dataLink .= '&location='.$location;
-            $location = json_decode($location, true);
+            $params['location'] = json_decode($location, true);
         }
 
         if (isset($_REQUEST['area'])) {
             $area = $_REQUEST['area'];
             $dataLink .= '&area='.$area;
-            $area = json_decode($area, true);
+            $params['area'] = json_decode($area, true);
         }
 
         $params['limit'] = 500;
-        $list_fb_phone = $this->fu->get_fb_phone($params);
+        $list_fb_phone = $this->fu->get_list_feedback_phone_export($params);
 
         $filename = 'Feedback-Phone.xlsx';
         $this->load->library('PHPExcel');
@@ -540,7 +541,7 @@ class Log extends CI_Controller
                     ->setCellValue('A'.$i, "STT")
                     ->setCellValue('B'.$i, "Lớp")
                     ->setCellValue('C'.$i, "Giảng viên")
-//                    ->setCellValue('D'.$i, "Cơ sở")
+                    ->setCellValue('D'.$i, "Cơ sở")
                     ->setCellValue('E'.$i, "Ngày nhận KS")
                     ->setCellValue('F'.$i, "Lần")
                     ->setCellValue('G'.$i, "Điểm trung bình")
@@ -551,8 +552,8 @@ class Log extends CI_Controller
             $objPHPExcel->getActiveSheet(0)
                 ->setCellValue('A'.$count, $keyEX+1 )
                 ->setCellValue('B'.$count, $mono_feedback_phone['class_code'])
-                ->setCellValue('C'.$count, $mono_feedback_phone['name'])
-//                ->setCellValue('D'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
+                ->setCellValue('C'.$count, $mono_feedback_phone['teacher_name'])
+                ->setCellValue('D'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
                 ->setCellValue('E'.$count, date('d/m/Y', $mono_feedback_phone['time']))
                 ->setCellValue('F'.$count, $mono_feedback_phone['times'])
                 ->setCellValue('G'.$count, $mono_feedback_phone['point'])
