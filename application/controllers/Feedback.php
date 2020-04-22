@@ -388,7 +388,6 @@ class Feedback extends CI_Controller
         $data = array(
             'get_list_bell' => $r,
         );
-
         $this->load->layout('feedback/log_send_report', $data, false, 'layout_feedback');
     }
 

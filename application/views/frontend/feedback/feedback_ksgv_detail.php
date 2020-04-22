@@ -8,6 +8,8 @@
         if (isset($type_ksgv)){
             if ($type_ksgv === 'ksgv1'){
                 echo ' Feedback Form mẫu 1';
+            }elseif($type_ksgv === 'dao_tao_onl'){
+                echo ' Feedback đào tạo online';
             }else{
                 echo ' Feedback Form mẫu 2';
             }
@@ -21,15 +23,25 @@
         <div>
             <h5>Danh sách câu hỏi</h5>
             <?php
+            $list_quest_total = array();
+            for ($i = 0; $i < count($list_quest_ruler); $i++) {
+                echo '<p>'.$list_quest_ruler[$i].'</p>';
+            }
             for ($i = 0; $i < count($list_quest_select); $i++) {
                 echo '<p>'.$list_quest_select[$i].'</p>';
             }
             for ($i = 0; $i < count($list_quest_text); $i++) {
                 echo '<p>'.$list_quest_text[$i].'</p>';
             }
-            $list_quest_total = array_merge($list_quest_select,$list_quest_text);
-
-
+            if($list_quest_ruler){
+                $list_quest_total = array_merge($list_quest_ruler,$list_quest_total);
+            }
+            if($list_quest_select){
+                $list_quest_total = array_merge($list_quest_select,$list_quest_total);
+            }
+            if($list_quest_text){
+                $list_quest_total = array_merge($list_quest_text,$list_quest_total);
+            }
             ?>
         </div>
     </div>
@@ -313,6 +325,13 @@
                                         $mono__count ++;
                                     }
                                     echo  '<td><span class="point" >'.$mono_point.'</span></td>';
+                                }elseif($type === 'ruler'){
+                                    $mono_point = (int)$mono_detail[3]*2;
+                                    if ($mono_point >0){
+                                        $mono__sum += $mono_point;
+                                        $mono__count ++;
+                                    }
+                                    echo  '<td><span class="point" title="'.$mono_detail[3].'/5">'.$mono_point.'</span></td>';
                                 }else{
                                     $content = $mono_detail[3];
                                     echo  '<td>'.$content.'</td>';
