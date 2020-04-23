@@ -777,9 +777,7 @@ class Form extends CI_Controller
         $list_info_class = array();
         if (isset($_GET['my_class'])) {
             $class_code = mb_strtolower($_GET['my_class']);
-            if ($this->feedback->check_class_code_exist($class_code, 'toeic')) {
-                $info_class = $this->feedback->get_info_class_by_class_code($class_code);
-            }
+            $info_class = $this->feedback->get_info_class_by_class_code($class_code);
         } else {
             $list_info_class = $this->feedback->get_list_class_code_opening('toeic');
         }
@@ -810,7 +808,6 @@ class Form extends CI_Controller
 
         $token_feedback = $this->config->item('token_feedback');
         $token = md5($token_feedback . $time_start);
-
 
         $data = array(
             'type_class' => 'dao_tao_onl',

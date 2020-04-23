@@ -414,14 +414,11 @@ class Feedback_model extends CI_Model
     {
         $this->_tracking_func(__FUNCTION__);
 
-        $this->db->where('class_code', $class_code);
+        $this->db->like('class_code', $class_code);
         $this->db->select('*');
         $query = $this->db->get('feedback_class');
-        $arr_res = $query->result_array();
-        if (isset($arr_res[0])) {
-            return $arr_res[0];
-        }
-        return null;
+        $arr_res = $query->row_array();
+        return $arr_res;
     }
 
     public function check_class_code_exist($class_code, $type = '')
