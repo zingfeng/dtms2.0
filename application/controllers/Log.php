@@ -10,6 +10,15 @@ class Log extends CI_Controller
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
             $del = true;
         }
+        if (isset($_REQUEST['location'])) {
+            $params['location'] = json_decode($_REQUEST['location'], true);
+        }
+        if (isset($_REQUEST['area'])) {
+            $params['area'] = json_decode($_REQUEST['area'], true);
+        }
+        if (isset($_REQUEST['class_code'])) {
+            $params['class_code'] = strip_tags($_REQUEST['class_code']);
+        }
         switch($_GET['type_ksgv']){
             case 'ksgv2':
                 $type_ksgv = 'ksgv2';
@@ -93,85 +102,47 @@ class Log extends CI_Controller
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
             $del = true;
         }
-        switch($_GET['type_ksgv']){
-            case 'ksgv2':
-                $type_ksgv = 'ksgv2';
-                $list_quest_select = array(
-                    '1. Về phương pháp giảng dạy', // 1
-                    '2. Trình độ chuyên môn', //2
-                    '3. Mức độ quan tâm học viên', // 3
-                    '4. Mức độ truyền cảm hứng', // 4
-                    '5. Mức độ tiến bộ của học viên', // 5
-                    '6. Diện mạo - Tác phong giáo viên', // 6
-                    '7. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm', // 7
-                );
-
-                $list_quest_text = array(
-                    '8. Mời bạn đóng góp thêm những điểm cần cải thiện để nâng cao chất lượng đào tạo/ mong muốn được hỗ trợ thêm?',
-                );
-                break;
-            case 'dao_tao_onl':
-                $type_ksgv = 'dao_tao_onl';
-                $list_quest_ruler = array(
-                    '1. TỐC ĐỘ giảng dạy có phù hợp không?', // 1
-                    '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?', //2
-                    '3. Giảng viên có MỞ RỘNG thêm kiến thức không?', // 3
-                    '4. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?', // 4
-                    '5. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?', // 5
-                    '6. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?', // 6
-                    '7. Chất lượng đường truyền', // 7
-                    '8. Mức độ dễ thao tác và sử dụng', // 7
-                    '9. Chất lượng học online', // 7
-                );
-                $list_quest_select = array(
-                    '10. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?', // 7
-                );
-                break;
-            default:
-                $type_ksgv = 'ksgv1';
-                $list_quest_select = array(
-                    '1. TỐC ĐỘ giảng dạy có phù hợp không?', // 1
-                    '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân, tập thể không?', //2
-                    '3. Giảng viên có TỰ TIN khi giảng dạy bằng slide hay không?', // 3
-                    '4. Giảng viên có MỞ RỘNG thêm kiến thức TRÊN BẢNG không?', // 4
-                    '5. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?', // 5
-                    '6. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?', // 6
-                    '7. Giảng viên có CHUẨN BỊ KỸ BÀI và NẮM RÕ SLIDE không?', // 7
-                    '8. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?', // 8
-                    '9. Giảng viên có DI CHUYỂN LINH HOẠT trong lớp học (giữa máy tính/bảng và về phía học viên) không?',
-                    '10. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm',
-                );
-                $list_quest_text = array();
-                break;
+        $dataLink = '';
+        if (isset($_REQUEST['location'])) {
+            $params['location'] = json_decode($_REQUEST['location'], true);
+            $dataLink .= '&location='.$_REQUEST['location'];
+        }
+        if (isset($_REQUEST['area'])) {
+            $params['area'] = json_decode($_REQUEST['area'], true);
+            $dataLink .= '&area='.$_REQUEST['area'];
+        }
+        if (isset($_REQUEST['class_code'])) {
+            $params['class_code'] = strip_tags($_REQUEST['class_code']);
         }
 
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
 
         $params['limit'] = 500;
-        $params['type'] = $type_ksgv;
+        $params['type'] = $_GET['type_ksgv'];
+        $dataLink .= '&type_ksgv='.$_GET['type_ksgv'];
+        $params['data_class'] = 1;
         $list_fb = $this->fu->get_feedback_ksgv($params);  // zfdev Viết lại phần filter trong model
 
-        $location_info = $this->feedback->get_list_location();
-        $arr_location_info = array();
-        foreach ($location_info as $mono_location) {
-            $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
+        $point_by_class = array();
+        foreach ($list_fb as $keyfb => $fb){
+            $data_fb = json_decode($fb['detail'], true);
+            if($fb['type'] == 'ksgv2'){
+                $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[6][3];
+                $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+            }else{
+                $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[9][3];
+                $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+            }
+            $point_by_class[$fb['class_code']]['class_code'] = $fb['class_code'];
+            $point_by_class[$fb['class_code']]['teacher_name'] = $fb['teacher_name'];
+            $point_by_class[$fb['class_code']]['time_end'] = $fb['time_end'];
+            $point_by_class[$fb['class_code']]['type'] = $fb['type'];
+            $point_by_class[$fb['class_code']]['location'] = $fb['name'] .' - '.$fb['area'];
         }
         // ==================================
 
-//        $data = array(
-//            'rows' => $list_fb,
-//            'location_info' => $location_info,
-//            'type_ksgv' => $type_ksgv,
-//            'list_quest_select' => $list_quest_select,
-//            'list_quest_text' => $list_quest_text,
-//            'arr_location_info' => $arr_location_info,
-//            'del' => $del
-//        );
-        // ================================== START EXPORT
-
         $this->load->library('PHPExcel');
-
 
         switch($_GET['type_ksgv']){
             case 'ksgv2':
@@ -187,99 +158,35 @@ class Log extends CI_Controller
         $i = 1;
         $baseRow = 1;
 
-        foreach($list_fb as $mono_feedback) {
-            $class_code_mono = $mono_feedback['class_code'];
-            $time_end = $mono_feedback['time_end'];
-            $name_feeder = $mono_feedback['name_feeder'];
-            $age = $mono_feedback['age'];
-
-            $list_teacher_text = '';
-
-            $list_quest_total = array();
-            if($list_quest_ruler){
-                $list_quest_total = array_merge($list_quest_ruler,$list_quest_total);
-            }
-            if($list_quest_select){
-                $list_quest_total = array_merge($list_quest_select,$list_quest_total);
-            }
-            if($list_quest_text){
-                $list_quest_total = array_merge($list_quest_text,$list_quest_total);
-            }
-
-
+        foreach($point_by_class as $keyEX => $mono_feedback){
             $count = $baseRow + $i;
-            if ($i == 1) {
-                $objPHPExcel->getActiveSheet(0)
-                    ->setCellValue('A' . $i, "ID")// index 0
-                    ->setCellValue('B' . $i, "Mã lớp")// index 1
-                    ->setCellValue('C' . $i, "Thời gian")// 2
-                    ->setCellValue('D' . $i, "Tên")//3
-                    ->setCellValue('E' . $i, "Tuổi"); // 4
-                $num_index = 5;
-                for ($kk = 0; $kk < count($list_quest_total); $kk++) {
-                    $nameColumn = getNameFromNumber($num_index);
-                    $stt_kk = $kk + 1;
-                    $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $i, "Q" . $stt_kk);
-                    $num_index++;
-                }
-
-                $nameColumn = getNameFromNumber($num_index);
-                $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $i, "ĐTB");
+            $classLink = '';
+            if(empty($_REQUEST['class_code'])){
+                $classLink = '&class_code='.$mono_feedback['class_code'];
             }
-
-            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count, 1);
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Lớp")
+                    ->setCellValue('C'.$i, "Giảng viên")
+                    ->setCellValue('D'.$i, "Cơ sở")
+                    ->setCellValue('E'.$i, "Ngày nhận KS")
+                    ->setCellValue('F'.$i, "Loại")
+                    ->setCellValue('G'.$i, "Điểm trung bình giáo viên")
+                    ->setCellValue('H'.$i, "Chi tiết");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
 
             $objPHPExcel->getActiveSheet(0)
-                ->setCellValue('A' . $count, $mono_feedback['id'])
-                ->setCellValue('B' . $count, $class_code_mono)
-                ->setCellValue('C' . $count, date('d/m/Y - H:i:s', $time_end))
-                ->setCellValue('D' . $count, $name_feeder)
-                ->setCellValue('E' . $count, $age);
-
-            $detail = $mono_feedback['detail'];
-            $detail_live = json_decode($detail, true);
-            $mono__sum = 0;
-            $mono__count = 0;
-
-            $num_index = 5;
-            for ($zz = 0; $zz < count($detail_live); $zz++) {
-                $mono_detail = $detail_live[$zz];
-                $type = $mono_detail[1];
-                if ($type === 'select') {
-                    $mono_point = $mono_detail[3];
-                    if ($mono_point > 0) {
-                        $mono__sum += $mono_point;
-                        $mono__count++;
-                    }
-                    $nameColumn = getNameFromNumber($num_index);
-
-                    $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $count, $mono_point);
-
-                } elseif($type === 'ruler') {
-                    $mono_point = (int)$mono_detail[3]*2;
-                    if ($mono_point >0){
-                        $mono__sum += $mono_point;
-                        $mono__count ++;
-                    }
-                    $nameColumn = getNameFromNumber($num_index);
-                    $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $count, $mono_point);
-                } else {
-                    $content = $mono_detail[3];
-                    $nameColumn = getNameFromNumber($num_index);
-
-                    $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $count, $content);
-                }
-                $num_index++;
-            }
-
-
-            if ($mono__count > 0) {
-                $dtb = round($mono__sum / $mono__count, 2);
-            } else {
-                $dtb = 0;
-            }
-            $nameColumn = getNameFromNumber($num_index);
-            $objPHPExcel->getActiveSheet(0)->setCellValue($nameColumn . $count, $dtb);
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, $mono_feedback['class_code'])
+                ->setCellValue('C'.$count, $mono_feedback['teacher_name'])
+                ->setCellValue('D'.$count, $mono_feedback['location'])
+                ->setCellValue('E'.$count, date('d/m/Y', $mono_feedback['time_end']))
+                ->setCellValue('F'.$count, $mono_feedback['type'])
+                ->setCellValue('G'.$count, $mono_feedback['total_point']/$mono_feedback['count_point'])
+                ->setCellValue('H'.$count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
+            $i++;
         }
 
         $objPHPExcel->getActiveSheet()->setTitle($filename);

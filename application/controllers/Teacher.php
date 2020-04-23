@@ -199,13 +199,18 @@ class Teacher extends CI_Controller
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
 
-        $params = array();
+        $params = array(
+            'limit' => 30
+        );
 
         if (isset($_REQUEST['min_opening'])) {
             $params['min_opening'] = strip_tags($_REQUEST['min_opening']);
         }
         if (isset($_REQUEST['max_opening'])) {
             $params['max_opening'] = strip_tags($_REQUEST['max_opening']);
+        }
+        if (isset($_REQUEST['teacher_name'])) {
+            $params['teacher_name'] = strip_tags($_REQUEST['teacher_name']);
         }
 
 
@@ -215,7 +220,7 @@ class Teacher extends CI_Controller
         // Dựa vào điểm feedback phone và 1 số câu hỏi chi tiết trong phần feedback ksgv
 
         // 1
-        $list_teacher  = $this->fu->get_list_id_teacher_to_info(['limit' => 30]);
+        $list_teacher  = $this->fu->get_list_id_teacher_to_info($params);
         $arr_teacher_id = array_keys($list_teacher);
         $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher' );
 

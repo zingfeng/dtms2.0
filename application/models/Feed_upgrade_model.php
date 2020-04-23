@@ -4,9 +4,12 @@ class Feed_upgrade_model extends CI_Model{
 
     public function get_list_id_teacher_to_info($params = []){
         $this->db->select('teacher_id,name');
-
+        $params =array_merge(array('limit' => 30), $params);
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
+        }
+        if (isset($params['teacher_name'])){
+            $this->db->like('name', $params['teacher_name']);
         }
         if (isset($params['teacher_id_list'])){
             $this->db->where_in('teacher_id', $params['teacher_id_list']);
@@ -182,16 +185,31 @@ class Feed_upgrade_model extends CI_Model{
     }
 
     public function get_feedback_ksgv($params){
-        $this->db->select("*");
-        $this->db->order_by("id","desc");
+        $this->db->order_by("fk.id","desc");
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
         // type
         if (isset($params['type'])){
-            $this->db->where('type',$params['type']);
+            $this->db->where('fk.type',$params['type']);
         }
-        $r = $this->db->get('feedback_ksgv');
+
+        $this->db->join("feedback_class as fc","fk.class_code = fc.class_code");
+        $this->db->join("feedback_location as fl","fc.id_location = fl.id");
+
+        if (isset($params['location']) && count($params['location']) > 0){
+            $this->db->where_in("fc.id_location",$params['location']);
+        }
+        if (isset($params['area']) && count($params['area']) > 0){
+            $this->db->where_in("fl.area",$params['area']);
+        }
+        if (isset($params['class_code'])){
+            $this->db->where('fk.class_code',$params['class_code']);
+        }
+        $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
+        $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name");
+
+        $r = $this->db->get('feedback_ksgv as fk');
         return $r->result_array();
     }
 }
