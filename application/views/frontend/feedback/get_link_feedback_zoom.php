@@ -35,10 +35,7 @@
             <div class="form-group" style="padding: 5px 20px; font-size: large;">
                 <label for="class_info_feedback">1. Lựa chọn lớp học của bạn</label>
                 <select class="form-control" name="" id="class_info_feedback">
-                    <option disabled selected value="">Lớp học ...</option>
-                    <?php foreach ($class_code as $mono_info_class) { ?>
-                        <option value="<?php echo $mono_info_class['class_code']; ?>"><?php echo $mono_info_class['class_code']; ?></option>
-                    <?php } ?>
+
                 </select>
             </div>
             <div class="form-group" style="padding: 5px 20px; font-size: large;">
@@ -96,7 +93,41 @@
     }
 
     $(document).ready(function () {
-        $('#class_info_feedback').select2();
+        ////////class_info_feedback
+
+        $("#class_info_feedback").select2({
+            allowClear: true,
+            placeholder: 'Chọn hoặc tìm Lớp học',
+            ajax: {
+                url: "/request/suggest_class_code_zoom",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term, // search term
+                        page: params.page,
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: data.option.nextpage
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 0,
+            templateSelection: function(data) {
+                if (typeof (data.item_id) != 'undefined') {
+                    $("#class_info_feedback").val(data.item_id);
+                }
+
+                return data.text;
+            }
+        });
     });
 
     function ClickCopy() {

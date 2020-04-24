@@ -177,6 +177,18 @@ class Feedback_model extends CI_Model
         $arr_res = $query->result_array();
         return $arr_res;
     }
+    public function get_list_class_code_zoom_filter($params)
+    {
+        $params = array_merge(array('limit' => 100, 'offset' => 0), $params);
+        if ($params['keyword']){
+            $this->db->like('class_code',$params['keyword']);
+        }
+        $this->db->select('class_code');
+        $this->db->order_by('class_id', 'DESC');
+        $query = $this->db->get('feedback_class', $params['limit'], $params['offset']);
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
 
     public function get_list_class_filter($params)
     {
