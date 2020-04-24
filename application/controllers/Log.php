@@ -95,7 +95,11 @@ class Log extends CI_Controller
             'arr_location_info' => $arr_location_info,
             'del' => $del
         );
-        $this->load->layout('feedback/feedback_ksgv_detail', $data, false,'layout_feedback');
+        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
+            $this->load->layout('feedback/feedback_ksgv_detail', $data, false, 'layout_feedback');
+        } else {
+            $this->load->layout('feedback/feedback_ksgv_detail', $data, false, 'layout_feedback_tuvan');
+        }
     }
 
     public function export_feedback_ksgv_detail(){
@@ -213,7 +217,11 @@ class Log extends CI_Controller
             'rows' => $list_fb_homthu,
             'location_info' => $location_info,
         );
-        $this->load->layout('feedback/feedback_homthugopy_detail', $data, false,'layout_feedback');
+        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
+            $this->load->layout('feedback/feedback_homthugopy_detail', $data, false, 'layout_feedback');
+        } else {
+            $this->load->layout('feedback/feedback_homthugopy_detail', $data, false, 'layout_feedback_tuvan');
+        }
     }
 
     public function export_hom_thu_gop_y_detail(){
@@ -381,7 +389,7 @@ class Log extends CI_Controller
 
     public function feedback_phone_detail(){
         guard();
-        guard_admin_manager();
+//        guard_admin_manager();
 
         $del = false;
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
@@ -435,8 +443,11 @@ class Log extends CI_Controller
             'del' => $del,
             'location_info' => $location_info
         );
-
-        $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback');
+        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
+            $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback');
+        } else {
+            $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback_tuvan');
+        }
     }
 
     public function export_list_feedback_phone_detail(){

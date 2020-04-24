@@ -239,6 +239,16 @@
 <!--                <li><a href="/feedback/report">Report</a></li>-->
 <!--                <li><a href="/feedback/dashboard">About Us</a></li>-->
                 <li class="dropdown">
+                    <a href="#" style="color:white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Chi tiết <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/feedback/feedback_phone_detail">Lịch sử Feedback Phone</a></li>
+                        <li><a href="/feedback/feedback_ksgv_detail?type_ksgv=ksgv1">Lịch sử Feedback Form mẫu 1</a></li>
+                        <li><a href="/feedback/feedback_ksgv_detail?type_ksgv=ksgv2">Lịch sử Feedback Form mẫu 2</a></li>
+                        <li><a href="/feedback/hom_thu_gop_y_detail">Lịch sử Hòm thư góp ý</a></li>
+                        <li><a href="/feedback/feedback_ksgv_detail?type_ksgv=dao_tao_onl">Lịch sử Feedback đào tạo online</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" style="color:white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Xin chào, <?php  if(isset($_SESSION['fullname'])) echo $_SESSION['fullname']; ?>   <span class="caret"></span></a>
                     <ul class="dropdown-menu">
 <!--                        <li><a href="#">Change password</a></li>-->
