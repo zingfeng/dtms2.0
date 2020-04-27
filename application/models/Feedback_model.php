@@ -426,7 +426,7 @@ class Feedback_model extends CI_Model
     {
         $this->_tracking_func(__FUNCTION__);
 
-        $this->db->like('class_code', $class_code);
+        $this->db->where('class_code', $class_code);
         $this->db->select('*');
         $query = $this->db->get('feedback_class');
         $arr_res = $query->row_array();
