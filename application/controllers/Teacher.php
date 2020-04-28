@@ -20,7 +20,6 @@ class Teacher extends CI_Controller
         guard();
         guard_admin_manager();
 
-//        $this->_mark_all_class('');
         $params = array();
         if (isset($_REQUEST['min_opening'])) {
             $params['min_opening'] = strip_tags($_REQUEST['min_opening']);
@@ -221,41 +220,43 @@ class Teacher extends CI_Controller
 
         // 1
         $list_teacher  = $this->fu->get_list_id_teacher_to_info($params);
-        $arr_teacher_id = array_keys($list_teacher);
-        $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher' );
+        if($list_teacher){
+            $arr_teacher_id = array_keys($list_teacher);
+            $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher', $params);
 
-        $arr_info_view = [];
-        foreach ($arr_teacher_id_to_list_class as $id_main_teacher => $list_class) {
-            $arr_fb_phone_point = [];
-            $arr_class_code = []; // classes belong to this teacher
-            $arr_class_code_and_type = [];
-            $number_class = count($list_class);
+            $arr_info_view = [];
+            foreach ($arr_teacher_id_to_list_class as $id_main_teacher => $list_class) {
+                $arr_fb_phone_point = [];
+                $arr_class_code = []; // classes belong to this teacher
+                $arr_class_code_and_type = [];
+                $number_class = count($list_class);
 
-            for ($i = 0; $i < count($list_class); $i++) {
-                $mono_class = $list_class[$i];
-                $arr_fb_phone_point[$mono_class['class_code']] = $mono_class['point_phone'];
-                $arr_class_code[] = $mono_class['class_code'];
-                $arr_class_code_and_type[] = [$mono_class['class_code'],$mono_class['type']];
-            }
-
-            $point_fb_ksgv = $this->fu->get_point_fb_ksgv_by_list_class_code($arr_class_code);
-            $average_point_of_1class = [];
-            foreach ($arr_fb_phone_point as $m___class_code => $point_phone_mono){
-                if (isset($point_fb_ksgv[$m___class_code])){
-                    $point_fb_ksgv_mono = $point_fb_ksgv[$m___class_code];
-                    $average_point_of_1class[] = tbc([$point_fb_ksgv_mono,$point_phone_mono],false,10);
-                }else{
-                    $average_point_of_1class[]  = $point_phone_mono;
+                for ($i = 0; $i < count($list_class); $i++) {
+                    $mono_class = $list_class[$i];
+                    $arr_fb_phone_point[$mono_class['class_code']] = $mono_class['point_phone'];
+                    $arr_class_code[] = $mono_class['class_code'];
+                    $arr_class_code_and_type[] = [$mono_class['class_code'],$mono_class['type']];
                 }
+
+                $point_fb_ksgv = $this->fu->get_point_fb_ksgv_by_list_class_code($arr_class_code);
+                $average_point_of_1class = [];
+                foreach ($arr_fb_phone_point as $m___class_code => $point_phone_mono){
+                    if (isset($point_fb_ksgv[$m___class_code])){
+                        $point_fb_ksgv_mono = $point_fb_ksgv[$m___class_code];
+                        $average_point_of_1class[] = tbc([$point_fb_ksgv_mono,$point_phone_mono],false,10);
+                    }else{
+                        $average_point_of_1class[]  = $point_phone_mono;
+                    }
+                }
+                $average_point_of_teacher = tbc ($average_point_of_1class);
+                $arr_info_view[] = array(
+                    'teacher_id' =>$id_main_teacher,
+                    'teacher_info' => $list_teacher[$id_main_teacher],
+                    'number_class' => $number_class,
+                    'arr_class_code_and_type' => $arr_class_code_and_type,
+                    'average_point_of_teacher' => $average_point_of_teacher,
+                );
             }
-            $average_point_of_teacher = tbc ($average_point_of_1class);
-            $arr_info_view[] = array(
-                'teacher_id' =>$id_main_teacher,
-                'teacher_info' => $list_teacher[$id_main_teacher],
-                'number_class' => $number_class,
-                'arr_class_code_and_type' => $arr_class_code_and_type,
-                'average_point_of_teacher' => $average_point_of_teacher,
-            );
         }
 
         $today = date('Y-m-d', time());
@@ -306,7 +307,7 @@ class Teacher extends CI_Controller
         // 1
         $list_teacher  = $this->fu->get_list_id_teacher_to_info();
         $arr_teacher_id = array_keys($list_teacher);
-        $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher' );
+        $arr_teacher_id_to_list_class = $this->fu->get_class_info_where_in_teacher_id($arr_teacher_id,'class_id, class_code, type, point_phone, main_teacher', $params );
 
         $arr_info_view = [];
         foreach ($arr_teacher_id_to_list_class as $id_main_teacher => $list_class) {
@@ -558,14 +559,6 @@ class Teacher extends CI_Controller
             $teacher_id_to_name[$id_teacher] = $teacher_info[$k]['name'];
         }
 
-        // $data = array(
-        //     'class_info' => $class_info,
-        //     'list_teacher_to_class' => $list_teacher_to_class,
-        //     'teacher_info' => $teacher_info,
-        //     'teacher_id_to_name' => $teacher_id_to_name,
-        //     'point_teacher_arr' => $point_teacher_arr,
-        // );
-
         $filename = 'Export-teacher-'.date('d-m-Y').'.xlsx';
         $this->load->library('PHPExcel');
         $objPHPExcel = new PHPExcel();
@@ -607,7 +600,6 @@ class Teacher extends CI_Controller
                 }
             }
 
-            $xeploai = '';
             switch (true){
                 case ($point_teacher_arr[$id_teacher]['average_point_of_teacher'] >=9.5):
                     $xeploai = 'Xuất sắc';
@@ -650,6 +642,4 @@ class Teacher extends CI_Controller
         return $objWriter->save('php://output');exit();
 
     }
-
-
 }

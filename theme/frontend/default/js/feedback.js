@@ -755,7 +755,7 @@ function edit_teacher(){
             teacher_ielts_insert: my_info.teacher_ielts_insert,
             teacher_aland_insert: my_info.teacher_aland_insert,
             email_teacher_insert: my_info.email_teacher_insert,
-
+            manager_email_insert: my_info.manager_email_insert,
         },
         function (data, status) {
             console.log(data);
@@ -789,6 +789,7 @@ function insert_teacher(){
         info_teacher_insert: my_info.info_teacher_insert,
         name_teacher_insert: my_info.name_teacher_insert,
         email_teacher_insert: my_info.email_teacher_insert,
+        manager_email_insert: my_info.manager_email_insert,
     },
     function (data, status) {
         console.log(data);
