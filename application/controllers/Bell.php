@@ -96,21 +96,14 @@ class Bell extends CI_Controller
 
         // INFO TEACHER
         $teacher_id = $info_class['main_teacher'];
-        $teacher_email = '';
-        $email_bcc = array();
         $teacher_info = $this->feedback->get_info_teacher($teacher_id);
-        if($teacher_info){
-            $teacher_email = $teacher_info['email'];
-            $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn');
-            if(isset($teacher_info['manager_email'])){
-                $email_bcc = array_merge(array($teacher_info['manager_email']), $email_bcc);
-            }
+        $email_to = array();
+        if(isset($teacher_info['manager_email'])){
+            $email_to = array($teacher_info['manager_email']);
         }
-        if ($teacher_email == '') {
-            $email_to = array($email_bcc[0]);
-            unset($email_bcc[0]);
-        } else {
-            $email_to = array($teacher_email);
+        $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn');
+        if (count($email_to) == 0) {
+            $email_to = array('lanphuong@imap.edu.vn');
         }
 
         // POINT CLASS
