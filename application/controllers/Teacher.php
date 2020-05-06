@@ -197,7 +197,14 @@ class Teacher extends CI_Controller
         guard_admin_manager();
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
-
+        
+        $list_manager = $this->fu->get_teacher_manager();
+        $data_manager = array();
+        foreach ($list_manager as $manager){
+            if($manager['manager_email']){
+                $data_manager[] = $manager['manager_email'];
+            }
+        }
         $params = array(
             'limit' => 30
         );
@@ -210,6 +217,9 @@ class Teacher extends CI_Controller
         }
         if (isset($_REQUEST['teacher_name'])) {
             $params['teacher_name'] = strip_tags($_REQUEST['teacher_name']);
+        }
+        if (isset($_REQUEST['manager_email'])) {
+            $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
         }
 
 
@@ -274,6 +284,7 @@ class Teacher extends CI_Controller
             'three_month' => $three_month,
             'six_month' => $six_month,
             'one_year' => $one_year,
+            'list_manager' => $data_manager,
         );
 
 //        print_r($arr_info_view); exit;

@@ -47,6 +47,27 @@
                 <form action="/feedback/teacher_point" method="get">
                 <div class="col col-sm-3">
                     <div class="form-group">
+                        <label for="usr">Quản lý</label>
+                        <select name="manager_email" id="manager_email" class="form-control" placeholder="Manager">
+                            <option value="">Chọn quản lý</option>
+                            <?php if(isset($list_manager) && count($list_manager) > 0) foreach ($list_manager as $manager) {?>
+                                <option value="<?php echo $manager; ?>" <?php echo (isset($_REQUEST['manager_email']) && $_REQUEST['manager_email'] == $manager) ? 'selected' : '' ?>><?php echo $manager; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-3">
+                    <div class="form-group">
+                        <label for="usr">Tên giáo viên</label>
+                        <input type="text" class="form-control" name="teacher_name" id="teacher_name" value="<?php
+                        if (isset($_REQUEST['teacher_name'])){
+                            echo $_REQUEST['teacher_name'];
+                        }
+                        ?>">
+                    </div>
+                </div>
+                <div class="col col-sm-3">
+                    <div class="form-group">
                         <label for="usr">Từ ngày:</label>
                         <input type="date" class="form-control" name="min_opening" id="min_opening" value="<?php
                         if (isset($_REQUEST['min_opening'])){
@@ -65,8 +86,6 @@
                         ?>">
                     </div>
                 </div>
-
-
                     <div class="col col-sm-1">
                         <div>
                             <label for="usr" style="visibility: hidden">-</label>
@@ -93,6 +112,7 @@
 
         </div>
 
+
         <div class="list_in_table container-fluid" id="list_class">
             <table id="dtClassList" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
@@ -104,6 +124,7 @@
                     <th class="th-sm">Chi tiết</th>
                     <th class="th-sm">Xếp loại</th>
                     <th class="th-sm">Action</th>
+
                 </tr>
 
                 </thead>

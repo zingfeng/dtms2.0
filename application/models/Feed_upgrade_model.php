@@ -14,6 +14,10 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['teacher_id_list'])){
             $this->db->where_in('teacher_id', $params['teacher_id_list']);
         }
+        if (isset($params['manager_email'])){
+            $this->db->where_in('manager_email', $params['manager_email']);
+        }
+
 
         $query = $this->db->get('feedback_teacher');
         $teacher_info = $query->result_array();
@@ -41,9 +45,17 @@ class Feed_upgrade_model extends CI_Model{
         return $arr_res;
     }
 
-    public function get_class_info_where_in_teacher_id($arr_teacher_id,$class_info_select ){
+    public function get_class_info_where_in_teacher_id($arr_teacher_id,$class_info_select, $params = array() ){
         $this->db->select($class_info_select);
-        $this->db->where_in('main_teacher', $arr_teacher_id);
+        if($arr_teacher_id && count($arr_teacher_id) > 0) {
+            $this->db->where_in('main_teacher', $arr_teacher_id);
+        }
+        if ((isset($params['min_opening'])) && ($params['min_opening'] != '')) {
+            $this->db->where('opening_day >=', $params['min_opening']);
+        }
+        if (isset($params['max_opening']) && (($params['max_opening'] != ''))) {
+            $this->db->where('opening_day <=', $params['max_opening']);
+        }
         $this->db->order_by("main_teacher",'DESC');
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
@@ -168,7 +180,7 @@ class Feed_upgrade_model extends CI_Model{
         }
 
         $this->db->group_by('fb.class_code');
-        $this->db->select('MAX(fb.times) as times,MAX(fb.time) as time, ft.name as teacher_name, fc.class_code, fl.name, fl.area, AVG(fb.point) AS point');
+        $this->db->select('MAX(fb.times) as times,MAX(fb.time) as time, MAX(ft.name) as teacher_name, fc.class_code, fl.name, fl.area, AVG(fb.point) AS point');
         $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
         if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("fc.id_location",$params['location']);
@@ -177,7 +189,7 @@ class Feed_upgrade_model extends CI_Model{
             $this->db->where_in("fl.area",$params['area']);
             $this->db->join("feedback_location as fl","fc.id_location = fl.id");
         }
-        $this->db->order_by("fb.id","desc");
+        $this->db->order_by("MAX(fb.id)","desc");
         $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
         $query = $this->db->get("feedback_phone as fb");
         $arr_res = $query->result_array();
@@ -210,6 +222,14 @@ class Feed_upgrade_model extends CI_Model{
         $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name");
 
         $r = $this->db->get('feedback_ksgv as fk');
+        return $r->result_array();
+    }
+
+    public function get_teacher_manager(){
+        $this->db->where('manager_email is not null');
+        $this->db->group_by('manager_email');
+        $this->db->select("manager_email");
+        $r = $this->db->get('feedback_teacher');
         return $r->result_array();
     }
 }
