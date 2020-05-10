@@ -140,6 +140,9 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("feedback_class.id_location",$params['location']);
         }
+        if (isset($params['manager_email'])){
+            $this->db->where_in('feedback_teacher.manager_email', $params['manager_email']);
+        }
 
         $this->db->from('feedback_phone');
         $this->db->join('feedback_class', 'feedback_phone.class_code=feedback_class.class_code');
@@ -220,7 +223,9 @@ class Feed_upgrade_model extends CI_Model{
         }
         $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
         $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name");
-
+        if (isset($params['manager_email'])){
+            $this->db->where_in('ft.manager_email', $params['manager_email']);
+        }
         $r = $this->db->get('feedback_ksgv as fk');
         return $r->result_array();
     }

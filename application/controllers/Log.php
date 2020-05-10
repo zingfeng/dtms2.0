@@ -19,6 +19,9 @@ class Log extends CI_Controller
         if (isset($_REQUEST['class_code'])) {
             $params['class_code'] = strip_tags($_REQUEST['class_code']);
         }
+        if (isset($_REQUEST['manager_email'])) {
+            $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
+        }
         switch($_GET['type_ksgv']){
             case 'ksgv2':
                 $type_ksgv = 'ksgv2';
@@ -74,6 +77,14 @@ class Log extends CI_Controller
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
 
+        $list_manager = $this->fu->get_teacher_manager();
+        $data_manager = array();
+        foreach ($list_manager as $manager){
+            if($manager['manager_email']){
+                $data_manager[] = $manager['manager_email'];
+            }
+        }
+
         $params['limit'] = 500;
         $params['type'] = $type_ksgv;
         $list_fb = $this->fu->get_feedback_ksgv($params);  // zfdev Viết lại phần filter trong model
@@ -93,6 +104,7 @@ class Log extends CI_Controller
             'list_quest_select' => $list_quest_select,
             'list_quest_text' => $list_quest_text,
             'arr_location_info' => $arr_location_info,
+            'list_manager' => $data_manager,
             'del' => $del
         );
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
@@ -389,7 +401,6 @@ class Log extends CI_Controller
 
     public function feedback_phone_detail(){
         guard();
-//        guard_admin_manager();
 
         $del = false;
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
@@ -398,6 +409,14 @@ class Log extends CI_Controller
 
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
+
+        $list_manager = $this->fu->get_teacher_manager();
+        $data_manager = array();
+        foreach ($list_manager as $manager){
+            if($manager['manager_email']){
+                $data_manager[] = $manager['manager_email'];
+            }
+        }
 
         $params = [];
 
@@ -430,6 +449,10 @@ class Log extends CI_Controller
                 $area = $_REQUEST['area'];
                 $params['area'] = json_decode($area, true);
             }
+
+            if (isset($_REQUEST['manager_email'])) {
+                $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
+            }
         }
         $location_info = $this->feedback->get_list_location();
         $params['limit'] = 500;
@@ -441,7 +464,8 @@ class Log extends CI_Controller
         $data = array(
             'rows' => $list_fb_phone,
             'del' => $del,
-            'location_info' => $location_info
+            'location_info' => $location_info,
+            'list_manager' => $data_manager,
         );
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
             $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback');
@@ -453,11 +477,6 @@ class Log extends CI_Controller
     public function export_list_feedback_phone_detail(){
         guard();
         guard_admin_manager();
-
-        $del = false;
-        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
-            $del = true;
-        }
 
         $this->load->model('Feedback_model', 'feedback');
         $this->load->model('Feed_upgrade_model', 'fu');
