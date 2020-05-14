@@ -434,11 +434,11 @@ class Log extends CI_Controller
 
         if(count($_REQUEST) > 0) {
             if (isset($_REQUEST['starttime'])) {
-                $starttime = strtotime(strip_tags($_REQUEST['starttime']));
+                $params['starttime'] = strtotime(strip_tags($_REQUEST['starttime']));
             }
 
             if (isset($_REQUEST['endtime'])) {
-                $endtime = strtotime(strip_tags($_REQUEST['endtime']));
+                $params['endtime'] = strtotime(strip_tags($_REQUEST['endtime']));
             }
 
             if (isset($_REQUEST['class'])) {
@@ -446,16 +446,22 @@ class Log extends CI_Controller
                 $params['class_code'] = $class_code;
             }
 
+            if (isset($_REQUEST['teacher_name'])) {
+                $teacher = strip_tags($_REQUEST['teacher_name']);
+                $params['teacher_name'] = $teacher;
+            }
+
             if (isset($_REQUEST['location'])) {
                 $location = $_REQUEST['location'];
-                $location = json_decode($location, true);
+                $params['location'] = json_decode($location, true);
             }
 
             if (isset($_REQUEST['area'])) {
                 $area = $_REQUEST['area'];
-                $area = json_decode($area, true);
+                $params['area'] = json_decode($area, true);
             }
         }
+        $location_info = $this->feedback->get_list_location();
         $params['limit'] = 500;
         $list_fb_phone = $this->fu->get_fb_phone($params);
 //        echo '<pre>';
@@ -465,6 +471,7 @@ class Log extends CI_Controller
         $data = array(
             'rows' => $list_fb_phone,
             'del' => $del,
+            'location_info' => $location_info
         );
 
         $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback');
@@ -487,35 +494,35 @@ class Log extends CI_Controller
 
         $dataLink = '';
         if (isset($_REQUEST['starttime'])) {
-            $starttime = strtotime(strip_tags($_REQUEST['starttime']));
-            $dataLink .= '&starttime='.$starttime;
+            $params['starttime'] = strtotime(strip_tags($_REQUEST['starttime']));
+            $dataLink .= '&starttime='.$params['starttime'];
         }
 
         if (isset($_REQUEST['endtime'])) {
-            $endtime = strtotime(strip_tags($_REQUEST['endtime']));
-            $dataLink .= '&endtime='.$endtime;
+            $params['endtime'] = strtotime(strip_tags($_REQUEST['endtime']));
+            $dataLink .= '&endtime='.$params['endtime'];
         }
 
         if (isset($_REQUEST['class'])) {
             $class_code = strip_tags($_REQUEST['class']);
+            $params['class_code'] = $class_code;
             $dataLink .= '&class='.$class_code;
         }
 
         if (isset($_REQUEST['location'])) {
             $location = $_REQUEST['location'];
             $dataLink .= '&location='.$location;
-            $location = json_decode($location, true);
+            $params['location'] = json_decode($location, true);
         }
 
         if (isset($_REQUEST['area'])) {
             $area = $_REQUEST['area'];
             $dataLink .= '&area='.$area;
-            $area = json_decode($area, true);
+            $params['area'] = json_decode($area, true);
         }
 
         $params['limit'] = 500;
         $list_fb_phone = $this->fu->get_fb_phone($params);
-
 
         $filename = 'Feedback-Phone.xlsx';
         $this->load->library('PHPExcel');

@@ -4,6 +4,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Form extends CI_Controller
 {
 
+    public function luyen_de()
+    {
+        $this->load->model('Feedback_model', 'feedback');
+
+        $info_class = array();
+        if (isset($_GET['my_class'])) {
+            $class_code = mb_strtolower($_GET['my_class']);
+            var_dump($class_code);
+            if ($this->feedback->check_class_code_exist($class_code, 'giaotiep')) {
+                $info_class = $this->feedback->get_info_class_by_class_code($class_code);
+            }
+        }else{
+            //
+
+        }
+
+        $time_start = time();
+
+        $token_feedback = $this->config->item('token_feedback');
+        $token = md5($token_feedback . $time_start);
+
+        var_dump($info_class); exit;
+        $data = array(
+            'type_class' => $info_class['type'],
+            'time_start' => $time_start,
+            'token' => $token,
+            'info_class' => $info_class,
+        );
+
+        $this->load->view('feedback/luyen_de', $data, false);
+    }
+
     public function giaotiep()
     {
         $this->load->model('Feedback_model', 'feedback');
@@ -777,9 +809,7 @@ class Form extends CI_Controller
         $list_info_class = array();
         if (isset($_GET['my_class'])) {
             $class_code = mb_strtolower($_GET['my_class']);
-            if ($this->feedback->check_class_code_exist($class_code, 'toeic')) {
                 $info_class = $this->feedback->get_info_class_by_class_code($class_code);
-            }
         } else {
             $list_info_class = $this->feedback->get_list_class_code_opening('toeic');
         }
