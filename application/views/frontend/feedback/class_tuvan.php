@@ -28,46 +28,36 @@
                                 <input class="form-control" id="class_to_date_get_link" type="datetime-local" value="2030-01-01T00:00:00" />
                             </div>
                         </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="usr">Sĩ số lớp</label>
+                                <input class="form-control" id="number_student_get_link" type="number" value="0" />
+                            </div>
+                        </div>
                         <div class="col-sm-3">
                             <button class="btn btn-warning" id="btn_save_change_date" onclick="SaveFromDateToDateLink()" >Save</button>
                         </div>
                     </div>
                 </div>
                 <hr>
-                <h4>
-                    Link Feedback Form khảo sát lớp lần 1
-                </h4>
-                <div class="row">
-                    <div class="col col-sm-12 col-md-8">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="link_feedback_lan1">
-                        </div>
-                    </div>
-                    <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>
-                    </div>
-                    <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>
-                    </div>
+<!--                <h4>-->
+<!--                    Link Feedback Form khảo sát lớp lần 1-->
+<!--                </h4>-->
+<!--                <div class="row">-->
+<!--                    <div class="col col-sm-12 col-md-8">-->
+<!--                        <div class="form-group">-->
+<!--                            <input type="text" class="form-control" id="link_feedback_lan1">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col col-sm-12 col-md-2">-->
+<!--                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>-->
+<!--                    </div>-->
+<!--                    <div class="col col-sm-12 col-md-2">-->
+<!--                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>-->
+<!--                    </div>-->
+<!---->
+<!--                </div>-->
 
-                </div>
-                <h4>
-                    Link Feedback Form khảo sát lớp lần 2
-                </h4>
-                <div class="row">
-                    <div class="col col-sm-12 col-md-8">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="link_feedback_lan2">
-                        </div>
-                    </div>
-                    <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan2')" >Xem mẫu</button>
-                    </div>
-                    <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan2')">Copy</button>
-                    </div>
-
-                </div>
                 <h4>
                     Link hòm thư góp ý
                 </h4>
@@ -86,7 +76,8 @@
                 </div>
 
                 <h4>
-                    Link Feedback đào tạo online
+<!--                    Link Feedback đào tạo online-->
+                    Link Feedback Form khảo sát giữa kỳ
                 </h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
@@ -102,6 +93,44 @@
                     </div>
 
                 </div>
+                <h4>
+                    <!--                    Link Feedback Form khảo sát lớp lần 2-->
+                    Link Feedback Form khảo sát cuối kỳ
+                </h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_feedback_lan2">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan2')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan2')">Copy</button>
+                    </div>
+
+                </div>
+
+                <h4>
+                    Link đăng ký lớp luyện đề
+                </h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_feedback_luyende">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_luyende')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_luyende')">Copy</button>
+                    </div>
+
+                </div>
+
+
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -344,6 +373,8 @@
                     <th class="th-sm" colspan="2">Feedback Phone 2</th>
                     <th class="th-sm" rowspan="2">Điểm TB</th>
                     <th class="th-sm" rowspan="2">Nội dung hòm thư</th>
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên trong lớp">Sĩ số lớp</th>
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký lớp Luyện đề">SL HV ĐK Luyện đề</th>
                     <th class="th-sm" rowspan="2" style="background: red; color: white; text-align: center">Action</th>
                 </tr>
                 <tr>
@@ -407,6 +438,9 @@
                         <td><?php echo $mono_class_info['point_phone2']; ?></td>
                         <td><?php echo $mono_class_info['average_point']; ?></td>
                         <td><a href="//dtms.aland.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
+                        <td><?php echo $mono_class_info['number_student']; ?></td>
+                        <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
+
                         <td style="font-size: x-large; min-width: 200px;">
                             <i info='<?php echo json_encode($mono_class_info); ?>'  class="fa fa-link" aria-hidden="true" title="Lấy link làm Feedback cho học viên" onclick="load_get_link_class(event)"></i>
                             <a href="/feedback/phone?class_code=<?php echo $mono_class_info['class_code']; ?>" target="_blank" ><i class="fa fa-phone" aria-hidden="true" title="Nhập phản hồi điện thoại" ></i></a>

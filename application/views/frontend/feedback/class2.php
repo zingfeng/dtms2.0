@@ -14,29 +14,47 @@
 
             <!-- Modal body -->
             <div class="modal-body">
+<!--                <h4>-->
+<!--                    Link Feedback Form khảo sát lớp lần 1-->
+<!--                </h4>-->
+<!--                <div class="row">-->
+<!--                    <div class="col col-sm-12 col-md-8">-->
+<!--                        <div class="form-group">-->
+<!--                            <input type="text" class="form-control" id="link_feedback_lan1">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col col-sm-12 col-md-2">-->
+<!---->
+<!--                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>-->
+<!--                    </div>-->
+<!--                    <div class="col col-sm-12 col-md-2">-->
+<!--                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>-->
+<!--                    </div>-->
+<!---->
+<!--                </div>-->
+
                 <h4>
-                    Link Feedback Form khảo sát lớp lần 1
+                    <!--                    Link Feedback đào tạo online-->
+                    Link Feedback Form khảo sát giữa kỳ
+
                 </h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="link_feedback_lan1">
+                            <input type="text" class="form-control" id="link_feedback_online">
                         </div>
                     </div>
                     <div class="col col-sm-12 col-md-2">
-
-                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_online')" >Xem mẫu</button>
                     </div>
                     <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_online')">Copy</button>
                     </div>
 
                 </div>
 
-
-
                 <h4>
-                    Link Feedback Form khảo sát lớp lần 2
+                    Link Feedback Form khảo sát cuối kỳ
                 </h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
@@ -70,23 +88,25 @@
                     </div>
 
                 </div>
+
                 <h4>
-                    Link Feedback đào tạo online
+                    Link đăng ký lớp luyện đề
                 </h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="link_feedback_online">
+                            <input type="text" class="form-control" id="link_feedback_luyende">
                         </div>
                     </div>
                     <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_online')" >Xem mẫu</button>
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_luyende')" >Xem mẫu</button>
                     </div>
                     <div class="col col-sm-12 col-md-2">
-                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_online')">Copy</button>
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_luyende')">Copy</button>
                     </div>
 
                 </div>
+
 
 
             </div>
@@ -116,9 +136,7 @@
 
         <div class="filter_div">
             <div class="hover-point" onclick="$('#body_filter').toggle();">
-                <h4 class="text-primary" style="display: inline-block">Filter - Lọc toàn hệ thống</h4>
-                <button class="btn btn-primary btn-sm" style="float: right;padding-left: 120px; padding-right: 120px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Filter</button>
-                <a href="/feedback/class_"><button class="btn btn-danger btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;" onclick="clickFilter()"><i class="fa fa-filter"></i> X Filter</button></a>
+                <h4 class="text-primary" style="display: inline-block">Tìm kiếm</h4>
             </div>
             
            
@@ -340,6 +358,15 @@
                         ?>
                     </div>
                 </div>
+
+                <div class="col col-sm-6">
+                    <div style="padding: 20px">
+                        <button class="btn btn-primary btn-sm" style="float: left;padding-left: 120px; padding-right: 120px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Filter - lọc</button>
+                        <a href="/feedback/class_"><button class="btn btn-danger btn-sm" style="float: left;margin-left: 20px; padding-right: 20px; margin-right: 20px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Reset</button></a>
+
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -443,13 +470,6 @@
             }
 
         </style>
-        <div style="    padding: 8px;
-    border-left: 2px solid red;">
-            <p>
-                Lưu ý: Để đảm bảo tốc độ truy cập, mục Filter (lọc) trong bảng dưới phía dưới chỉ dẫn này chỉ lọc trong 200 lớp gần đây nhất.
-                <br> Nếu bạn cần lọc thông tin trong toàn hệ thống, hãy sử dụng bộ lọc phía trên.
-            </p>
-        </div>
 
         <div class="list_in_table container-fluid" id="list_class">
             <table id="dtClassList" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -471,6 +491,9 @@
                     <th class="th-sm" colspan="2">Feedback Online</th>
                     <th class="th-sm" rowspan="2">Điểm TB</th>
                     <th class="th-sm" rowspan="2">Nội dung hòm thư</th>
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên trong lớp">Sĩ số lớp</th>
+
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký lớp luyện đề">SL HV ĐK Luyện đề</th>
 
                     <th class="th-sm" rowspan="2">Action
                     </th>
@@ -567,6 +590,10 @@
                         <td><?php echo $mono_class_info['point_online']; ?></td>
                         <td><?php echo $mono_class_info['average_point']; ?></td>
                         <td><a href="//dtms.aland.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
+                        <td><?php echo $mono_class_info['number_student']; ?></td>
+
+                        <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
+
 
                         <td style="font-size: x-large; min-width: 250px;">
                             <i info='<?php echo json_encode($mono_class_info); ?>'  class="fa fa-link" aria-hidden="true" title="Link Feedback Form" onclick="load_get_link_class2(event)"></i>
@@ -617,6 +644,7 @@
     $(document).ready(function () {
         $('#dtClassList').DataTable({
             "pageLength": 50,
+            "searching": false,
             "ordering": false // false to disable sorting (or any other option)
         });
         $('.dataTables_length').addClass('bs-select');
@@ -747,6 +775,7 @@
         var link_feedback_ksgv2 = 'https://dtms.aland.edu.vn/feedback/ksgv_lan2?my_class=' + info_live.class_code;
         var link_feedback_homthugopy = 'https://dtms.aland.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
         var link_feedback_online = 'https://dtms.aland.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
+        var link_feedback_luyende = 'https://dtms.aland.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
 
         $('#modal_link_feedback').html(info_live.class_code);
         $('#modal_link_feedback').attr('class_id',info_live.class_id);
@@ -758,6 +787,8 @@
         $('#link_feedback_homthugopy').val(link_feedback_homthugopy);
 
         $('#link_feedback_online').val(link_feedback_online);
+
+        $('#link_feedback_luyende').val(link_feedback_luyende);
 
         $('#modal_get_link').modal('show');
 

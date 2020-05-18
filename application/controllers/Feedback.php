@@ -310,6 +310,23 @@ class Feedback extends CI_Controller
             var_dump($info['type']);
             echo '<pre>'; print_r($_REQUEST); echo '</pre>';
 
+            // Luyện đề tách riêng và ko liên quan đến ngày nhận feedback của lớp
+            if ($info['type'] === 'luyende'){
+
+                $info = [
+                    'type' => $this->input->post('type_class'),
+                    'class_code' => $this->input->post('class_code'),
+                    'hoten' => $this->input->post('hoten'),
+                    'phone' => $this->input->post('phone'),
+                    'email' => $this->input->post('email'),
+                    'level' => $this->input->post('level'),
+                    'shift' => $this->input->post('shift'),
+                ];
+
+                $this->feedback->insert_feedback_luyen_de($info);
+                exit;
+            }
+
             if ($info['type'] === 'homthugopy'){
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
             }else{
@@ -357,8 +374,6 @@ class Feedback extends CI_Controller
     private function check_token()
     {
         if (isset($_POST['token']) && (isset($_POST['time_start']))) {
-
-
             $token_feedback = $this->config->item('token_feedback');
             $token_formal = md5($token_feedback . $_POST['time_start']);
             if ($token_formal === $_POST['token']) {

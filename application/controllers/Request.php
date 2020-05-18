@@ -9,6 +9,7 @@ class Request extends CI_Controller
             echo 'wrong token';
             exit;
         }
+
         $this->load->model('Feedback_model', 'feedback');
         // check security
 
@@ -133,6 +134,7 @@ class Request extends CI_Controller
                         'name' => strip_tags($_POST['name_teacher_insert']),
                         'info' => strip_tags($_POST['info_teacher_insert']),
                         'email' => strip_tags($_POST['email_teacher_insert']),
+                        'manager_email' => strip_tags($_POST['manager_email_insert']),
                         'giaotiep' => $giaotiep,
                         'toeic' => $toeic,
                         'ielts' => $ielts,
@@ -163,6 +165,7 @@ class Request extends CI_Controller
                         'name' => strip_tags($_POST['name_teacher_insert']),
                         'info' => strip_tags($_POST['info_teacher_insert']),
                         'email' => strip_tags($_POST['email_teacher_insert']),
+                        'manager_email' => strip_tags($_POST['manager_email_insert']),
                         'giaotiep' => $giaotiep,
                         'toeic' => $toeic,
                         'ielts' => $ielts,
@@ -242,21 +245,24 @@ class Request extends CI_Controller
                     }
                     echo $status;
                     break;
-                case 'edit_time_class':
+                case 'edit_time_class': // Thay đổi sĩ số lớp
 
                     $time_start = strip_tags($_POST['class_from_date']);
                     $time_start = strtotime($time_start);
                     $time_end = strip_tags($_POST['class_to_date']);
                     $time_end = strtotime($time_end);
+                    $number_student = (int) $_POST['number_student'];
 
                     $info = array(
                         'class_id' => strip_tags($_POST['class_id']),
                         'time_start' => $time_start,
                         'time_end' => $time_end,
+                        'number_student' => $number_student,
                     );
                     $this->db->where('class_id',$info['class_id']);
                     $this->db->set('time_start', $time_start);
                     $this->db->set('time_end', $time_end);
+                    $this->db->set('number_student', $number_student);
                     $this->db->update('feedback_class');
                     echo json_encode(array(
                         'status' => 'success'
@@ -325,13 +331,36 @@ class Request extends CI_Controller
             exit;
         }
         $this->load->model('Feedback_model','fb');
-        $class_code = $this->fb->get_list_class_code_zoom(300);
+        $class_code = $this->fb->get_list_class_code_zoom(10);
 
         $data = array(
             'class_code' => $class_code,
         );
 
         $this->load->view('feedback/get_link_feedback_zoom', $data, false);
+    }
+
+    /**
+     * @return object
+     */
+    public function suggest_class_code_zoom(){
+        $keyword = $this->input->get("term");
+        $page = (int) $this->input->get('page');
+        $page = ($page > 1) ? $page : 1;
+        $limit = 100;
+        $offset = ($page - 1) * $limit;
+        $this->load->model('Feedback_model','fb');
+        $params = array('limit' => $limit,'keyword' => $keyword,'offset' => $offset);
+        $arrClass = $this->fb->get_list_class_code_zoom_filter($params);
+        $data = $option = array();
+        if (count($arrClass) > $limit) {
+            $option['nextpage'] = true;
+            unset($arrClass[$limit]);
+        }
+        foreach ($arrClass as $key => $class) {
+            $data[] = array('id' => $class['class_code'], 'text' => $class['class_code'],'item_id' => $class['class_code']);
+        }
+        return $this->output->set_output(json_encode(array('status' => 'success','data' => $data,'option' => $option)));
     }
 
     private function update_time_feedback($class_code, $detail_class = array()){

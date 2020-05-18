@@ -177,6 +177,18 @@ class Feedback_model extends CI_Model
         $arr_res = $query->result_array();
         return $arr_res;
     }
+    public function get_list_class_code_zoom_filter($params)
+    {
+        $params = array_merge(array('limit' => 100, 'offset' => 0), $params);
+        if ($params['keyword']){
+            $this->db->like('class_code',$params['keyword']);
+        }
+        $this->db->select('class_code');
+        $this->db->order_by('class_id', 'DESC');
+        $query = $this->db->get('feedback_class', $params['limit'], $params['offset']);
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
 
     public function get_list_class_filter($params)
     {
@@ -417,11 +429,8 @@ class Feedback_model extends CI_Model
         $this->db->where('class_code', $class_code);
         $this->db->select('*');
         $query = $this->db->get('feedback_class');
-        $arr_res = $query->result_array();
-        if (isset($arr_res[0])) {
-            return $arr_res[0];
-        }
-        return null;
+        $arr_res = $query->row_array();
+        return $arr_res;
     }
 
     public function check_class_code_exist($class_code, $type = '')
@@ -884,6 +893,32 @@ class Feedback_model extends CI_Model
         $data = array_merge($info, $plus);
         $this->db->insert('feedback_zoom', $data);
     }
+
+    public function insert_feedback_luyen_de($info)
+    {
+        $this->load->library('user_agent');
+        $plus = array(
+            'time_end' => time(),
+            'ip' => $this->input->ip_address(),
+            'browser' => $this->agent->browser() . ' ' . $this->agent->version()
+        );
+        $data = array_merge($info, $plus);
+        $this->db->insert('feedback_luyende', $data);
+
+        // Update thêm số lượng đăng ký
+        if (isset($info['class_code'])){
+            $this->db->where('class_code', $info['class_code']);
+            $query = $this->db->get('feedback_luyende');
+            $arr_res = $query->result_array();
+            $number = count($arr_res);
+
+            $this->db->set('number_luyen_de', $number);
+            $this->db->where('class_code', $info['class_code']);
+            $this->db->update('feedback_class');
+        }
+
+    }
+
 
 
     public function get_list_feedback_paper($class_code = '', $type = '', $order = '')

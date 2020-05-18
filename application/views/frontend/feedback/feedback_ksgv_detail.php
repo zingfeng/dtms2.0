@@ -8,8 +8,11 @@
         if (isset($type_ksgv)){
             if ($type_ksgv === 'ksgv1'){
                 echo ' Feedback Form mẫu 1';
+            }elseif($type_ksgv === 'dao_tao_onl'){
+//                echo ' Feedback đào tạo online';
+                echo ' Feedback giữa kỳ';
             }else{
-                echo ' Feedback Form mẫu 2';
+                echo ' Feedback cuối kỳ';
             }
         }
     ?>
@@ -21,15 +24,25 @@
         <div>
             <h5>Danh sách câu hỏi</h5>
             <?php
+            $list_quest_total = array();
+            for ($i = 0; $i < count($list_quest_ruler); $i++) {
+                echo '<p>'.$list_quest_ruler[$i].'</p>';
+            }
             for ($i = 0; $i < count($list_quest_select); $i++) {
                 echo '<p>'.$list_quest_select[$i].'</p>';
             }
             for ($i = 0; $i < count($list_quest_text); $i++) {
                 echo '<p>'.$list_quest_text[$i].'</p>';
             }
-            $list_quest_total = array_merge($list_quest_select,$list_quest_text);
-
-
+            if($list_quest_ruler){
+                $list_quest_total = array_merge($list_quest_ruler,$list_quest_total);
+            }
+            if($list_quest_select){
+                $list_quest_total = array_merge($list_quest_select,$list_quest_total);
+            }
+            if($list_quest_text){
+                $list_quest_total = array_merge($list_quest_text,$list_quest_total);
+            }
             ?>
         </div>
     </div>
@@ -40,11 +53,7 @@
                 <button class="btn btn-primary btn-sm" style="float: right;padding-left: 120px; padding-right: 120px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Filter</button>
                 <a href="/feedback/class_"><button class="btn btn-danger btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;" onclick="clickFilter()"><i class="fa fa-filter"></i> X Filter</button></a>
                 <button class="btn btn-success btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;" title="Export File" onclick="clickExport()">Export</button>
-
             </div>
-
-
-
             <div class="row" id="body_filter" style="<?php
             if ( (isset($_GET['type'])) || (isset($_GET['min'])) || (isset($_GET['max'])) || (isset($_GET['location'])) || (isset($_GET['area'])) || (isset($_GET['teacher']))  ){
 
@@ -52,7 +61,17 @@
                 echo ' display:none; ';
             }
             ?>" >
-
+                <div class="col col-sm-12">
+                    <div class="form-group">
+                        <label for="usr">Quản lý</label>
+                        <select name="manager_email" id="manager_email" class="form-control" placeholder="Manager">
+                            <option value="">Chọn quản lý</option>
+                            <?php if(isset($list_manager) && count($list_manager) > 0) foreach ($list_manager as $manager) {?>
+                                <option value="<?php echo $manager; ?>" <?php echo (isset($_REQUEST['manager_email']) && $_REQUEST['manager_email'] == $manager) ? 'selected' : '' ?>><?php echo $manager; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
                 <div class="col col-sm-6 col-md-4">
                     <p class="title_filter">by type </p>
                     <div>
@@ -93,30 +112,8 @@
                             <?php
                         }
                         ?>
-
-
-
                     </div>
                 </div>
-<!--                <div class="col col-sm-6 col-md-3">-->
-<!--                    <p class="title_filter">by point</p>-->
-<!---->
-<!--                    <div class="row">-->
-<!--                        <div class="col col-sm-6">-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="usr">Min</label>-->
-<!--                                <input type="number" min="0" max="10" class="form-control" id="min" value="--><?php // if (isset($_GET['min'])) {echo $_GET['min'];} ?><!--">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col col-sm-6">-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="usr">Max</label>-->
-<!--                                <input type="number" min="0" max="10"  class="form-control" id="max" value="--><?php // if (isset($_GET['max'])) {echo $_GET['max'];} ?><!--">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!---->
-<!--                </div>-->
                 <div class="col col-sm-6 col-md-4">
                     <p class="title_filter">by branch  </p>
                     <div>
@@ -219,48 +216,11 @@
 
                     </div>
                 </div>
-<!--                <div class="col col-sm-6 col-md-2">-->
-<!--                    <p class="title_filter">by teacher </p>-->
-<!--                    <div style="    max-height: 500px; overflow: auto;">-->
-<!---->
-<!--                        <div class="checkbox">-->
-<!--                            <label><input  id="filter-teacher-anchor" type="checkbox" onchange="ClickSelectLabel('teacher')" checked > Select All </label>-->
-<!--                        </div>-->
-<!---->
-<!--                        --><?php
-//                        foreach ($teacher_info as $item_teacher) {
-//
-//                            if (isset($_GET['teacher'])){
-//                                $teacher_live = json_decode($_GET['teacher'],true);
-//                                if ( in_array($item_teacher['teacher_id'], $teacher_live)){
-//                                    $checked_teacher = ' checked ';
-//                                }else{
-//                                    $checked_teacher = '';
-//                                }
-//                            }else{
-//                                $checked_teacher = ' checked ';
-//                            }
-//
-//                            ?>
-<!--                            <div class="checkbox">-->
-<!--                                <label><input class="filter-teacher" type="checkbox" value="--><?php //echo $item_teacher['teacher_id']; ?><!--" --><?php //echo $checked_teacher; ?><!-- >--><?php //echo $item_teacher['name']; ?><!--</label>-->
-<!--                            </div>-->
-<!--                            --><?php
-//                        }
-//                        ?>
-<!--                    </div>-->
-<!--                </div>-->
             </div>
 
         </div>
     </div>
 </div>
-
-
-
-
-
-
 
 <div class="container-fluid" style="margin-top: 20px; ">
     <div class="row">
@@ -313,6 +273,13 @@
                                         $mono__count ++;
                                     }
                                     echo  '<td><span class="point" >'.$mono_point.'</span></td>';
+                                }elseif($type === 'ruler'){
+                                    $mono_point = (int)$mono_detail[3]*2;
+                                    if ($mono_point >0){
+                                        $mono__sum += $mono_point;
+                                        $mono__count ++;
+                                    }
+                                    echo  '<td><span class="point" title="'.$mono_detail[3].'/5">'.$mono_point.'</span></td>';
                                 }else{
                                     $content = $mono_detail[3];
                                     echo  '<td>'.$content.'</td>';
@@ -351,8 +318,8 @@
         $("span.point").each(function () {
             var value_string = $(this).html();
             value =parseFloat(value_string);
-            console.log("value");
-            console.log(value);
+            // console.log("value");
+            // console.log(value);
 
             switch (true) {
                 case (value >= 9.5):
@@ -417,27 +384,17 @@
         console.log(arr_type);
         query_string += '&type=' + JSON.stringify(arr_type);
 
-        // var min = $('#min').val();
-        // var max = $('#max').val();
-        //
-        // console.log("min");
-        // console.log(min);
-        // if (min !== ''){
-        //     query_string += '&min=' + min;
-        // }
-        //
-        // console.log("max");
-        // console.log(max);
-        // if (max !== ''){
-        //     query_string += '&max=' + max;
-        // }
-
         var arr_branch = [];
         $(".filter-branch").each(function () {
             if ($(this).prop('checked')){
                 arr_branch.push($(this).val());
             }
         });
+        var manager_email = $('#manager_email').val();
+
+        if (manager_email !== ''){
+            query_string += '&manager_email=' + manager_email;
+        }
         console.log("arr_branch");
         console.log(arr_branch);
         query_string += '&location=' + JSON.stringify(arr_branch);
@@ -451,19 +408,6 @@
         console.log("arr_area");
         console.log(arr_area);
         query_string += '&area=' + JSON.stringify(arr_area);
-
-
-        // var arr_teacher = [];
-
-        // $(".filter-teacher").each(function () {
-        //     if ($(this).prop('checked')){
-        //         arr_teacher.push($(this).val());
-        //     }
-        // });
-        // query_string += '&teacher=' + JSON.stringify(arr_teacher);
-        //
-        // console.log("arr_teacher");
-        // console.log(arr_teacher);
 
         window.location.href = "/feedback/feedback_ksgv_detail?type_ksgv=<?php echo $type_ksgv; ?>" + query_string;
 
@@ -480,21 +424,6 @@
         console.log("arr_type");
         console.log(arr_type);
         query_string += '&type=' + JSON.stringify(arr_type);
-
-        // var min = $('#min').val();
-        // var max = $('#max').val();
-        //
-        // console.log("min");
-        // console.log(min);
-        // if (min !== ''){
-        //     query_string += '&min=' + min;
-        // }
-        //
-        // console.log("max");
-        // console.log(max);
-        // if (max !== ''){
-        //     query_string += '&max=' + max;
-        // }
 
         var arr_branch = [];
         $(".filter-branch").each(function () {

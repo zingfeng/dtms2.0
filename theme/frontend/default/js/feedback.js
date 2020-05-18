@@ -143,6 +143,7 @@ function load_get_link_class(event) {
 
     $("#class_from_date_get_link").val(info_live.time_start_client);
     $("#class_to_date_get_link").val(info_live.time_end_client);
+    $("#number_student_get_link").val(info_live.number_student);
 
     var link_feedback = 'https://dtms.aland.edu.vn/feedback/' + info_live.type + '?my_class=' + info_live.class_code;
     var link_feedback_ksgv1 = 'https://dtms.aland.edu.vn/feedback/ksgv_lan1?my_class=' + info_live.class_code;
@@ -150,6 +151,7 @@ function load_get_link_class(event) {
     var link_feedback_slide = 'https://dtms.aland.edu.vn/feedback/slide?my_class=' + info_live.class_code;
     var link_feedback_homthugopy = 'https://dtms.aland.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
     var link_feedback_online = 'https://dtms.aland.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
+    var link_feedback_luyende = 'https://dtms.aland.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
 
     $('#modal_link_feedback').html(info_live.class_code);
     $('#modal_link_feedback').attr('class_id',info_live.class_id);
@@ -163,6 +165,7 @@ function load_get_link_class(event) {
     $('#link_feedback_homthugopy').val(link_feedback_homthugopy);
 
     $('#link_feedback_online').val(link_feedback_online);
+    $('#link_feedback_luyende').val(link_feedback_luyende);
 
     $('#modal_get_link').modal('show');
 
@@ -189,6 +192,7 @@ function SaveFromDateToDateLink() {
             class_id: class_id,
             class_from_date: my_info.class_from_date_get_link,
             class_to_date: my_info.class_to_date_get_link,
+            number_student: my_info.number_student_get_link,
         },
         function (data, status) {
             console.log(data);
@@ -669,6 +673,7 @@ function load_edit_teacher(event) {
     $('#name_teacher_insert').val(info_live.name);
     $('#info_teacher_insert').val(info_live.info);
     $('#email_teacher_insert').val(info_live.email);
+    $('#manager_email_insert').val(info_live.manager_email);
 
     if (info_live.giaotiep === '1'){
         var check = true;
@@ -742,7 +747,7 @@ function edit_teacher(){
     }
     // console.log("here");
     var teacher_id = $('#btn_ok_teacher').attr('teacher_id');
-    make_effect_submitting('btn_ok_teacher');
+    // make_effect_submitting('btn_ok_teacher');
 
     $.post("/feedback/request",{
             optcod: 'edit_teacher', // có thể include optcode này vào đâu ko ?
@@ -755,7 +760,7 @@ function edit_teacher(){
             teacher_ielts_insert: my_info.teacher_ielts_insert,
             teacher_aland_insert: my_info.teacher_aland_insert,
             email_teacher_insert: my_info.email_teacher_insert,
-
+            manager_email_insert: my_info.manager_email_insert,
         },
         function (data, status) {
             console.log(data);
@@ -789,6 +794,7 @@ function insert_teacher(){
         info_teacher_insert: my_info.info_teacher_insert,
         name_teacher_insert: my_info.name_teacher_insert,
         email_teacher_insert: my_info.email_teacher_insert,
+        manager_email_insert: my_info.manager_email_insert,
     },
     function (data, status) {
         console.log(data);
@@ -983,3 +989,16 @@ var captain = {
         $('#captain_copy_to_clipboard').css('display','none !important');
     },
 };
+
+
+
+function ClickOpenLink__(id_target) {
+    var link = $('#' + id_target).val();
+    openInNewTab(link);
+}
+function ClickCopy__(id_target) {
+    var link = $('#' + id_target).val();
+    captain.copyToClipboard(link);
+    $('#' + id_target).select();
+}
+

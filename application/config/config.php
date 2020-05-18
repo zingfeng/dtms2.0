@@ -13,7 +13,7 @@ $config['role_feedback'] = array(
 
 );
 
-$config['ver_js'] = 1;
+$config['ver_js'] = 5;
 
 $config['web4u_oauth'] = array(
 	'site' => 'http://accounts.web4u.com.vn',

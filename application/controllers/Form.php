@@ -10,14 +10,12 @@ class Form extends CI_Controller
 
         $info_class = array();
         if (isset($_GET['my_class'])) {
-            $class_code = mb_strtolower($_GET['my_class']);
-            var_dump($class_code);
-            if ($this->feedback->check_class_code_exist($class_code, 'giaotiep')) {
-                $info_class = $this->feedback->get_info_class_by_class_code($class_code);
-            }
+            $class_code = trim(mb_strtolower($_GET['my_class']));
+//            var_dump($class_code);
+            $info_class = $this->feedback->get_info_class_by_class_code($class_code);
         }else{
-            //
-
+            echo 'Truy cập không hợp lệ';
+            return ;
         }
 
         $time_start = time();
@@ -25,9 +23,33 @@ class Form extends CI_Controller
         $token_feedback = $this->config->item('token_feedback');
         $token = md5($token_feedback . $time_start);
 
-        var_dump($info_class); exit;
+        $type_info = array(
+            'ielts' => array(
+                'name' => 'IELTS FIGHTER',
+                'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
+            ),
+            'toeic' => array(
+                'name' => 'MS HOA TOEIC',
+                'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
+            ),
+            'giaotiep' => array(
+                'name' => 'MS HOA GIAO TIẾP',
+                'logo' => 'theme/frontend/default/images/images/logo/giaotiep.png',
+            ),
+            'aland' => array(
+                'name' => 'ALAND',
+                'logo' => 'theme/frontend/default/images/images/logo/aland.png',
+            ),
+        );
+        $type_class = $info_class['type'];
+        if (! isset($type_info[$type_class])){
+            echo 'Truy cập không hợp lệ - type error';
+            return ;
+        }
+
         $data = array(
-            'type_class' => $info_class['type'],
+            'type_class' => $type_class,
+            'type_detail' => $type_info[$type_class],
             'time_start' => $time_start,
             'token' => $token,
             'info_class' => $info_class,

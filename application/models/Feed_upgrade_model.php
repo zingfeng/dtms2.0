@@ -4,13 +4,20 @@ class Feed_upgrade_model extends CI_Model{
 
     public function get_list_id_teacher_to_info($params = []){
         $this->db->select('teacher_id,name');
-
+        $params =array_merge(array('limit' => 30), $params);
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
+        }
+        if (isset($params['teacher_name'])){
+            $this->db->like('name', $params['teacher_name']);
         }
         if (isset($params['teacher_id_list'])){
             $this->db->where_in('teacher_id', $params['teacher_id_list']);
         }
+        if (isset($params['manager_email'])){
+            $this->db->where_in('manager_email', $params['manager_email']);
+        }
+
 
         $query = $this->db->get('feedback_teacher');
         $teacher_info = $query->result_array();
@@ -38,9 +45,17 @@ class Feed_upgrade_model extends CI_Model{
         return $arr_res;
     }
 
-    public function get_class_info_where_in_teacher_id($arr_teacher_id,$class_info_select ){
+    public function get_class_info_where_in_teacher_id($arr_teacher_id,$class_info_select, $params = array() ){
         $this->db->select($class_info_select);
-        $this->db->where_in('main_teacher', $arr_teacher_id);
+        if($arr_teacher_id && count($arr_teacher_id) > 0) {
+            $this->db->where_in('main_teacher', $arr_teacher_id);
+        }
+        if ((isset($params['min_opening'])) && ($params['min_opening'] != '')) {
+            $this->db->where('opening_day >=', $params['min_opening']);
+        }
+        if (isset($params['max_opening']) && (($params['max_opening'] != ''))) {
+            $this->db->where('opening_day <=', $params['max_opening']);
+        }
         $this->db->order_by("main_teacher",'DESC');
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();
@@ -102,8 +117,6 @@ class Feed_upgrade_model extends CI_Model{
     }
 
     public function get_fb_phone($params){
-        $this->db->select("feedback_phone.id, feedback_phone.class_code, feedback_phone.times,feedback_phone.time, feedback_phone.comment, feedback_phone.point, feedback_phone.name_feeder, feedback_class.main_teacher,feedback_class.id_location, feedback_teacher.name ");
-
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
@@ -124,35 +137,128 @@ class Feed_upgrade_model extends CI_Model{
         if(!empty($params['endtime']) && $params['endtime'] > 0) {
             $this->db->where('feedback_phone.time < ', $params['endtime'] + 86400);
         }
-        if (isset($params['location'])){
+        if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("feedback_class.id_location",$params['location']);
+        }
+        if (isset($params['manager_email'])){
+            $this->db->where_in('feedback_teacher.manager_email', $params['manager_email']);
         }
 
         $this->db->from('feedback_phone');
         $this->db->join('feedback_class', 'feedback_phone.class_code=feedback_class.class_code');
         $this->db->join('feedback_teacher', 'feedback_class.main_teacher=feedback_teacher.teacher_id');
 
-        if (isset($params['area'])){
+        if (isset($params['area']) && count($params['area']) > 0){
             $this->db->where_in("feedback_location.area",$params['area']);
             $this->db->join('feedback_location','feedback_class.id_location = feedback_location.id');
         }
+        $this->db->select("feedback_phone.id, feedback_phone.class_code, feedback_phone.times,feedback_phone.time, feedback_phone.comment, feedback_phone.point, feedback_phone.name_feeder, feedback_class.main_teacher,feedback_class.id_location, feedback_teacher.name ");
 
         $this->db->order_by("feedback_phone.id",'DESC');
         $r = $this->db->get();
         return $r->result_array();
     }
 
+    public function get_list_feedback_phone_export($params)
+    {
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('fb.time >', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('fb.time < ', $params['endtime'] + 86400);
+        }
+        if (isset($params['teacher_name'])){
+            $this->db->like('ft.name', $params['teacher_name']);
+        }
+        if (isset($params['class_code'])){
+            if (is_array($params['class_code'])){
+                $this->db->where_in('fb.class_code',$params['class_code']);
+            }else{
+                $this->db->where('fb.class_code',$params['class_code']);
+            }
+        }
+
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+
+        $this->db->group_by('fb.class_code');
+        $this->db->select('MAX(fb.times) as times,MAX(fb.time) as time, MAX(ft.name) as teacher_name, fc.class_code, fl.name, fl.area, AVG(fb.point) AS point');
+        $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
+        if (isset($params['location']) && count($params['location']) > 0){
+            $this->db->where_in("fc.id_location",$params['location']);
+        }
+        if (isset($params['area']) && count($params['area']) > 0){
+            $this->db->where_in("fl.area",$params['area']);
+            $this->db->join("feedback_location as fl","fc.id_location = fl.id");
+        }
+        $this->db->order_by("MAX(fb.id)","desc");
+        $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
+        $query = $this->db->get("feedback_phone as fb");
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
+
     public function get_feedback_ksgv($params){
-        $this->db->select("*");
-        $this->db->order_by("id","desc");
+        $this->db->order_by("fk.id","desc");
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
         // type
         if (isset($params['type'])){
-            $this->db->where('type',$params['type']);
+            $this->db->where('fk.type',$params['type']);
         }
-        $r = $this->db->get('feedback_ksgv');
+
+        $this->db->join("feedback_class as fc","fk.class_code = fc.class_code");
+        $this->db->join("feedback_location as fl","fc.id_location = fl.id");
+
+        if (isset($params['location']) && count($params['location']) > 0){
+            $this->db->where_in("fc.id_location",$params['location']);
+        }
+        if (isset($params['area']) && count($params['area']) > 0){
+            $this->db->where_in("fl.area",$params['area']);
+        }
+        if (isset($params['class_code'])){
+            $this->db->where('fk.class_code',$params['class_code']);
+        }
+        $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
+        $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name");
+        if (isset($params['manager_email'])){
+            $this->db->where_in('ft.manager_email', $params['manager_email']);
+        }
+        $r = $this->db->get('feedback_ksgv as fk');
         return $r->result_array();
+    }
+
+    public function get_teacher_manager(){
+        $this->db->where('manager_email is not null');
+        $this->db->group_by('manager_email');
+        $this->db->select("manager_email");
+        $r = $this->db->get('feedback_teacher');
+        return $r->result_array();
+    }
+
+    /**
+     * Hàm get log đăng ký luyện đề cho chi tiết 1 lớp học (có chọn level co_ban - nang_cao)
+     * Nếu ko truyền vào class_code thì sẽ lấy theo thứ tự mới nhất
+     * @param string $class_code
+     * @param string $level
+     * @param array $option (limit => 100)
+     */
+    public function get_log_luyende_class($class_code='',$level='',$option=array()){
+        if ($class_code != ''){
+            $this->db->where('class_code',$class_code);
+        }
+
+        if ($level != ''){
+            $this->db->where('level',$level);
+        }
+
+        if (isset($option['limit'])){
+            $this->db->limit($option['limit']);
+        }
+        $r = $this->db->get('feedback_luyende');
+        return $r->result_array();
+
     }
 }
