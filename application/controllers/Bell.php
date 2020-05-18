@@ -93,65 +93,17 @@ class Bell extends CI_Controller
         // INFO LOCATION
         $id_location = $info_class['id_location'];
         $info_location = $this->feedback->get_info_location_by_id($id_location);
-        $area = $info_location['area'];
-        switch ($area) {
-            case 'Hà Nội':
-                $area_code = 'hn';
-                break;
-            case 'Hồ Chí Minh':
-                $area_code = 'hcm';
-                break;
-            case 'Đà Nẵng':
-                $area_code = 'dn';
-                break;
-            default:
-                $area_code = 'unknown';
-        }
 
         // INFO TEACHER
-        $list_teacher = $info_class['list_teacher'];
-        $list_teacher = json_decode($list_teacher, 0);
-
-        $teacher_email = '';
-        if (count($list_teacher) > 0) {
-            $teacher_id = $list_teacher[0];
-            $teacher_info = $this->feedback->get_info_teacher($teacher_id);
-            $teacher_email = $teacher_info['email'];
+        $teacher_id = $info_class['main_teacher'];
+        $teacher_info = $this->feedback->get_info_teacher($teacher_id);
+        $email_to = array();
+        if(isset($teacher_info['manager_email'])){
+            $email_to = array($teacher_info['manager_email']);
         }
-
-        // EMAIL MANAGER
-        $array_email_manager = array(
-            'manager' => array(
-                'lanphuong@imap.edu.vn',
-                'thanhdat.it@imap.edu.vn',
-                'huyhieu.it@imap.edu.vn'
-            ),
-            'hn' => array(
-                'yennhi@imap.edu.vn',
-                'tahoa.dthn@imap.edu.vn',
-                'ductam.dthn@imap.edu.vn',
-                'maido@imap.edu.vn',
-            ),
-            'hcm' => array(
-                'trongvinh.dthcm@imap.edu.vn',
-                'mylinh.hcdthcm@imap.edu.vn',
-            ),
-            'dn' => array(
-                'minhhai@imap.edu.vn',
-                'thaohieunt@imap.edu.vn',
-            ),
-        );
-
-        $email_bcc = $array_email_manager['manager'];
-        if (isset($array_email_manager[$area_code])) {
-            $email_bcc = array_merge($email_bcc, $array_email_manager[$area_code]);
-        }
-
-        if ($teacher_email == '') {
-            $email_to = array($email_bcc[0]);
-            unset($email_bcc[0]);
-        } else {
-            $email_to = array($teacher_email);
+        $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn');
+        if (count($email_to) == 0) {
+            $email_to = array('lanphuong@imap.edu.vn');
         }
 
         // POINT CLASS
@@ -262,14 +214,6 @@ class Bell extends CI_Controller
             <p><i>Email này được hệ thống tạo và gửi tự động dưới yêu cầu của nhân viên tư vấn <b>' . $name_request_send_email['fullname'] . '</b>.</i></p>
             <p>Trân trọng</p>
         ';
-
-//
-        // $email_bcc = array('zingfeng.9x@gmail.com'); // $email_bcc
-//        $arr_recveive = array('thanhdat.finance@gmail.com'); // $email_to
-
-
-
-
 
         $arr_recveive = $email_to; // $email_to
         $CI = &get_instance();

@@ -36,8 +36,10 @@
                             <label for="comment">Thông tin thêm</label>
                             <textarea class="form-control" rows="3" id="info_teacher_insert"></textarea>
                         </div>
-
-
+                        <div class="form-group">
+                            <label>Email quản lý</label>
+                            <input type="text" class="form-control" id="manager_email_insert">
+                        </div>
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="checkbox">

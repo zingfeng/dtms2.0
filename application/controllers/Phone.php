@@ -13,7 +13,6 @@ class Phone extends CI_Controller
             if ($this->feedback->check_class_code_exist($class_code)) {
                 $info_class = $this->feedback->get_info_class_by_class_code($class_code);
 
-
                 $list_teacher = json_decode($info_class['list_teacher'], true);
                 $list_info_teacher = array();
 
@@ -137,5 +136,6 @@ class Phone extends CI_Controller
 
         return $max_times;
     }
+
 
 }

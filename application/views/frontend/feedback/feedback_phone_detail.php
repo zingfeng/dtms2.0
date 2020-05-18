@@ -11,6 +11,17 @@
 
     <div class="row" id="body_filter" style="display: none">
         <form action="/feedback/feedback_phone_detail" method="get">
+            <div class="col col-sm-3">
+                <div class="form-group">
+                    <label for="usr">Quản lý</label>
+                    <select name="manager_email" id="manager_email" class="form-control" placeholder="Manager">
+                        <option value="">Chọn quản lý</option>
+                        <?php if(isset($list_manager) && count($list_manager) > 0) foreach ($list_manager as $manager) {?>
+                            <option value="<?php echo $manager; ?>" <?php echo (isset($_REQUEST['manager_email']) && $_REQUEST['manager_email'] == $manager) ? 'selected' : '' ?>><?php echo $manager; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
             <div class="col col-sm-2">
                 <div class="form-group">
                     <label>Từ ngày:</label>
@@ -283,6 +294,12 @@
         console.log(endtime);
         if (endtime !== ''){
             query_string += '&endtime=' + endtime;
+        }
+
+        var manager_email = $('#manager_email').val();
+
+        if (manager_email !== ''){
+            query_string += '&manager_email=' + manager_email;
         }
 
         var class_code = $('#class').val();

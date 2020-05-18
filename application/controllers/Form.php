@@ -863,7 +863,6 @@ class Form extends CI_Controller
         $token_feedback = $this->config->item('token_feedback');
         $token = md5($token_feedback . $time_start);
 
-
         $data = array(
             'type_class' => 'dao_tao_onl',
             'time_start' => $time_start,
