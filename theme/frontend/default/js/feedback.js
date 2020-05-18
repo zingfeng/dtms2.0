@@ -274,6 +274,7 @@ function edit_class(){
             class_type: my_info.class_type,
             class_opening_date: my_info.class_opening_date,
             id_location: my_info.location_class,
+            level: my_info.level,
         },
         function (data, status) {
             console.log(data);

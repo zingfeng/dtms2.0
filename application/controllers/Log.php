@@ -829,6 +829,159 @@ class Log extends CI_Controller
 
     }
 
+    /**
+     * Hàm export log đăng ký luyện đề theo area
+     * @return .xlsx file
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+    public function export_list_feedback_luyende_by_area(){
+        guard();
+        guard_admin_manager();
 
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $params = [];
+
+        if (isset($_REQUEST['area'])) {
+            $area = $_REQUEST['area'];
+            $params['area'] = $area;
+        }
+
+        $params['limit'] = 500;
+        $list_fb_ld = $this->fu->get_log_luyende_filter_by_class($params);
+
+        $filename = 'Feedback-LuyenDe.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb_ld as $keyEX => $mono_feedback_ld){
+            $count = $baseRow + $i;
+            $classLink = '';
+            $number_off = (int)$mono_feedback_ld['number_student']-((int)$mono_feedback_ld['number_student_coban']+(int)$mono_feedback_ld['number_student_nangcao']);
+            if($number_off <= 0) {
+                $number_off = 0;
+            }
+            if(empty($_REQUEST['class'])){
+                $classLink = '&class='.$mono_feedback_ld['class_code'];
+            }
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Cơ sở")
+                    ->setCellValue('C'.$i, "Level")
+                    ->setCellValue('D'.$i, "Lớp")
+                    ->setCellValue('E'.$i, "Giáo viên")
+                    ->setCellValue('F'.$i, "Ngày kết thúc")
+                    ->setCellValue('G'.$i, "Sĩ số lớp")
+                    ->setCellValue('H'.$i, "Số lượng HV đăng ký level cơ bản")
+                    ->setCellValue('I'.$i, "Số lượng HV đăng ký level nâng cao ")
+                    ->setCellValue('J'.$i, "Số lượng HV chưa đăng ký")
+                    ->setCellValue('K'.$i, "Danh sách đăng ký")
+                    ->setCellValue('L'.$i, "Ti lệ HV đăng ký học");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, $mono_feedback_ld['loca_name'])
+                ->setCellValue('C'.$count, $mono_feedback_ld['level'])
+                ->setCellValue('D'.$count, $mono_feedback_ld['class_code'])
+                ->setCellValue('E'.$count, $mono_feedback_ld['teacher_name'])
+                ->setCellValue('F'.$count, date('d/m/Y', $mono_feedback_ld['time_end_class']))
+                ->setCellValue('G'.$count, $mono_feedback_ld['number_student'])
+                ->setCellValue('H'.$count, $mono_feedback_ld['number_student_coban'])
+                ->setCellValue('I'.$count, $mono_feedback_ld['number_student_nangcao'])
+                ->setCellValue('J'.$count, $number_off)
+                ->setCellValue('K'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('L'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? (($number_off / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+    }
+
+    /**
+     * Hàm export log đăng ký luyện đề theo area
+     * @return .xlsx file
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+    public function export_list_feedback_luyende_by_type(){
+        guard();
+        guard_admin_manager();
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $shift_text = [
+            's_t7' => 'Sáng thứ 7',
+            'c_t7' => 'Chiều thứ 7',
+            's_cn' => 'Sáng CN',
+        ];
+        $params = [];
+
+        if (isset($_REQUEST['type'])) {
+            $type = $_REQUEST['type'];
+            $params['type'] = $type;
+        }
+
+        if (isset($_REQUEST['level'])) {
+            $level = $_REQUEST['level'];
+            $params['level'] = $level;
+        }
+
+        $params['limit'] = 1000;
+        $list_fb_ld = $this->fu->get_log_luyende_filter($params);
+
+        $filename = 'Feedback-LuyenDe.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb_ld as $keyEX => $mono_feedback_ld){
+            $count = $baseRow + $i;
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Họ và tên")
+                    ->setCellValue('C'.$i, "Số điện thoại")
+                    ->setCellValue('D'.$i, "Email")
+                    ->setCellValue('E'.$i, "Ngày sinh")
+                    ->setCellValue('F'.$i, "Cơ sở")
+                    ->setCellValue('G'.$i, "Lớp")
+                    ->setCellValue('H'.$i, "Khung giờ học");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, $mono_feedback_ld['hoten'])
+                ->setCellValue('C'.$count, $mono_feedback_ld['phone'])
+                ->setCellValue('D'.$count, $mono_feedback_ld['email'])
+                ->setCellValue('E'.$count, '')
+                ->setCellValue('F'.$count, $mono_feedback_ld['location'].' - '.$mono_feedback_ld['area'])
+                ->setCellValue('G'.$count, $mono_feedback_ld['class_code'])
+                ->setCellValue('H'.$count, $shift_text[$mono_feedback_ld['shift']]);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+    }
 
 }

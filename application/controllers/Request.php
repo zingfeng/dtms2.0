@@ -200,6 +200,7 @@ class Request extends CI_Controller
                         'opening_day' => strip_tags($_POST['class_opening_date']),
                         'time_start' => $time_start,
                         'time_end' => $time_end,
+                        'level' => strip_tags($_POST['level']),
                     );
                     // main_teacher
                     if (count($_POST['class_teacher']) > 0){
@@ -229,6 +230,7 @@ class Request extends CI_Controller
                         'opening_day' => strip_tags($_POST['class_opening_date']),
                         'time_start' => $time_start,
                         'time_end' => $time_end,
+                        'level' => strip_tags($_POST['level']),
                     );
 
                     // main_teacher

@@ -244,6 +244,7 @@ class Feed_upgrade_model extends CI_Model{
      * @param string $class_code
      * @param string $level
      * @param array $option (limit => 100)
+     * @return array
      */
     public function get_log_luyende_class($class_code='',$level='',$option=array()){
         if ($class_code != ''){
@@ -258,6 +259,56 @@ class Feed_upgrade_model extends CI_Model{
             $this->db->limit($option['limit']);
         }
         $r = $this->db->get('feedback_luyende');
+        return $r->result_array();
+
+    }
+
+
+    /**
+     * Hàm get log đăng ký luyện đề theo params truyền vào
+     * @param $params (area,)
+     * @return array group by class
+     */
+    public function get_log_luyende_filter_by_class($params = array()){
+        $params = array_merge(array('limit' => 500 ), $params);
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+        $this->db->select("fc.level, fc.class_code, ft.name as teacher_name, flo.name as loca_name, fc.time_end as time_end_class, fc.number_student, COUNT(IF(fc.level NOT IN ('co_ban', 'nang_cao'),1,null)) AS number_student_giaotiep, COUNT(IF(fc.level='co_ban',1,null)) AS number_student_coban, COUNT(IF(fc.level='nang_cao',1,null)) AS number_student_nangcao");
+        $this->db->join("feedback_class as fc","fc.class_code = fld.class_code");
+        if (isset($params['area'])){
+            $this->db->where("flo.area",$params['area']);
+            $this->db->join("feedback_location as flo","fc.id_location = flo.id");
+        }
+        $this->db->join("feedback_teacher as ft","ft.teacher_id = fc.main_teacher");
+        $this->db->group_by('fc.class_code');
+        $r = $this->db->get('feedback_luyende as fld');
+        return $r->result_array();
+
+    }
+
+
+    /**
+     * Hàm get log đăng ký luyện đề theo params truyền vào
+     * @param $params (area,)
+     * @return array
+     */
+    public function get_log_luyende_filter($params = array()){
+        $params = array_merge(array('limit' => 500 ), $params);
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+        if (isset($params['type'])){
+            $this->db->where("fld.type",$params['type']);
+        }
+        if (isset($params['level'])){
+            $this->db->where("fld.level",$params['level']);
+        }
+        $this->db->select("fld.class_code, fld.hoten, fld.phone, fld.email, fld.shift, flo.name as location, flo.area");
+        $this->db->join("feedback_class as fc","fc.class_code = fld.class_code");
+        $this->db->join("feedback_location as flo","fc.id_location = flo.id");
+        $this->db->order_by("fld.id","desc");
+        $r = $this->db->get('feedback_luyende as fld');
         return $r->result_array();
 
     }

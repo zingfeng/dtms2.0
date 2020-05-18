@@ -282,7 +282,20 @@
                         <li><a href="/feedback/hom_thu_gop_y_detail">Lịch sử Hòm thư góp ý</a></li>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Danh sách luyện đề <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--                        <li><a href="#">Change password</a></li>-->
+                        <li><a href="/log/export_list_feedback_luyende_by_area?area=Hà%20Nội">Hà Nội</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_area?area=Đà%20Nẵng">Đà Nẵng</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_area?area=Hồ%20Chí%20Minh">Hồ Chí Minh</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_type?type=toeic&level=co_ban">Toeic cơ bản</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_type?type=toeic&level=nang_cao">Toeic nâng cao</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_type?type=ielts&level=co_ban">Ielts cơ bản</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_type?type=ielts&level=nang_cao">Ielts nâng cao</a></li>
+                        <li><a href="/log/export_list_feedback_luyende_by_type?type=giaotiep">Giao tiếp</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi, <?php  if(isset($_SESSION['fullname'])) echo $_SESSION['fullname']; ?>   <span class="caret"></span></a>
                     <ul class="dropdown-menu">

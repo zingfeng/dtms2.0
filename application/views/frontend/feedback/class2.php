@@ -381,7 +381,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="sel1">Type</label>
                                     <select class="form-control" id="class_type"  caption_get="value" caption_instruction="value or text" >
@@ -392,10 +392,16 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="usr">Mã lớp</label>
                                     <input type="text" class="form-control" id="class_code">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="level">Level</label>
+                                    <input type="text" class="form-control" id="level">
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -404,7 +410,6 @@
                                     <input type="date" class="form-control" id="class_opening_date">
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="row">
