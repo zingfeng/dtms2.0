@@ -40,6 +40,7 @@ function load_edit_class(event) {
     $('#class_more_info').val(info_live.more_info);
     $('#location_class').val(info_live.id_location);
     $('#class_opening_date').val(info_live.opening_day);
+    $('#level').val(info_live.level);
 
     var list_teacher = JSON.parse(info_live.list_teacher);
     $('#class_teacher').val(list_teacher).trigger('change');
@@ -198,6 +199,7 @@ function SaveFromDateToDateLink() {
             console.log(data);
             var data_live = JSON.parse(data);
             if ( (data_live.status === 'success') || (data.includes("success"))){
+                location.reload();
                 alert('Ok ! Thông tin thay đổi đã được cập nhật');
                 $("#btn_save_change_date").attr("disabled", false);
             }else{

@@ -45,15 +45,15 @@ class Log extends CI_Controller
                     '1. TỐC ĐỘ giảng dạy có phù hợp không?', // 1
                     '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?', //2
                     '3. Giảng viên có MỞ RỘNG thêm kiến thức không?', // 3
-                    '4. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?', // 4
-                    '5. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?', // 5
-                    '6. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?', // 6
-                    '7. Chất lượng đường truyền', // 7
-                    '8. Mức độ dễ thao tác và sử dụng', // 7
-                    '9. Chất lượng học online', // 7
+//                    '4. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?', // 4
+                    '4. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?', // 5
+                    '5. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?', // 6
+                    '6. Chất lượng đường truyền', // 7
+//                    '8. Mức độ dễ thao tác và sử dụng', // 7
+                    '7. Chất lượng học online', // 7
                 );
                 $list_quest_select = array(
-                    '10. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?', // 7
+                    '8. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?', // 7
                 );
                 break;
             default:
@@ -95,6 +95,11 @@ class Log extends CI_Controller
             $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
         }
         // ==================================
+
+//        foreach ($list_fb as $m){
+//            $detail_live = json_decode($m['detail'],true);
+//            echo '<pre>'; print_r($detail_live); exit;
+//        }
 
         $data = array(
             'rows' => $list_fb,

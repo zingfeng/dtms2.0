@@ -264,6 +264,11 @@
                             $mono__sum = 0;
                             $mono__count = 0;
                             for ($i = 0; $i < count($detail_live); $i++) {
+                                // Bỏ câu hỏi số 4 và số 8
+                                if ( ($i == 3) || ($i == 7)){
+                                    continue;
+                                }
+
                                 $mono_detail = $detail_live[$i];
                                 $type = $mono_detail[1];
                                 if ($type === 'select'){
