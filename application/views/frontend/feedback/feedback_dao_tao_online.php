@@ -72,7 +72,7 @@
             <h3 class="title_group_quest">Đánh giá theo thang điểm</h3>
 
             <?php creat_feedback_list_question_select_fast($list_quest_select,600); ?>
-
+            <?php creat_feedback_list_question_text2($list_quest_text,300); ?>
             <div style="padding: 10px; text-align: center">
                 <button class="btn btn-lg btn-success mx-auto btn_send_feedback" onclick="Send_feedback()">Gửi</button>
             </div>

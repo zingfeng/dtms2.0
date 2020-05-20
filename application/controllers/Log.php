@@ -42,18 +42,21 @@ class Log extends CI_Controller
             case 'dao_tao_onl':
                 $type_ksgv = 'dao_tao_onl';
                 $list_quest_ruler = array(
-                    '1. TỐC ĐỘ giảng dạy có phù hợp không?', // 1
-                    '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?', //2
-                    '3. Giảng viên có MỞ RỘNG thêm kiến thức không?', // 3
-//                    '4. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?', // 4
-                    '4. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?', // 5
-                    '5. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?', // 6
-                    '6. Chất lượng đường truyền', // 7
-//                    '8. Mức độ dễ thao tác và sử dụng', // 7
-                    '7. Chất lượng học online', // 7
+                    '1. TỐC ĐỘ giảng dạy có phù hợp không?',
+                    '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?',
+                    '3. Giảng viên có MỞ RỘNG thêm kiến thức không?',
+//                    '4. Giảng viên có hướng dẫn cách viết STUDENT BOOK không?',
+                    '4. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?',
+                    '5. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?',
+                    '6. Chất lượng đường truyền',
+//                    '8. Mức độ dễ thao tác và sử dụng',
+                    '7. Chất lượng học online',
                 );
                 $list_quest_select = array(
-                    '8. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?', // 7
+                    '8. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?',
+                )
+                ;$list_quest_text = array(
+                    '9. Bạn có đóng góp gì cho giáo viên và trung tâm không?',
                 );
                 break;
             default:

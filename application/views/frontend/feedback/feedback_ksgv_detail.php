@@ -212,8 +212,6 @@
                             ?>
                             <label><input class="filter-area"  type="checkbox" value="Tỉnh thành khác" <?php echo $checked_area; ?>>Tỉnh thành khác</label>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -264,9 +262,11 @@
                             $mono__sum = 0;
                             $mono__count = 0;
                             for ($i = 0; $i < count($detail_live); $i++) {
-                                // Bỏ câu hỏi số 4 và số 8
-                                if ( ($i == 3) || ($i == 7)){
-                                    continue;
+                                if(count($detail_live) > 9) {
+                                    // Bỏ câu hỏi số 4 và số 8
+                                    if ( ($i == 3) || ($i == 7)){
+                                        continue;
+                                    }
                                 }
 
                                 $mono_detail = $detail_live[$i];
@@ -288,6 +288,12 @@
                                 }else{
                                     $content = $mono_detail[3];
                                     echo  '<td>'.$content.'</td>';
+                                }
+                                // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
+                                if(count($detail_live) > 9 && $i == 9) {
+                                    if($i == 9){
+                                        echo  '<td><span class="point" ></span></td>';
+                                    }
                                 }
                             } ?>
                             <td>

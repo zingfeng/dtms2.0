@@ -841,21 +841,25 @@ class Form extends CI_Controller
                 'TỐC ĐỘ giảng dạy có phù hợp không?',
                 'Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?',
                 'Giảng viên có MỞ RỘNG thêm kiến thức không?',
-                'Giảng viên có hướng dẫn cách viết STUDENT BOOK không?',
+//                'Giảng viên có hướng dẫn cách viết STUDENT BOOK không?',
                 'Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?',
                 'Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?'
             ),
 
             'Về chất lượng ứng dụng và học online' => array(
                 'Chất lượng đường truyền',
-                'Mức độ dễ thao tác và sử dụng',
-                'Chất lượng học online'
+//                'Mức độ dễ thao tác và sử dụng',
+                'Chất lượng học online',
             ),
         );
 
 
         $list_quest_select = array(
             'Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?'
+        );
+
+        $list_quest_text = array(
+            'Bạn có đóng góp gì cho giáo viên và trung tâm không?'
         );
 
         $time_start = time();
@@ -871,6 +875,7 @@ class Form extends CI_Controller
             'list_info_class' => $list_info_class,
             'list_quest_ruler' => $list_quest_ruler,
             'list_quest_select' => $list_quest_select,
+            'list_quest_text' => $list_quest_text,
             'arr_location_info' => $arr_location_info,
         );
 
