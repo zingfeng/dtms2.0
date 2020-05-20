@@ -266,7 +266,8 @@ class Feed_upgrade_model extends CI_Model{
 
     /**
      * Hàm get log đăng ký luyện đề theo params truyền vào
-     * @param $params (area,)
+     * by HieuTH
+     * @param $params array(area,limit)
      * @return array group by class
      */
     public function get_log_luyende_filter_by_class($params = array()){
@@ -274,12 +275,12 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
-        $this->db->select("fc.level, fc.class_code, ft.name as teacher_name, flo.name as loca_name, fc.time_end as time_end_class, fc.number_student, COUNT(IF(fc.level NOT IN ('co_ban', 'nang_cao'),1,null)) AS number_student_giaotiep, COUNT(IF(fc.level='co_ban',1,null)) AS number_student_coban, COUNT(IF(fc.level='nang_cao',1,null)) AS number_student_nangcao");
+        $this->db->select("fc.level, fc.class_code, ft.name as teacher_name, flo.name as loca_name, fc.time_end as time_end_class, fc.number_student, COUNT(IF(fld.level NOT IN ('co_ban', 'nang_cao'),1,null)) AS number_student_giaotiep, COUNT(IF(fld.level='co_ban',1,null)) AS number_student_coban, COUNT(IF(fld.level='nang_cao',1,null)) AS number_student_nangcao");
         $this->db->join("feedback_class as fc","fc.class_code = fld.class_code");
         if (isset($params['area'])){
             $this->db->where("flo.area",$params['area']);
-            $this->db->join("feedback_location as flo","fc.id_location = flo.id");
         }
+        $this->db->join("feedback_location as flo","fc.id_location = flo.id");
         $this->db->join("feedback_teacher as ft","ft.teacher_id = fc.main_teacher");
         $this->db->group_by('fc.class_code');
         $r = $this->db->get('feedback_luyende as fld');
@@ -290,7 +291,8 @@ class Feed_upgrade_model extends CI_Model{
 
     /**
      * Hàm get log đăng ký luyện đề theo params truyền vào
-     * @param $params (area,)
+     * by HieuTH
+     * @param $params array(type,level)
      * @return array
      */
     public function get_log_luyende_filter($params = array()){
@@ -311,5 +313,43 @@ class Feed_upgrade_model extends CI_Model{
         $r = $this->db->get('feedback_luyende as fld');
         return $r->result_array();
 
+    }
+
+
+    /**
+     * Hàm get số lượng fb phone theo từng lớp
+     * @param $params (course_id)
+     * by HieuTH
+     * @return array
+     */
+    public function get_total_fb_phone_by_class($params = array()){
+        $this->db->select("fc.class_id, COUNT(fc.class_id) AS number_fb");
+        $this->db->join("feedback_class as fc","fc.class_code = fp.class_code");
+        if (isset($params['class_id'])){
+            $this->db->where_in('fc.class_id', $params['class_id']);
+        }
+        $this->db->group_by('fc.class_code');
+        $r = $this->db->get('feedback_phone as fp');
+        return $r->result_array();
+    }
+
+
+    /**
+     * Hàm get số lượng fb ksgv theo từng lớp
+     * @param $params (course_id)
+     * by HieuTH
+     * @return array
+     */
+    public function get_total_fb_ksgv_by_class($params = array()){
+        $this->db->select("fc.class_id, COUNT(fc.class_id) AS number_fb");
+        $this->db->join("feedback_class as fc","fc.class_code = fk.class_code");
+        if (isset($params['class_id'])){
+            $this->db->where_in('fc.class_id', $params['class_id']);
+        }if (isset($params['type_ksgv'])){
+            $this->db->where('fk.type', $params['type_ksgv']);
+        }
+        $this->db->group_by('fc.class_code');
+        $r = $this->db->get('feedback_ksgv as fk');
+        return $r->result_array();
     }
 }

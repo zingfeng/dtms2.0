@@ -6,6 +6,7 @@ class Log extends CI_Controller
 
     public function feedback_ksgv_detail()
     {
+        guard();
         $del = false;
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
             $del = true;
@@ -97,12 +98,6 @@ class Log extends CI_Controller
         foreach ($location_info as $mono_location) {
             $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
         }
-        // ==================================
-
-//        foreach ($list_fb as $m){
-//            $detail_live = json_decode($m['detail'],true);
-//            echo '<pre>'; print_r($detail_live); exit;
-//        }
 
         $data = array(
             'rows' => $list_fb,
@@ -123,9 +118,7 @@ class Log extends CI_Controller
     }
 
     public function export_feedback_ksgv_detail(){
-        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
-            $del = true;
-        }
+        guard();
         $dataLink = '';
         if (isset($_REQUEST['location'])) {
             $params['location'] = json_decode($_REQUEST['location'], true);
@@ -188,28 +181,40 @@ class Log extends CI_Controller
             if(empty($_REQUEST['class_code'])){
                 $classLink = '&class_code='.$mono_feedback['class_code'];
             }
+            switch ($mono_feedback['type']) {
+                case 'ksgv2':
+                    $type = 'Online cuối kỳ';
+                    break;
+                case 'dao_tao_onl':
+                    $type = 'Online giữa kỳ';
+                    break;
+                default:
+                    $type = '';
+            }
             if($i == 1){
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A'.$i, "STT")
-                    ->setCellValue('B'.$i, "Lớp")
-                    ->setCellValue('C'.$i, "Giảng viên")
-                    ->setCellValue('D'.$i, "Cơ sở")
-                    ->setCellValue('E'.$i, "Ngày nhận KS")
-                    ->setCellValue('F'.$i, "Loại")
-                    ->setCellValue('G'.$i, "Điểm trung bình giáo viên")
-                    ->setCellValue('H'.$i, "Chi tiết");
+                    ->setCellValue('B'.$i, "Loại khảo sát")
+                    ->setCellValue('C'.$i, "Lớp")
+                    ->setCellValue('D'.$i, "Giảng viên")
+                    ->setCellValue('E'.$i, "Cơ sở")
+                    ->setCellValue('F'.$i, "Ngày nhận KS")
+                    ->setCellValue('G'.$i, "Loại")
+                    ->setCellValue('H'.$i, "Điểm trung bình giáo viên")
+                    ->setCellValue('I'.$i, "Chi tiết");
             }
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
 
             $objPHPExcel->getActiveSheet(0)
                 ->setCellValue('A'.$count, $keyEX+1 )
-                ->setCellValue('B'.$count, $mono_feedback['class_code'])
-                ->setCellValue('C'.$count, $mono_feedback['teacher_name'])
-                ->setCellValue('D'.$count, $mono_feedback['location'])
-                ->setCellValue('E'.$count, date('d/m/Y', $mono_feedback['time_end']))
-                ->setCellValue('F'.$count, $mono_feedback['type'])
-                ->setCellValue('G'.$count, $mono_feedback['total_point']/$mono_feedback['count_point'])
-                ->setCellValue('H'.$count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
+                ->setCellValue('B'.$count, $type)
+                ->setCellValue('C'.$count, $mono_feedback['class_code'])
+                ->setCellValue('D'.$count, $mono_feedback['teacher_name'])
+                ->setCellValue('E'.$count, $mono_feedback['location'])
+                ->setCellValue('F'.$count, date('d/m/Y', $mono_feedback['time_end']))
+                ->setCellValue('G'.$count, $mono_feedback['type'])
+                ->setCellValue('H'.$count, $mono_feedback['total_point']/$mono_feedback['count_point'])
+                ->setCellValue('I'.$count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
             $i++;
         }
 
@@ -225,6 +230,7 @@ class Log extends CI_Controller
     }
 
     public function hom_thu_gop_y_detail(){
+        guard();
         $this->load->model('Feedback_model', 'feedback');
         $list_fb_homthu = $this->feedback->get_list_feedback_hom_thu_gop_y('');
         $location_info = $this->feedback->get_list_location();
@@ -245,6 +251,7 @@ class Log extends CI_Controller
     }
 
     public function export_hom_thu_gop_y_detail(){
+        guard();
         $this->load->model('Feedback_model', 'feedback');
         $list_fb_homthu = $this->feedback->get_list_feedback_hom_thu_gop_y('');
         $location_info = $this->feedback->get_list_location();
@@ -305,111 +312,8 @@ class Log extends CI_Controller
 
     }
 
-    public function feedback_phone_detail_old(){
-        guard();
-        guard_admin_manager();
-
-        $del = false;
-        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
-            $del = true;
-        }
-
-        $this->load->model('Feedback_model', 'feedback');
-        if(count($_REQUEST) > 0) {
-            if (isset($_REQUEST['starttime'])) {
-                $starttime = strtotime(strip_tags($_REQUEST['starttime']));
-            }
-
-            if (isset($_REQUEST['endtime'])) {
-                $endtime = strtotime(strip_tags($_REQUEST['endtime']));
-            }
-
-            if (isset($_REQUEST['class'])) {
-                $class_code = strip_tags($_REQUEST['class']);
-            }
-
-            if (isset($_REQUEST['location'])) {
-                $location = $_REQUEST['location'];
-                $location = json_decode($location, true);
-            }
-
-            if (isset($_REQUEST['area'])) {
-                $area = $_REQUEST['area'];
-                $area = json_decode($area, true);
-            }
-            // lazy code
-            $list_feedback_phone_newestSS = $this->feedback->get_list_feedback_phone_filter(1000, $starttime, $endtime, $class_code, $area, $location);
-        } else {
-            $list_feedback_phone_newestSS = $this->feedback->get_list_feedback_phone_newest(1000);
-        }
-
-
-        $array_class_code_feedback_phone = array();
-        $array_class_code_feedback_phone_type = array(); // ielts => array()
-        for ($i = 0; $i < count($list_feedback_phone_newestSS); $i++) {
-            $mono = $list_feedback_phone_newestSS[$i];
-            $class_code_mono = $mono['class_code'];
-            if (! in_array($class_code_mono,$array_class_code_feedback_phone)){
-                array_push($array_class_code_feedback_phone,$class_code_mono);
-            }
-        }
-
-        for ($i = 0; $i < count($array_class_code_feedback_phone); $i++) {
-            $supermono_classcode = $array_class_code_feedback_phone[$i];
-            if ($this->feedback->check_class_code_exist($supermono_classcode)){
-                $info_class_super = $this->feedback->get_info_class_by_class_code($supermono_classcode);
-                $type = $info_class_super['type'];
-                if(! isset($array_class_code_feedback_phone_type[$type])){
-                    $array_class_code_feedback_phone_type[$type] = array();
-                }
-                array_push($array_class_code_feedback_phone_type[$type],$supermono_classcode);
-            }
-        }
-
-        // ======== Lấy điểm của lớp
-        $arr_info_class = array(); // class_code => class_info
-
-        for ($i = 0; $i < count($array_class_code_feedback_phone); $i++) {
-            $su_per_class_code = $array_class_code_feedback_phone[$i];
-            if (isset($arr_info_class[$su_per_class_code])){continue; }
-            $arr_info_class[$su_per_class_code] = $this->feedback->get_info_class_by_class_code($su_per_class_code);
-        }
-
-
-        $list_feedback_newest = $this->feedback->get_list_feedback_paper('', '', 'time_end');
-        $list_feedback_newest = array_slice($list_feedback_newest, 0, 200); // 100 feed back mới nhất
-
-
-        $teacher_info = $this->feedback->get_list_info_teacher();
-        $arr_techer_id_to_teacher_info = array();
-        for ($i = 0; $i < count($teacher_info); $i++) {
-            $mono_teacher_info = $teacher_info[$i];
-            $arr_techer_id_to_teacher_info[$mono_teacher_info['teacher_id']] = $mono_teacher_info;
-        }
-        $location_info = $this->feedback->get_list_location();
-        $arr_location_id_to_location_info = array();
-        for ($i = 0; $i < count($location_info); $i++) {
-            $mono_location_info = $location_info[$i];
-            $arr_location_id_to_location_info[$mono_location_info['id']] = $mono_location_info;
-        }
-
-        $data = array(
-            'list_feedback_newest' => $list_feedback_newest, // feedback form
-            'list_feedback_phone_newestSS' => $list_feedback_phone_newestSS,
-            'array_class_code_feedback_phone_type' => $array_class_code_feedback_phone_type,
-            'arr_info_class' => $arr_info_class,
-            'location_info' => $location_info,
-            'arr_location_id_to_location_info' => $arr_location_id_to_location_info,
-            'arr_techer_id_to_teacher_info' => $arr_techer_id_to_teacher_info,
-            'del' => $del,
-        );
-
-        $this->load->layout('feedback/feedback_phone_detail', $data, false, 'layout_feedback');
-    }
-
     public function feedback_phone_detail(){
         guard();
-
         $del = false;
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
             $del = true;
@@ -465,9 +369,6 @@ class Log extends CI_Controller
         $location_info = $this->feedback->get_list_location();
         $params['limit'] = 500;
         $list_fb_phone = $this->fu->get_fb_phone($params);
-//        echo '<pre>';
-//        print_r($list_fb_phone);
-//        exit;
 
         $data = array(
             'rows' => $list_fb_phone,
@@ -539,218 +440,27 @@ class Log extends CI_Controller
             if($i == 1){
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A'.$i, "STT")
-                    ->setCellValue('B'.$i, "Lớp")
-                    ->setCellValue('C'.$i, "Giảng viên")
-                    ->setCellValue('D'.$i, "Cơ sở")
-                    ->setCellValue('E'.$i, "Ngày nhận KS")
-                    ->setCellValue('F'.$i, "Lần")
-                    ->setCellValue('G'.$i, "Điểm trung bình")
-                    ->setCellValue('H'.$i, "Chi tiết");
+                    ->setCellValue('B'.$i, "Loại khảo sát")
+                    ->setCellValue('C'.$i, "Lớp")
+                    ->setCellValue('D'.$i, "Giảng viên")
+                    ->setCellValue('E'.$i, "Cơ sở")
+                    ->setCellValue('F'.$i, "Ngày nhận KS")
+                    ->setCellValue('G'.$i, "Lần")
+                    ->setCellValue('H'.$i, "Điểm trung bình")
+                    ->setCellValue('I'.$i, "Chi tiết");
             }
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
 
             $objPHPExcel->getActiveSheet(0)
                 ->setCellValue('A'.$count, $keyEX+1 )
-                ->setCellValue('B'.$count, $mono_feedback_phone['class_code'])
-                ->setCellValue('C'.$count, $mono_feedback_phone['teacher_name'])
-                ->setCellValue('D'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
-                ->setCellValue('E'.$count, date('d/m/Y', $mono_feedback_phone['time']))
-                ->setCellValue('F'.$count, $mono_feedback_phone['times'])
-                ->setCellValue('G'.$count, $mono_feedback_phone['point'])
-                ->setCellValue('H'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
-            $i++;
-        }
-        $objPHPExcel->getActiveSheet()->setTitle($filename);
-        $objPHPExcel->setActiveSheetIndex(0);
-
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachement; filename="' . $filename . '"');
-        ob_end_clean();
-        return $objWriter->save('php://output');exit();
-    }
-
-    public function export_list_feedback_phone_detail_old(){
-//        ini_set('display_errors', 1);
-//        ini_set('display_startup_errors', 1);
-//        error_reporting(E_ALL);
-        guard();
-        guard_admin_manager();
-        // md bootstrap
-        // Quản lý danh sách lớp
-        // Quản lý danh sách giảng viên
-        // 1 view
-        //
-        $this->load->model('Feedback_model', 'feedback');
-
-//        $this->_mark_all_class('');
-
-
-        $top_class_ielts = $this->feedback->get_top_class_feedback_newest(15, 'ielts');
-        $top_class_toeic = $this->feedback->get_top_class_feedback_newest(15, 'toeic');
-        $top_class_giaotiep = $this->feedback->get_top_class_feedback_newest(15, 'giaotiep');
-        $top_class_aland = $this->feedback->get_top_class_feedback_newest(15, 'aland');
-
-        // lazy code
-        $list_feedback_phone_newestSS = $this->feedback->get_list_feedback_phone_newest(100000);
-        $array_class_code_feedback_phone = array();
-        $array_class_code_feedback_phone_type = array(); // ielts => array()
-        for ($i = 0; $i < count($list_feedback_phone_newestSS); $i++) {
-            $mono = $list_feedback_phone_newestSS[$i];
-            $class_code_mono = $mono['class_code'];
-            if (! in_array($class_code_mono,$array_class_code_feedback_phone)){
-                array_push($array_class_code_feedback_phone,$class_code_mono);
-            }
-        }
-
-        for ($i = 0; $i < count($array_class_code_feedback_phone); $i++) {
-            $supermono_classcode = $array_class_code_feedback_phone[$i];
-            if ($this->feedback->check_class_code_exist($supermono_classcode)){
-                $info_class_super = $this->feedback->get_info_class_by_class_code($supermono_classcode);
-                $type = $info_class_super['type'];
-                if(! isset($array_class_code_feedback_phone_type[$type])){
-                    $array_class_code_feedback_phone_type[$type] = array();
-                }
-                array_push($array_class_code_feedback_phone_type[$type],$supermono_classcode);
-            }
-        }
-
-
-        // ======== Lấy điểm của lớp
-        $arr_info_class = array(); // class_code => class_info
-
-        for ($i = 0; $i < count($array_class_code_feedback_phone); $i++) {
-            $su_per_class_code = $array_class_code_feedback_phone[$i];
-            if (isset($arr_info_class[$su_per_class_code])){continue; }
-            $res = $this->feedback->get_info_class_by_class_code($su_per_class_code);
-            if( $res !== null){
-                $arr_info_class[$su_per_class_code] = $res;
-            }
-        }
-
-        $arr_new_feedback_form = array_merge($top_class_ielts,$top_class_toeic,$top_class_giaotiep,$top_class_aland);
-
-        for ($i = 0; $i < count($arr_new_feedback_form); $i++) {
-            $su_per_class_info = $arr_new_feedback_form[$i];
-            $su_per_class_info_live = json_decode($su_per_class_info,true);
-            $su_per_class_code = $su_per_class_info_live[1];
-            if (isset($arr_info_class[$su_per_class_code])){continue; }
-            $arr_info_class[$su_per_class_code] = $this->feedback->get_info_class_by_class_code($su_per_class_code);
-        }
-
-        //  [0] => ["ielts","Pre707"]
-
-//        echo '<pre>'; print_r($array_class_code_feedback_phone_type); echo '</pre>'; exit;
-
-        // =========== end lazy code
-
-        $list_feedback_newest = $this->feedback->get_list_feedback_paper('', '', 'time_end');
-        $list_feedback_newest = array_slice($list_feedback_newest, 0, 200); // 100 feed back mới nhất
-
-
-
-        $list_feedback_phone_newest = $this->feedback->get_list_feedback_phone_newest(500);
-
-//        echo '<pre>'; print_r($list_feedback_newest); echo '</pre>';
-//        echo '<pre>'; print_r($list_feedback_phone_newest); echo '</pre>';
-//        exit;
-
-        $info = $this->feedback->get_all_info_system();
-
-
-        $teacher_info = $this->feedback->get_list_info_teacher();
-        $arr_techer_id_to_teacher_info = array();
-        for ($i = 0; $i < count($teacher_info); $i++) {
-            $mono_teacher_info = $teacher_info[$i];
-            $arr_techer_id_to_teacher_info[$mono_teacher_info['teacher_id']] = $mono_teacher_info;
-        }
-        $location_info = $this->feedback->get_list_location();
-        $arr_location_id_to_location_info = array();
-        for ($i = 0; $i < count($location_info); $i++) {
-            $mono_location_info = $location_info[$i];
-            $arr_location_id_to_location_info[$mono_location_info['id']] = $mono_location_info;
-        }
-
-
-        $info_giaotiep = $this->feedback->get_all_info_system_by_type('giaotiep');
-        $info_toeic = $this->feedback->get_all_info_system_by_type('toeic');
-        $info_ielts = $this->feedback->get_all_info_system_by_type('ielts');
-        $info_aland = $this->feedback->get_all_info_system_by_type('aland');
-        $data = array(
-            'list_feedback_newest' => $list_feedback_newest, // feedback form
-            'list_feedback_phone_newestSS' => $list_feedback_phone_newestSS,
-            'top_class_ielts' => $top_class_ielts,
-            'top_class_toeic' => $top_class_toeic,
-            'top_class_giaotiep' => $top_class_giaotiep,
-            'top_class_aland' => $top_class_aland,
-            'array_class_code_feedback_phone_type' => $array_class_code_feedback_phone_type,
-            'arr_info_class' => $arr_info_class,
-            'info_giaotiep' => $info_giaotiep,
-            'info_toeic' => $info_toeic,
-            'info_ielts' => $info_ielts,
-            'info_aland' => $info_aland,
-            'arr_location_id_to_location_info' => $arr_location_id_to_location_info,
-            'arr_techer_id_to_teacher_info' => $arr_techer_id_to_teacher_info,
-        );
-        $data = array_merge($data, $info);
-
-        // ===============================================================
-        // ===============================================================
-        // ===============================================================
-        // ===============================================================
-
-
-
-
-        $filename = 'Feedback-Phone-'.date('d-m-Y').'.xlsx';
-        $filename = 'Feedback-Phone.xlsx';
-        $this->load->library('PHPExcel');
-        $objPHPExcel = new PHPExcel();
-        $i = 1;
-        $baseRow = 1;
-
-        foreach($list_feedback_phone_newestSS as $mono_feedback_phone){
-            $class_code_mono = $mono_feedback_phone['class_code'];
-            $time_end = $mono_feedback_phone['time'];
-            $name_feeder = $mono_feedback_phone['name_feeder'];
-
-            $list_teacher_text = '';
-
-            if (isset($arr_info_class[$class_code_mono])){
-                $list_teacher = $arr_info_class[$class_code_mono]['list_teacher'];
-                if ( ($list_teacher != '')&&($list_teacher != 'null')){
-                    $list_teacher_live = json_decode($list_teacher,true);
-                    foreach ($list_teacher_live as $super_mono_teacher_id) {
-                        $list_teacher_text .= $arr_techer_id_to_teacher_info[$super_mono_teacher_id]['name'].' ';
-                    }
-                }
-            }
-
-
-
-            $count = $baseRow + $i;
-            if($i == 1){
-                $objPHPExcel->getActiveSheet(0)
-                    ->setCellValue('A'.$i, "ID")
-                    ->setCellValue('B'.$i, "Thời gian")
-                    ->setCellValue('C'.$i, "Ngày")
-                    ->setCellValue('D'.$i, "Mã lớp")
-                    ->setCellValue('E'.$i, "Giáo viên")
-                    ->setCellValue('F'.$i, "Học viên")
-                    ->setCellValue('G'.$i, "Điểm")
-                    ->setCellValue('H'.$i, "Nhận xét");
-            }
-            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
-
-            $objPHPExcel->getActiveSheet(0)
-                ->setCellValue('A'.$count, $mono_feedback_phone['id'] )
-                ->setCellValue('B'.$count, date('d/m/Y - H:i:s', $time_end))
-                ->setCellValue('C'.$count, date('d/m/Y', $time_end))
-                ->setCellValue('D'.$count, $class_code_mono)
-                ->setCellValue('E'.$count, $list_teacher_text)
-                ->setCellValue('F'.$count, $name_feeder)
-                ->setCellValue('G'.$count, $mono_feedback_phone['point'])
-                ->setCellValue('H'.$count, $mono_feedback_phone['comment']);
+                ->setCellValue('B'.$count, 'Phone')
+                ->setCellValue('C'.$count, $mono_feedback_phone['class_code'])
+                ->setCellValue('D'.$count, $mono_feedback_phone['teacher_name'])
+                ->setCellValue('E'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
+                ->setCellValue('F'.$count, date('d/m/Y', $mono_feedback_phone['time']))
+                ->setCellValue('G'.$count, $mono_feedback_phone['times'])
+                ->setCellValue('H'.$count, $mono_feedback_phone['point'])
+                ->setCellValue('I'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
@@ -869,7 +579,7 @@ class Log extends CI_Controller
         foreach($list_fb_ld as $keyEX => $mono_feedback_ld){
             $count = $baseRow + $i;
             $classLink = '';
-            $number_off = (int)$mono_feedback_ld['number_student']-((int)$mono_feedback_ld['number_student_coban']+(int)$mono_feedback_ld['number_student_nangcao']);
+            $number_off = (int)$mono_feedback_ld['number_student']-((int)$mono_feedback_ld['number_student_coban']+(int)$mono_feedback_ld['number_student_nangcao']+(int)$mono_feedback_ld['number_student_giaotiep']);
             if($number_off <= 0) {
                 $number_off = 0;
             }
@@ -887,9 +597,10 @@ class Log extends CI_Controller
                     ->setCellValue('G'.$i, "Sĩ số lớp")
                     ->setCellValue('H'.$i, "Số lượng HV đăng ký level cơ bản")
                     ->setCellValue('I'.$i, "Số lượng HV đăng ký level nâng cao ")
-                    ->setCellValue('J'.$i, "Số lượng HV chưa đăng ký")
-                    ->setCellValue('K'.$i, "Danh sách đăng ký")
-                    ->setCellValue('L'.$i, "Ti lệ HV đăng ký học");
+                    ->setCellValue('J'.$i, "Số lượng HV đăng ký lớp giao tiếp ")
+                    ->setCellValue('K'.$i, "Số lượng HV chưa đăng ký")
+                    ->setCellValue('L'.$i, "Danh sách đăng ký")
+                    ->setCellValue('M'.$i, "Ti lệ HV đăng ký học");
             }
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
 
@@ -903,9 +614,10 @@ class Log extends CI_Controller
                 ->setCellValue('G'.$count, $mono_feedback_ld['number_student'])
                 ->setCellValue('H'.$count, $mono_feedback_ld['number_student_coban'])
                 ->setCellValue('I'.$count, $mono_feedback_ld['number_student_nangcao'])
-                ->setCellValue('J'.$count, $number_off)
-                ->setCellValue('K'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
-                ->setCellValue('L'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? (($number_off / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
+                ->setCellValue('J'.$count, $mono_feedback_ld['number_student_giaotiep'])
+                ->setCellValue('K'.$count, $number_off)
+                ->setCellValue('L'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('M'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? (($number_off / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
@@ -990,6 +702,105 @@ class Log extends CI_Controller
         header('Content-Disposition: attachement; filename="' . $filename . '"');
         ob_end_clean();
         return $objWriter->save('php://output');exit();
+    }
+
+    /**
+     * Lớp trang mới, hiển thị danh sách lớp và số lượng feedback, có action view tới list fb phone từng lớp
+     * @input string type, default: phone
+     * @input string class_code,
+     * @input string teacher,
+     * @input string loaction,
+     * @input string area,
+     * @output list class + total feedback phone
+     */
+    public function list_feedback_group_by_class()
+    {
+        guard();
+        $this->load->model('Feedback_model', 'feedback');
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $params = [];
+        $params_ksgv = [];
+
+        if(count($_REQUEST) > 0) {
+            if (isset($_REQUEST['type'])) {
+                $type = strip_tags($_REQUEST['type']);
+                $params['type'] = $type;
+            }
+            if (isset($_REQUEST['fb_type'])) {
+                $fb_type = strip_tags($_REQUEST['fb_type']);
+                $params['fb_type'] = $fb_type;
+            }
+            if (isset($_REQUEST['type_ksgv'])) {
+                $type_ksgv = strip_tags($_REQUEST['type_ksgv']);
+                $params_ksgv['type_ksgv'] = $type_ksgv;
+            }
+
+            if (isset($_REQUEST['class'])) {
+                $class_code = strip_tags($_REQUEST['class']);
+                $params['class_code'] = $class_code;
+            }
+
+            if (isset($_REQUEST['teacher_name'])) {
+                $teacher = strip_tags($_REQUEST['teacher_name']);
+                $params['teacher_name'] = $teacher;
+            }
+
+            if (isset($_REQUEST['location'])) {
+                $location = $_REQUEST['location'];
+                $params['location'] = json_decode($location, true);
+            }
+
+            if (isset($_REQUEST['area'])) {
+                $area = $_REQUEST['area'];
+                $params['area'] = json_decode($area, true);
+            }
+        }
+        $location_info = $this->feedback->get_list_location();
+        $arrLocation = array();
+        foreach ($location_info as $keyLoca => $location) {
+            $arrLocation[$location['id']] = $location;
+        }
+        $params['limit'] = 500;
+        $params = array_merge(array('fb_type' => 'phone'), $params);
+        $list_class = $this->feedback->get_list_class_filter($params);
+        $list_class_ids = array();
+        if(count($list_class) > 0) {
+            foreach ($list_class as $keyClass => $class) {
+                $list_class_ids[] = $class['class_id'];
+            }
+        }
+        if($fb_type == 'phone') {
+            $list_total = $this->fu->get_total_fb_phone_by_class(array('class_id' => $list_class_ids));
+        }else {
+            $params_ksgv = array_merge(array('class_id' => $list_class_ids), $params_ksgv);
+            $params_ksgv = array_merge(array('type_ksgv' => 'dao_tao_onl'), $params_ksgv);
+            $list_total = $this->fu->get_total_fb_ksgv_by_class($params_ksgv);
+        }
+
+        $arrTotalFB = array();
+        foreach ($list_total as $keyTotal => $total) {
+            $arrTotalFB[$total['class_id']] = $total;
+        }
+        $list_teacher = $this->feedback->get_list_info_teacher();
+        foreach ($list_teacher as $key => $teacher) {
+            $arrTeacher[$teacher['teacher_id']] = $teacher;
+        }
+
+        $data = array(
+            'rows' => $list_class,
+            'arrLocation' => $arrLocation,
+            'location_info' => $location_info,
+            'arr_teacher' => $arrTeacher,
+            'arr_total' => $arrTotalFB,
+            'fb_type' => $fb_type,
+            'type_ksgv' => ($params_ksgv['type_ksgv'])?$params_ksgv['type_ksgv']:'',
+        );
+        if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {
+            $this->load->layout('feedback/list_feedback_group_by_class', $data, false, 'layout_feedback');
+        } else {
+            $this->load->layout('feedback/list_feedback_group_by_class', $data, false, 'layout_feedback_tuvan');
+        }
     }
 
 }

@@ -210,6 +210,10 @@ class Feedback_model extends CI_Model
         if (isset($params['max']) && $params['max'] !== '') {
             $this->db->where("average_point <=",$params['max']);
         }
+        if (isset($params['teacher_name'])){
+            $this->db->like('ft.name', $params['teacher_name']);
+            $this->db->join("feedback_teacher as ft","ft.teacher_id = feedback_class.main_teacher");
+        }
 
         if (isset($params['limit']) ) {
             $this->db->limit($params['limit']);

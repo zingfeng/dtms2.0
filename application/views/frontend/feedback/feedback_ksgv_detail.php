@@ -61,7 +61,17 @@
                 echo ' display:none; ';
             }
             ?>" >
-                <div class="col col-sm-12">
+                <div class="col col-sm-6">
+                    <div class="form-group">
+                        <label>Mã lớp :</label>
+                        <input type="input" class="form-control" name="class_code" id="class_code" value="<?php
+                        if (isset($_REQUEST['class_code'])){
+                            echo $_REQUEST['class_code'];
+                        }
+                        ?>">
+                    </div>
+                </div>
+                <div class="col col-sm-6">
                     <div class="form-group">
                         <label for="usr">Quản lý</label>
                         <select name="manager_email" id="manager_email" class="form-control" placeholder="Manager">
@@ -227,10 +237,12 @@
                 <thead>
                 <tr>
                     <th class="th-sm">ID</th>
-                    <th class="th-sm">Mã lớp</th>
+                    <th class="th-sm">Mã lớp - Giáo viên</th>
                     <th class="th-sm">Thời gian</th>
                     <th class="th-sm">Tên</th>
-                    <th class="th-sm">Tuổi</th>
+                    <?php if($type_ksgv == 'ksgv2') {?>
+                        <th class="th-sm">Tuổi</th>
+                    <?php } ?>
                     <?php
 
                         for ($i = 0; $i < count($list_quest_total); $i++) {
@@ -251,10 +263,12 @@
                     foreach ($rows as $row) { ?>
                         <tr>
                             <td><?php echo $row['id'] ?></td>
-                            <td><?php echo $row['class_code'] ?></td>
+                            <td><?php echo $row['class_code'].' - '.$row['teacher_name'] ?></td>
                             <td><?php echo date('d/m/Y - H:i:s', $row['time_end']); ?></td>
                             <td><?php echo $row['name_feeder'] ?></td>
-                            <td><?php echo $row['age'] ?></td>
+                            <?php if($type_ksgv == 'ksgv2') {?>
+                                <td><?php echo $row['age'] ?></td>
+                            <?php } ?>
 
                             <?php
                             $detail = $row['detail'];
@@ -391,6 +405,10 @@
                 arr_type.push($(this).val());
             }
         });
+        var class_code = $('#class_code').val();
+        if (class_code !== ''){
+            query_string += '&class_code=' + class_code;
+        }
         console.log("arr_type");
         console.log(arr_type);
         query_string += '&type=' + JSON.stringify(arr_type);

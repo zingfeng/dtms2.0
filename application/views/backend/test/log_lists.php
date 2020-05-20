@@ -36,7 +36,7 @@ $arrType = $this->config->item('test_type');
 	            </div>
 
 	            <div class="col-tn-12 col-xs-12 form-group">
-	            	<button class="btn btn-primary reset" type="button"><?php echo $this->lang->line("common_reset"); ?></a>
+                    <button class="btn btn-primary reset" type="button"><?php echo $this->lang->line("common_reset"); ?></button>
 					<button class="btn btn-success" type="submit"><?php echo $this->lang->line("common_filter_submit"); ?></button>
 	            </div>
 			</div>
