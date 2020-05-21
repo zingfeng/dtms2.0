@@ -159,7 +159,7 @@ class Feed_upgrade_model extends CI_Model{
         return $r->result_array();
     }
 
-    public function get_list_feedback_phone_export($params)
+    public function get_list_feedback_phone_export_by_class($params)
     {
         if(!empty($params['starttime']) && $params['starttime'] > 0) {
             $this->db->where('fb.time >', $params['starttime']);
@@ -193,6 +193,44 @@ class Feed_upgrade_model extends CI_Model{
             $this->db->join("feedback_location as fl","fc.id_location = fl.id");
         }
         $this->db->order_by("MAX(fb.id)","desc");
+        $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
+        $query = $this->db->get("feedback_phone as fb");
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
+
+    public function get_list_feedback_phone_export($params)
+    {
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('fb.time >', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('fb.time < ', $params['endtime'] + 86400);
+        }
+        if (isset($params['teacher_name'])){
+            $this->db->like('ft.name', $params['teacher_name']);
+        }
+        if (isset($params['class_code'])){
+            if (is_array($params['class_code'])){
+                $this->db->where_in('fb.class_code',$params['class_code']);
+            }else{
+                $this->db->where('fb.class_code',$params['class_code']);
+            }
+        }
+
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+        $this->db->select('fb.times as times, fb.time as time, fb.comment, ft.name as teacher_name, fc.class_code, fl.name, fl.area, fb.point');
+        $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
+        if (isset($params['location']) && count($params['location']) > 0){
+            $this->db->where_in("fc.id_location",$params['location']);
+        }
+        if (isset($params['area']) && count($params['area']) > 0){
+            $this->db->where_in("fl.area",$params['area']);
+            $this->db->join("feedback_location as fl","fc.id_location = fl.id");
+        }
+        $this->db->order_by("fb.id","desc");
         $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
         $query = $this->db->get("feedback_phone as fb");
         $arr_res = $query->result_array();
@@ -328,7 +366,7 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['class_id'])){
             $this->db->where_in('fc.class_id', $params['class_id']);
         }
-        $this->db->group_by('fc.class_code');
+        $this->db->group_by('fc.class_id');
         $r = $this->db->get('feedback_phone as fp');
         return $r->result_array();
     }
@@ -348,7 +386,7 @@ class Feed_upgrade_model extends CI_Model{
         }if (isset($params['type_ksgv'])){
             $this->db->where('fk.type', $params['type_ksgv']);
         }
-        $this->db->group_by('fc.class_code');
+        $this->db->group_by('fc.class_id');
         $r = $this->db->get('feedback_ksgv as fk');
         return $r->result_array();
     }

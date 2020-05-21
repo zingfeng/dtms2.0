@@ -53,7 +53,7 @@ $route['default_controller'] = "feedback/login";
 
 $route['feedback/(giaotiep|ielts|toeic|aland|slide|ksgv_lan1|ksgv_lan2|hom_thu_gop_y|zoom|dao_tao_online)'] = "form/$1";
 $route['feedback/(feedback_ksgv_detail|export_feedback_ksgv_detail|hom_thu_gop_y_detail|export_hom_thu_gop_y_detail)'] = "log/$1";
-$route['feedback/(feedback_phone_detail|export_list_feedback_phone_detail)'] = "log/$1";
+$route['feedback/(feedback_phone_detail|export_list_feedback_phone_detail|export_list_feedback_phone_by_class)'] = "log/$1";
 
 $route['feedback/teacher'] = "teacher/index";
 $route['feedback/(teacher_point|export_teacher_point|teacher_point_new)'] = "teacher/$1";

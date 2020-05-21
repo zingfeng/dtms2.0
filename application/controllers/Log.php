@@ -118,6 +118,175 @@ class Log extends CI_Controller
     }
 
     public function export_feedback_ksgv_detail(){
+        $alphabet = range('A', 'Z');
+        guard();
+
+        if (isset($_REQUEST['location'])) {
+            $params['location'] = json_decode($_REQUEST['location'], true);
+            $dataLink .= '&location='.$_REQUEST['location'];
+        }
+        if (isset($_REQUEST['area'])) {
+            $params['area'] = json_decode($_REQUEST['area'], true);
+            $dataLink .= '&area='.$_REQUEST['area'];
+        }
+        if (isset($_REQUEST['class_code'])) {
+            $params['class_code'] = strip_tags($_REQUEST['class_code']);
+            $dataLink .= '&class_code='.$_REQUEST['class_code'];
+        }
+        if (isset($_REQUEST['manager_email'])) {
+            $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
+            $dataLink .= '&manager_email='.$_REQUEST['manager_email'];
+        }
+        $this->load->model('Feedback_model', 'feedback');
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $list_manager = $this->fu->get_teacher_manager();
+        $data_manager = array();
+        foreach ($list_manager as $manager){
+            if($manager['manager_email']){
+                $data_manager[] = $manager['manager_email'];
+            }
+        }
+
+        $params['limit'] = 100;
+        $params['type'] = $type_ksgv;
+        $list_fb = $this->fu->get_feedback_ksgv($params);  // zfdev Viết lại phần filter trong model
+
+        $location_info = $this->feedback->get_list_location();
+        $arr_location_info = array();
+        foreach ($location_info as $mono_location) {
+            $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
+        }
+
+        $this->load->library('PHPExcel');
+
+        switch($_GET['type_ksgv']){
+            case 'ksgv2':
+                $filename = 'Feedback-KSGV-Lan2.xlsx';
+                break;
+            case 'dao_tao_onl':
+                $filename = 'Feedback-Dao-Tao-Online.xlsx';
+                break;
+            default:
+                $filename = 'Feedback-KSGV-Lan1.xlsx';
+        }
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb as $keyEX => $mono_feedback){
+            $count = $baseRow + $i;
+            $classLink = '';
+            if(empty($_REQUEST['class_code'])){
+                $classLink = '&class_code='.$mono_feedback['class_code'];
+            }
+            switch ($mono_feedback['type']) {
+                case 'ksgv2':
+                    $type = 'Online cuối kỳ';
+                    break;
+                case 'dao_tao_onl':
+                    $type = 'Online giữa kỳ';
+                    break;
+                default:
+                    $type = '';
+            }
+
+            $detail = $mono_feedback['detail'];
+            $detail_live = json_decode($detail,true);
+
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)->setCellValue('A'.$i, "STT");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('B'.$i, "Loại khảo sát");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$i, "Lớp - Giảng viên");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$i, "Thời gian");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('E'.$i, "Tên");
+
+                $alpha = 5;
+                $qt = 1;
+                foreach ($detail_live as $keyDetail => $detail) {
+                    if(count($detail_live) > 9) {
+                        // Bỏ câu hỏi số 4 và số 8
+                        if ( ($keyDetail == 3) || ($keyDetail == 7)){
+                            continue;
+                        }
+                    }
+                    $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$alpha].$i, "Q".$qt);
+                    $alpha++;
+                    $qt++;
+                }
+
+                $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$alpha].$i, "Điểm trung bình");
+                $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$alpha+1].$i, "Chi tiết");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $mono__sum = 0;
+            $mono__count = 0;
+            $x = 0;
+
+            $objPHPExcel->getActiveSheet(0)->setCellValue('A'.$count, $keyEX+1 );
+            $objPHPExcel->getActiveSheet(0)->setCellValue('B'.$count, $type);
+            $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$count, $mono_feedback['class_code'].' - '.$mono_feedback['teacher_name']);
+            $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$count, date('d/m/Y - H:i:s', $mono_feedback['time_end']));
+            $objPHPExcel->getActiveSheet(0)->setCellValue('E'.$count, $mono_feedback['name_feeder']);
+
+            foreach ($detail_live as $keyDetail2 => $detail) {
+                if(count($detail_live) > 9) {
+                    // Bỏ câu hỏi số 4 và số 8
+                    if ( ($x == 3) || ($x == 7)){
+                        continue;
+                    }
+                }
+
+                $type = $detail[1];
+                if ($type === 'select'){
+                    $mono_point = $detail[3];
+                    if ($mono_point >0){
+                        $mono__sum += $mono_point;
+                        $mono__count ++;
+                    }
+                }elseif($type === 'ruler'){
+                    $mono_point = (int)$detail[3]*2;
+                    if ($mono_point >0){
+                        $mono__sum += $mono_point;
+                        $mono__count ++;
+                    }
+                }else{
+                    $content = $detail[3];
+                    $mono_point = $content;
+                }
+                $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+5].$count, $mono_point);
+                // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
+                if(count($detail_live) > 9 && $j == 9) {
+                    if($j == 9){
+                        $mono_point = '';
+                        $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+5].$count, $mono_point);
+                    }
+                }
+                $x++;
+            }
+            if ($mono__count > 0){
+                $point_round = round($mono__sum / $mono__count,2);
+            }else{
+                $point_round = 0;
+            }
+            $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+5].$count, $point_round);
+            $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+6].$count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+
+    }
+
+    public function export_feedback_ksgv_group_by_class(){
         guard();
         $dataLink = '';
         if (isset($_REQUEST['location'])) {
@@ -446,6 +615,152 @@ class Log extends CI_Controller
                     ->setCellValue('E'.$i, "Cơ sở")
                     ->setCellValue('F'.$i, "Ngày nhận KS")
                     ->setCellValue('G'.$i, "Lần")
+                    ->setCellValue('H'.$i, "Điểm")
+                    ->setCellValue('I'.$i, "Nội dung")
+                    ->setCellValue('J'.$i, "Chi tiết");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, 'Phone')
+                ->setCellValue('C'.$count, $mono_feedback_phone['class_code'])
+                ->setCellValue('D'.$count, $mono_feedback_phone['teacher_name'])
+                ->setCellValue('E'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
+                ->setCellValue('F'.$count, date('d/m/Y', $mono_feedback_phone['time']))
+                ->setCellValue('G'.$count, $mono_feedback_phone['times'])
+                ->setCellValue('H'.$count, $mono_feedback_phone['point'])
+                ->setCellValue('I'.$count, $mono_feedback_phone['comment'])
+                ->setCellValue('J'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+    }
+
+    public function export_list_feedback_group_by_class(){
+        guard();
+        $this->load->model('Feedback_model', 'feedback');
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $params = [];
+        $params_ksgv = [];
+
+        if(count($_REQUEST) > 0) {
+            if (isset($_REQUEST['type'])) {
+                $type = strip_tags($_REQUEST['type']);
+                $params['type'] = $type;
+            }
+            if (isset($_REQUEST['fb_type'])) {
+                $fb_type = strip_tags($_REQUEST['fb_type']);
+                $params['fb_type'] = $fb_type;
+            }
+            if (isset($_REQUEST['type_ksgv'])) {
+                $type_ksgv = strip_tags($_REQUEST['type_ksgv']);
+                $params_ksgv['type_ksgv'] = $type_ksgv;
+            }
+
+            if (isset($_REQUEST['class'])) {
+                $class_code = strip_tags($_REQUEST['class']);
+                $params['class_code'] = $class_code;
+            }
+
+            if (isset($_REQUEST['teacher_name'])) {
+                $teacher = strip_tags($_REQUEST['teacher_name']);
+                $params['teacher_name'] = $teacher;
+            }
+
+            if (isset($_REQUEST['location'])) {
+                $location = $_REQUEST['location'];
+                $params['location'] = json_decode($location, true);
+            }
+
+            if (isset($_REQUEST['area'])) {
+                $area = $_REQUEST['area'];
+                $params['area'] = json_decode($area, true);
+            }
+        }
+        $location_info = $this->feedback->get_list_location();
+        $arrLocation = array();
+        foreach ($location_info as $keyLoca => $location) {
+            $arrLocation[$location['id']] = $location;
+        }
+        $params['limit'] = 200;
+        $params = array_merge(array('fb_type' => 'phone'), $params);
+        $list_class = $this->feedback->get_list_class_filter($params);
+        $list_class_ids = array();
+        if(count($list_class) > 0) {
+            foreach ($list_class as $keyClass => $class) {
+                $list_class_ids[] = $class['class_id'];
+            }
+        }
+        if($fb_type == 'phone') {
+            $list_total = $this->fu->get_total_fb_phone_by_class(array('class_id' => $list_class_ids, 'export' => 1));
+        }else {
+            $params_ksgv = array_merge(array('class_id' => $list_class_ids), $params_ksgv);
+            $params_ksgv = array_merge(array('type_ksgv' => 'dao_tao_onl'), $params_ksgv);
+            $params_ksgv = array_merge(array('export' => 1), $params_ksgv);
+            $list_total = $this->fu->get_total_fb_ksgv_by_class($params_ksgv);
+        }
+        $list_fb = $this->fu->get_feedback_ksgv($params);  // zfdev Viết lại phần filter trong model
+
+        var_dump($list_fb); die;
+
+        $point_by_class = array();
+        foreach ($list_fb as $keyfb => $fb){
+            $data_fb = json_decode($fb['detail'], true);
+            if($fb['type'] == 'ksgv2'){
+                $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[6][3];
+                $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+            }else{
+                $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[9][3];
+                $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+            }
+            $point_by_class[$fb['class_code']]['class_code'] = $fb['class_code'];
+            $point_by_class[$fb['class_code']]['teacher_name'] = $fb['teacher_name'];
+            $point_by_class[$fb['class_code']]['time_end'] = $fb['time_end'];
+            $point_by_class[$fb['class_code']]['type'] = $fb['type'];
+            $point_by_class[$fb['class_code']]['location'] = $fb['name'] .' - '.$fb['area'];
+        }
+
+        var_dump($list_total); die;
+
+        $arrTotalFB = array();
+        foreach ($list_total as $keyTotal => $total) {
+            $arrTotalFB[$total['class_id']] = $total;
+        }
+        $list_teacher = $this->feedback->get_list_info_teacher();
+        foreach ($list_teacher as $key => $teacher) {
+            $arrTeacher[$teacher['teacher_id']] = $teacher;
+        }
+
+        $filename = 'Feedback-Phone.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb_phone as $keyEX => $mono_feedback_phone){
+            $count = $baseRow + $i;
+            $classLink = '';
+            if(empty($_REQUEST['class'])){
+                $classLink = '&class='.$mono_feedback_phone['class_code'];
+            }
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Loại khảo sát")
+                    ->setCellValue('C'.$i, "Lớp")
+                    ->setCellValue('D'.$i, "Giảng viên")
+                    ->setCellValue('E'.$i, "Cơ sở")
+                    ->setCellValue('F'.$i, "Ngày nhận KS")
+                    ->setCellValue('G'.$i, "Lần")
                     ->setCellValue('H'.$i, "Điểm trung bình")
                     ->setCellValue('I'.$i, "Chi tiết");
             }
@@ -617,7 +932,7 @@ class Log extends CI_Controller
                 ->setCellValue('J'.$count, $mono_feedback_ld['number_student_giaotiep'])
                 ->setCellValue('K'.$count, $number_off)
                 ->setCellValue('L'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
-                ->setCellValue('M'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? (($number_off / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
+                ->setCellValue('M'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
@@ -761,7 +1076,7 @@ class Log extends CI_Controller
         foreach ($location_info as $keyLoca => $location) {
             $arrLocation[$location['id']] = $location;
         }
-        $params['limit'] = 500;
+        $params['limit'] = 200;
         $params = array_merge(array('fb_type' => 'phone'), $params);
         $list_class = $this->feedback->get_list_class_filter($params);
         $list_class_ids = array();

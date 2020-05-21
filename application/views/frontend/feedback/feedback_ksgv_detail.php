@@ -445,6 +445,10 @@
     function clickExport() {
         var query_string = '';
         var arr_type = [];
+        var class_code = $('#class_code').val();
+        if (class_code !== ''){
+            query_string += '&class_code=' + class_code;
+        }
         $(".filter-type").each(function () {
             if ($(this).prop('checked')){
                 arr_type.push($(this).val());
