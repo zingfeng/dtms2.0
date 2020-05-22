@@ -636,9 +636,19 @@ class Log extends CI_Controller
                     ->setCellValue('G' . $count, $mono_feedback['point'])
                     ->setCellValue('H' . $count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?class='.$mono_feedback['class_code']);
             } else {
+                switch ($mono_feedback['type']) {
+                    case 'ksgv2':
+                        $type = 'Online cuối kỳ';
+                        break;
+                    case 'dao_tao_onl':
+                        $type = 'Online giữa kỳ';
+                        break;
+                    default:
+                        $type = '';
+                }
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A' . $count, $keyEX + 1)
-                    ->setCellValue('B' . $count, 'Phone')
+                    ->setCellValue('B' . $count, $type)
                     ->setCellValue('C' . $count, $mono_feedback['class_code'].' - '.$mono_feedback['teacher_name'])
                     ->setCellValue('D' . $count, $mono_feedback['location'])
                     ->setCellValue('E' . $count, date('d/m/Y', $mono_feedback['time_end']))
