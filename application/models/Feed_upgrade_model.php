@@ -190,8 +190,8 @@ class Feed_upgrade_model extends CI_Model{
         }
         if (isset($params['area']) && count($params['area']) > 0){
             $this->db->where_in("fl.area",$params['area']);
-            $this->db->join("feedback_location as fl","fc.id_location = fl.id");
         }
+        $this->db->join("feedback_location as fl","fc.id_location = fl.id");
         $this->db->order_by("MAX(fb.id)","desc");
         $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
         $query = $this->db->get("feedback_phone as fb");
@@ -243,8 +243,8 @@ class Feed_upgrade_model extends CI_Model{
             $this->db->limit($params['limit']);
         }
         // type
-        if (isset($params['type'])){
-            $this->db->where('fk.type',$params['type']);
+        if (isset($params['type_ksgv'])){
+            $this->db->where('fk.type',$params['type_ksgv']);
         }
 
         $this->db->join("feedback_class as fc","fk.class_code = fc.class_code");

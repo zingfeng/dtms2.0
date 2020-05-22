@@ -15,10 +15,12 @@
     <div class="hover-point" onclick="$('#body_filter').toggle();">
         <h4 class="text-primary" style="display: inline-block">Filter</h4>
         <button class="btn btn-primary btn-sm" style="float: right;padding-left: 120px; padding-right: 120px;" onclick="clickFilter('filter')" data-url="filter"><i class="fa fa-filter"></i> Filter</button>
-        <a href="/log/list_feedback_phone_group_by_class"><button class="btn btn-danger btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;"><i class="fa fa-filter"></i> X Filter</button></a>
+        <a href="/log/list_feedback_group_by_class?fb_type=<?php echo ($fb_type) ? $fb_type : 'ksgv'; echo ($type_ksgv) ? '&type_ksgv='.$type_ksgv : ''?>"><button class="btn btn-danger btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;"><i class="fa fa-filter"></i> X Filter</button></a>
+        <button class="btn btn-success btn-sm" style="float: right;padding-left: 20px; padding-right: 20px; margin-right: 20px;" title="Export File" onclick="clickFilter('export')">Export</button>
     </div>
     <div class="row" id="body_filter" style="display: none">
-        <form action="/log/list_feedback_phone_group_by_class" method="get">
+        <form action="/log/list_feedback_group_by_class" method="get">
+            <input type="hidden" name="fb_type" id="fb_type" value="<?php echo ($fb_type) ? $fb_type : 'ksgv'?>">
             <div class="col col-sm-1">
                 <div class="form-group">
                     <label>Mã lớp :</label>
@@ -251,6 +253,12 @@
             query_string += '&class=' + class_code;
         }
 
+        var fb_type = $('#fb_type').val();
+
+        if (fb_type !== ''){
+            query_string += '&fb_type=' + fb_type;
+        }
+
         var teacher = $('#teacher_name').val();
 
         if (teacher !== ''){
@@ -274,7 +282,11 @@
         });
 
         query_string += '&area=' + JSON.stringify(arr_area);
-        window.location.href = "/log/list_feedback_phone_group_by_class?" + query_string;
+        if(type == 'export'){
+            window.location.href = "/log/export_list_feedback_group_by_class?" + query_string;
+        }else {
+            window.location.href = "/log/list_feedback_group_by_class?" + query_string;
+        }
     }
 </script>
 
