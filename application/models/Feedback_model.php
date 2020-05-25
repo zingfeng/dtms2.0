@@ -210,18 +210,41 @@ class Feedback_model extends CI_Model
         if (isset($params['max']) && $params['max'] !== '') {
             $this->db->where("average_point <=",$params['max']);
         }
-        if (isset($params['teacher_name'])){
-            $this->db->like('ft.name', $params['teacher_name']);
-            $this->db->join("feedback_teacher as ft","ft.teacher_id = feedback_class.main_teacher");
+
+        if((isset($params['fb_type']) && $params['fb_type'] == 'phone') && ((isset($params['starttime']) && $params['starttime'] > 0) || (isset($params['endtime']) && $params['endtime'] > 0))) {
+            if(isset($params['starttime']) && $params['starttime'] > 0) {
+                $this->db->where('fp.time > ', $params['starttime']);
+            }
+            if(isset($params['endtime']) && $params['endtime'] > 0) {
+                $this->db->where('fp.time < ', $params['endtime'] + 86400);
+            }
+            $this->db->join("feedback_phone as fp","feedback_class.class_code = fp.class_code");
+            $this->db->group_by('feedback_class.class_id');
+        }
+
+        if((isset($params['fb_type']) && $params['fb_type'] == 'ksgv') && ((isset($params['starttime']) && $params['starttime'] > 0) || (isset($params['endtime']) && $params['endtime'] > 0))) {
+            if(isset($params['starttime']) && $params['starttime'] > 0) {
+                $this->db->where('fk.time_end > ', $params['starttime']);
+            }
+            if(isset($params['endtime']) && $params['endtime'] > 0) {
+                $this->db->where('fk.time_end < ', $params['endtime'] + 86400);
+            }
+            $this->db->join("feedback_ksgv as fk","feedback_class.class_code = fk.class_code");
+            $this->db->group_by('feedback_class.class_id');
         }
 
         if (isset($params['limit']) ) {
             $this->db->limit($params['limit']);
         }else{
-            $this->db->limit(200); // normal
+            $this->db->limit(500); // normal
         }
 
-        $this->db->select('*');
+        if (isset($params['manager_email'])){
+            $this->db->where_in('feedback_teacher.manager_email', $params['manager_email']);
+            $this->db->join('feedback_teacher', 'feedback_class.main_teacher=feedback_teacher.teacher_id');
+        }
+
+        $this->db->select('feedback_class.*');
         $this->db->order_by('class_id', 'DESC');
         $query = $this->db->get('feedback_class');
         $arr_res = $query->result_array();

@@ -40,6 +40,35 @@
                     }
                     ?>">
                 </div>
+                <div class="form-group">
+                    <label for="usr">Quản lý</label>
+                    <select name="manager_email" id="manager_email" class="form-control" placeholder="Manager">
+                        <option value="">Chọn quản lý</option>
+                        <?php if(isset($list_manager) && count($list_manager) > 0) foreach ($list_manager as $manager) {?>
+                            <option value="<?php echo $manager; ?>" <?php echo (isset($_REQUEST['manager_email']) && $_REQUEST['manager_email'] == $manager) ? 'selected' : '' ?>><?php echo $manager; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col col-sm-2">
+                <div class="form-group">
+                    <label>Từ ngày:</label>
+                    <input type="date" class="form-control" name="starttime" id="starttime" value="<?php
+                    if (isset($_REQUEST['starttime'])){
+                        echo $_REQUEST['starttime'];
+                    }
+                    ?>">
+                </div>
+            </div>
+            <div class="col col-sm-2">
+                <div class="form-group">
+                    <label>Đến ngày :</label>
+                    <input type="date" class="form-control" name="endtime" id="endtime" value="<?php
+                    if (isset($_REQUEST['endtime'])){
+                        echo $_REQUEST['endtime'];
+                    }
+                    ?>">
+                </div>
             </div>
             <div class="col col-sm-3">
                 <p class="title_filter">by branch  </p>
@@ -251,6 +280,21 @@
 
         if (class_code !== ''){
             query_string += '&class=' + class_code;
+        }
+
+        var starttime = $('#starttime').val();
+        var endtime = $('#endtime').val();
+        if (starttime !== ''){
+            query_string += '&starttime=' + starttime;
+        }
+        if (endtime !== ''){
+            query_string += '&endtime=' + endtime;
+        }
+
+        var manager_email = $('#manager_email').val();
+
+        if (manager_email !== ''){
+            query_string += '&manager_email=' + manager_email;
         }
 
         var fb_type = $('#fb_type').val();

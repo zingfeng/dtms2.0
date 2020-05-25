@@ -197,11 +197,12 @@ class Log extends CI_Controller
             if($i == 1){
                 $objPHPExcel->getActiveSheet(0)->setCellValue('A'.$i, "STT");
                 $objPHPExcel->getActiveSheet(0)->setCellValue('B'.$i, "Loại khảo sát");
-                $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$i, "Lớp - Giảng viên");
-                $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$i, "Thời gian");
-                $objPHPExcel->getActiveSheet(0)->setCellValue('E'.$i, "Tên");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$i, "Lớp");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$i, "Giảng viên");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('E'.$i, "Người feedback");
+                $objPHPExcel->getActiveSheet(0)->setCellValue('F'.$i, "Thời gian");
 
-                $alpha = 5;
+                $alpha = 6;
                 $qt = 1;
                 foreach ($detail_live as $keyDetail => $detail) {
                     if(count($detail_live) > 9) {
@@ -226,9 +227,10 @@ class Log extends CI_Controller
 
             $objPHPExcel->getActiveSheet(0)->setCellValue('A'.$count, $keyEX+1 );
             $objPHPExcel->getActiveSheet(0)->setCellValue('B'.$count, $type);
-            $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$count, $mono_feedback['class_code'].' - '.$mono_feedback['teacher_name']);
-            $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$count, date('d/m/Y - H:i:s', $mono_feedback['time_end']));
+            $objPHPExcel->getActiveSheet(0)->setCellValue('C'.$count, $mono_feedback['class_code']);
+            $objPHPExcel->getActiveSheet(0)->setCellValue('D'.$count, $mono_feedback['teacher_name']);
             $objPHPExcel->getActiveSheet(0)->setCellValue('E'.$count, $mono_feedback['name_feeder']);
+            $objPHPExcel->getActiveSheet(0)->setCellValue('F'.$count, date('d/m/Y - H:i:s', $mono_feedback['time_end']));
 
             foreach ($detail_live as $keyDetail2 => $detail) {
                 if(count($detail_live) > 9) {
@@ -498,12 +500,13 @@ class Log extends CI_Controller
                     ->setCellValue('B'.$i, "Loại khảo sát")
                     ->setCellValue('C'.$i, "Lớp")
                     ->setCellValue('D'.$i, "Giảng viên")
-                    ->setCellValue('E'.$i, "Cơ sở")
-                    ->setCellValue('F'.$i, "Ngày nhận KS")
-                    ->setCellValue('G'.$i, "Lần")
-                    ->setCellValue('H'.$i, "Điểm")
-                    ->setCellValue('I'.$i, "Nội dung")
-                    ->setCellValue('J'.$i, "Chi tiết");
+                    ->setCellValue('E'.$i, "Người Feedback")
+                    ->setCellValue('F'.$i, "Cơ sở")
+                    ->setCellValue('G'.$i, "Ngày nhận KS")
+                    ->setCellValue('H'.$i, "Lần")
+                    ->setCellValue('I'.$i, "Điểm")
+                    ->setCellValue('J'.$i, "Nội dung")
+                    ->setCellValue('K'.$i, "Chi tiết");
             }
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
 
@@ -512,12 +515,13 @@ class Log extends CI_Controller
                 ->setCellValue('B'.$count, 'Phone')
                 ->setCellValue('C'.$count, $mono_feedback_phone['class_code'])
                 ->setCellValue('D'.$count, $mono_feedback_phone['teacher_name'])
-                ->setCellValue('E'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
-                ->setCellValue('F'.$count, date('d/m/Y', $mono_feedback_phone['time']))
-                ->setCellValue('G'.$count, $mono_feedback_phone['times'])
-                ->setCellValue('H'.$count, $mono_feedback_phone['point'])
-                ->setCellValue('I'.$count, $mono_feedback_phone['comment'])
-                ->setCellValue('J'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
+                ->setCellValue('E'.$count, $mono_feedback_phone['name_feeder'])
+                ->setCellValue('F'.$count, $mono_feedback_phone['name'].' - '.$mono_feedback_phone['area'])
+                ->setCellValue('G'.$count, date('d/m/Y', $mono_feedback_phone['time']))
+                ->setCellValue('H'.$count, $mono_feedback_phone['times'])
+                ->setCellValue('I'.$count, $mono_feedback_phone['point'])
+                ->setCellValue('J'.$count, $mono_feedback_phone['comment'])
+                ->setCellValue('K'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
@@ -539,6 +543,12 @@ class Log extends CI_Controller
         $params_ksgv = [];
 
         if(count($_REQUEST) > 0) {
+            if (isset($_REQUEST['starttime'])) {
+                $params['starttime'] = strtotime(strip_tags($_REQUEST['starttime']));
+            }
+            if (isset($_REQUEST['endtime'])) {
+                $params['endtime'] = strtotime(strip_tags($_REQUEST['endtime']));
+            }
             if (isset($_REQUEST['type'])) {
                 $type = strip_tags($_REQUEST['type']);
                 $params['class_type'] = $type;
@@ -562,6 +572,10 @@ class Log extends CI_Controller
                 $params['teacher_name'] = $teacher;
             }
 
+            if (isset($_REQUEST['manager_email'])) {
+                $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
+            }
+
             if (isset($_REQUEST['location'])) {
                 $location = $_REQUEST['location'];
                 $params['location'] = json_decode($location, true);
@@ -577,7 +591,7 @@ class Log extends CI_Controller
         foreach ($location_info as $keyLoca => $location) {
             $arrLocation[$location['id']] = $location;
         }
-        $params['limit'] = 200;
+        $params['limit'] = 500;
         $params = array_merge(array('fb_type' => 'phone'), $params);
 
         $filename = 'Feedback-Group-By-Class.xlsx';
@@ -916,17 +930,27 @@ class Log extends CI_Controller
 
         $params = [];
         $params_ksgv = [];
+        $params_phone = [];
 
         if(count($_REQUEST) > 0) {
-            if (isset($_REQUEST['type'])) {
+
+            if (isset($_REQUEST['starttime'])) {
+                $params['starttime'] = $params_phone['starttime'] = $params_ksgv['starttime'] = strtotime(strip_tags($_REQUEST['starttime']));
+            }
+
+            if (isset($_REQUEST['endtime'])) {
+                $params['endtime'] = $params_phone['endtime'] = $params_ksgv['endtime'] = strtotime(strip_tags($_REQUEST['endtime']));
+            }
+
+            if (isset($_REQUEST['type'])) {  // type class : toeic, giaotiep, ielts, ...
                 $type = strip_tags($_REQUEST['type']);
                 $params['type'] = $type;
             }
-            if (isset($_REQUEST['fb_type'])) {
+            if (isset($_REQUEST['fb_type'])) { // type feedback: phone, ksgv, ....
                 $fb_type = strip_tags($_REQUEST['fb_type']);
                 $params['fb_type'] = $fb_type;
             }
-            if (isset($_REQUEST['type_ksgv'])) {
+            if (isset($_REQUEST['type_ksgv'])) { // type ksgv: ksgv1, ksgv2, dao_tao_onl,...
                 $type_ksgv = strip_tags($_REQUEST['type_ksgv']);
                 $params_ksgv['type_ksgv'] = $type_ksgv;
             }
@@ -939,6 +963,10 @@ class Log extends CI_Controller
             if (isset($_REQUEST['teacher_name'])) {
                 $teacher = strip_tags($_REQUEST['teacher_name']);
                 $params['teacher_name'] = $teacher;
+            }
+
+            if (isset($_REQUEST['manager_email'])) {
+                $params['manager_email'] = strip_tags($_REQUEST['manager_email']);
             }
 
             if (isset($_REQUEST['location'])) {
@@ -956,7 +984,7 @@ class Log extends CI_Controller
         foreach ($location_info as $keyLoca => $location) {
             $arrLocation[$location['id']] = $location;
         }
-        $params['limit'] = 200;
+        $params['limit'] = 500;
         $params = array_merge(array('fb_type' => 'phone'), $params);
         $list_class = $this->feedback->get_list_class_filter($params);
         $list_class_ids = array();
@@ -966,7 +994,8 @@ class Log extends CI_Controller
             }
         }
         if($fb_type == 'phone') {
-            $list_total = $this->fu->get_total_fb_phone_by_class(array('class_id' => $list_class_ids));
+            $params_phone = array_merge(array('class_id' => $list_class_ids), $params_phone);
+            $list_total = $this->fu->get_total_fb_phone_by_class($params_phone);
         }else {
             $params_ksgv = array_merge(array('class_id' => $list_class_ids), $params_ksgv);
             $params_ksgv = array_merge(array('type_ksgv' => 'dao_tao_onl'), $params_ksgv);
@@ -982,6 +1011,14 @@ class Log extends CI_Controller
             $arrTeacher[$teacher['teacher_id']] = $teacher;
         }
 
+        $list_manager = $this->fu->get_teacher_manager();
+        $data_manager = array();
+        foreach ($list_manager as $manager){
+            if($manager['manager_email']){
+                $data_manager[] = $manager['manager_email'];
+            }
+        }
+
         $data = array(
             'rows' => $list_class,
             'arrLocation' => $arrLocation,
@@ -989,6 +1026,7 @@ class Log extends CI_Controller
             'arr_teacher' => $arrTeacher,
             'arr_total' => $arrTotalFB,
             'fb_type' => $fb_type,
+            'list_manager' => $data_manager,
             'type_ksgv' => ($params_ksgv['type_ksgv'])?$params_ksgv['type_ksgv']:'',
         );
         if (($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'manager')) {

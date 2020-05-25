@@ -221,7 +221,7 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
-        $this->db->select('fb.times as times, fb.time as time, fb.comment, ft.name as teacher_name, fc.class_code, fl.name, fl.area, fb.point');
+        $this->db->select('fb.times as times, fb.time as time, fb.comment, ft.name as teacher_name, fc.class_code, fl.name, fl.area, fb.point, fb.name_feeder');
         $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
         if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("fc.id_location",$params['location']);
@@ -242,6 +242,14 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
+
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('fk.time_end >', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('fk.time_end < ', $params['endtime'] + 86400);
+        }
+
         // type
         if (isset($params['type_ksgv'])){
             $this->db->where('fk.type',$params['type_ksgv']);
@@ -366,6 +374,12 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['class_id'])){
             $this->db->where_in('fc.class_id', $params['class_id']);
         }
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('fp.time >', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('fp.time < ', $params['endtime'] + 86400);
+        }
         $this->db->group_by('fc.class_id');
         $r = $this->db->get('feedback_phone as fp');
         return $r->result_array();
@@ -379,12 +393,25 @@ class Feed_upgrade_model extends CI_Model{
      * @return array
      */
     public function get_total_fb_ksgv_by_class($params = array()){
-        $this->db->select("fc.class_id, COUNT(fc.class_id) AS number_fb");
+        $this->db->select("fc.class_code, fc.class_id, COUNT(fc.class_id) AS number_fb");
         $this->db->join("feedback_class as fc","fc.class_code = fk.class_code");
         if (isset($params['class_id'])){
-            $this->db->where_in('fc.class_id', $params['class_id']);
+            if (is_array($params['class_id'])){
+                if(count($params['class_id']) > 0) {
+                    $this->db->where_in('fc.class_id', $params['class_id']);
+                }
+            }else{
+                $this->db->where('fc.class_id',$params['class_id']);
+            }
+
         }if (isset($params['type_ksgv'])){
             $this->db->where('fk.type', $params['type_ksgv']);
+        }
+        if(!empty($params['starttime']) && $params['starttime'] > 0) {
+            $this->db->where('fk.time_end > ', $params['starttime']);
+        }
+        if(!empty($params['endtime']) && $params['endtime'] > 0) {
+            $this->db->where('fk.time_end < ', $params['endtime'] + 86400);
         }
         $this->db->group_by('fc.class_id');
         $r = $this->db->get('feedback_ksgv as fk');
