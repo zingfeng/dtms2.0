@@ -106,6 +106,23 @@
                     </div>
 
                 </div>
+                <h4>
+                    Link đăng ký thi cuối kỳ
+                </h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_thicuoiky">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_thicuoiky')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_thicuoiky')">Copy</button>
+                    </div>
+
+                </div>
 
 
 
@@ -499,6 +516,7 @@
                     <th class="th-sm" rowspan="2" title="Số lượng học viên trong lớp">Sĩ số lớp</th>
 
                     <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký lớp luyện đề">SL HV ĐK Luyện đề</th>
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký thi cuối kỳ">SL HV ĐK Thi cuối kỳ</th>
 
                     <th class="th-sm" rowspan="2">Action
                     </th>
@@ -598,6 +616,7 @@
                         <td><?php echo $mono_class_info['number_student']; ?></td>
 
                         <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
+                        <td><?php echo $mono_class_info['number_thicuoiky']; ?></td>
 
 
                         <td style="font-size: x-large; min-width: 250px;">
@@ -781,6 +800,7 @@
         var link_feedback_homthugopy = 'https://dtms.aland.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
         var link_feedback_online = 'https://dtms.aland.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
         var link_feedback_luyende = 'https://dtms.aland.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
+        var link_thicuoiky = 'https://dtms.aland.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
 
         $('#modal_link_feedback').html(info_live.class_code);
         $('#modal_link_feedback').attr('class_id',info_live.class_id);
@@ -794,6 +814,7 @@
         $('#link_feedback_online').val(link_feedback_online);
 
         $('#link_feedback_luyende').val(link_feedback_luyende);
+        $('#link_thicuoiky').val(link_thicuoiky);
 
         $('#modal_get_link').modal('show');
 

@@ -417,4 +417,28 @@ class Feed_upgrade_model extends CI_Model{
         $r = $this->db->get('feedback_ksgv as fk');
         return $r->result_array();
     }
+
+    /**
+     * Hàm get log đăng ký thi cuối kỳ theo params truyền vào
+     * by HieuTH
+     * @param $params array(area,limit)
+     * @return array group by class
+     */
+    public function get_log_thicuoiky_filter_by_class($params = array()){
+        $params = array_merge(array('limit' => 500 ), $params);
+        if (isset($params['limit'])){
+            $this->db->limit($params['limit']);
+        }
+        $this->db->select("fc.level, fc.class_code, ft.name as teacher_name, flo.name as loca_name, fc.time_end as time_end_class, fc.number_student, fc.number_thicuoiky");
+        $this->db->join("feedback_class as fc","fc.class_code = fld.class_code");
+        if (isset($params['area'])){
+            $this->db->where("flo.area",$params['area']);
+        }
+        $this->db->join("feedback_location as flo","fc.id_location = flo.id");
+        $this->db->join("feedback_teacher as ft","ft.teacher_id = fc.main_teacher");
+        $this->db->group_by('fc.class_code');
+        $r = $this->db->get('feedback_luyende as fld');
+        return $r->result_array();
+
+    }
 }

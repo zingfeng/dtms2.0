@@ -630,12 +630,13 @@ class Log extends CI_Controller
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A' . $i, "STT")
                     ->setCellValue('B' . $i, "Loại khảo sát")
-                    ->setCellValue('C' . $i, "Lớp - Giảng viên")
-                    ->setCellValue('D' . $i, "Cơ sở")
-                    ->setCellValue('E' . $i, "Ngày nhận KS")
-                    ->setCellValue('F' . $i, $text_F)
-                    ->setCellValue('G' . $i, "Điểm trung bình")
-                    ->setCellValue('H' . $i, "Chi tiết");
+                    ->setCellValue('C' . $i, "Lớp")
+                    ->setCellValue('D' . $i, "Giảng viên")
+                    ->setCellValue('E' . $i, "Cơ sở")
+                    ->setCellValue('F' . $i, "Ngày nhận KS")
+                    ->setCellValue('G' . $i, $text_F)
+                    ->setCellValue('H' . $i, "Điểm trung bình")
+                    ->setCellValue('I' . $i, "Chi tiết");
 
             }
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
@@ -643,12 +644,13 @@ class Log extends CI_Controller
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A' . $count, $keyEX + 1)
                     ->setCellValue('B' . $count, 'Phone')
-                    ->setCellValue('C' . $count, $mono_feedback['class_code'].' - '.$mono_feedback['teacher_name'])
-                    ->setCellValue('D' . $count, $mono_feedback['name'] . ' - ' . $mono_feedback['area'])
-                    ->setCellValue('E' . $count, date('d/m/Y', $mono_feedback['time']))
-                    ->setCellValue('F' . $count, $mono_feedback['times'])
-                    ->setCellValue('G' . $count, $mono_feedback['point'])
-                    ->setCellValue('H' . $count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?class='.$mono_feedback['class_code']);
+                    ->setCellValue('C' . $count, $mono_feedback['class_code'])
+                    ->setCellValue('D' . $count, $mono_feedback['teacher_name'])
+                    ->setCellValue('E' . $count, $mono_feedback['name'] . ' - ' . $mono_feedback['area'])
+                    ->setCellValue('F' . $count, date('d/m/Y', $mono_feedback['time']))
+                    ->setCellValue('G' . $count, $mono_feedback['times'])
+                    ->setCellValue('H' . $count, $mono_feedback['point'])
+                    ->setCellValue('I' . $count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?class='.$mono_feedback['class_code']);
             } else {
                 switch ($mono_feedback['type']) {
                     case 'ksgv2':
@@ -663,12 +665,13 @@ class Log extends CI_Controller
                 $objPHPExcel->getActiveSheet(0)
                     ->setCellValue('A' . $count, $keyEX + 1)
                     ->setCellValue('B' . $count, $type)
-                    ->setCellValue('C' . $count, $mono_feedback['class_code'].' - '.$mono_feedback['teacher_name'])
-                    ->setCellValue('D' . $count, $mono_feedback['location'])
-                    ->setCellValue('E' . $count, date('d/m/Y', $mono_feedback['time_end']))
-                    ->setCellValue('F' . $count, $mono_feedback['type'])
-                    ->setCellValue('G' . $count, $mono_feedback['total_point']/$mono_feedback['count_point'])
-                    ->setCellValue('H' . $count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?class_code='.$mono_feedback['class_code'].'&type_ksgv='.$mono_feedback['type']);
+                    ->setCellValue('C' . $count, $mono_feedback['class_code'])
+                    ->setCellValue('D' . $count, $mono_feedback['teacher_name'])
+                    ->setCellValue('E' . $count, $mono_feedback['location'])
+                    ->setCellValue('F' . $count, date('d/m/Y', $mono_feedback['time_end']))
+                    ->setCellValue('G' . $count, $mono_feedback['type'])
+                    ->setCellValue('H' . $count, $mono_feedback['total_point']/$mono_feedback['count_point'])
+                    ->setCellValue('I' . $count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?class_code='.$mono_feedback['class_code'].'&type_ksgv='.$mono_feedback['type']);
             }
             $i++;
         }
@@ -1034,6 +1037,83 @@ class Log extends CI_Controller
         } else {
             $this->load->layout('feedback/list_feedback_group_by_class', $data, false, 'layout_feedback_tuvan');
         }
+    }
+
+    /**
+     * Hàm export log đăng ký thi cuôi kỳ theo area
+     * @return .xlsx file
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+    public function export_list_feedback_thicuoiky_by_area(){
+        guard();
+        guard_admin_manager();
+
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $params = [];
+
+        if (isset($_REQUEST['area'])) {
+            $area = $_REQUEST['area'];
+            $params['area'] = $area;
+        }
+
+        $params['limit'] = 500;
+        $list_fb_ld = $this->fu->get_log_thicuoiky_filter_by_class($params);
+
+        $filename = 'Feedback-LuyenDe.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb_ld as $keyEX => $mono_feedback_ld){
+            $count = $baseRow + $i;
+            $classLink = '';
+            $number_off = (int)$mono_feedback_ld['number_student']-(int)$mono_feedback_ld['number_thicuoiky'];
+            if($number_off <= 0) {
+                $number_off = 0;
+            }
+            if(empty($_REQUEST['class'])){
+                $classLink = '&class='.$mono_feedback_ld['class_code'];
+            }
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Cơ sở")
+                    ->setCellValue('C'.$i, "Lớp")
+                    ->setCellValue('D'.$i, "Giáo viên")
+                    ->setCellValue('E'.$i, "Ngày kết thúc")
+                    ->setCellValue('F'.$i, "Sĩ số lớp")
+                    ->setCellValue('G'.$i, "Số lượng HV đăng ký")
+                    ->setCellValue('H'.$i, "Số lượng HV chưa đăng ký")
+                    ->setCellValue('I'.$i, "Danh sách đăng ký")
+                    ->setCellValue('J'.$i, "Ti lệ HV đăng ký học");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, $mono_feedback_ld['loca_name'])
+                ->setCellValue('C'.$count, $mono_feedback_ld['class_code'])
+                ->setCellValue('D'.$count, $mono_feedback_ld['teacher_name'])
+                ->setCellValue('E'.$count, date('d/m/Y', $mono_feedback_ld['time_end_class']))
+                ->setCellValue('F'.$count, $mono_feedback_ld['number_student'])
+                ->setCellValue('G'.$count, $mono_feedback_ld['number_thicuoiky'])
+                ->setCellValue('H'.$count, $number_off)
+                ->setCellValue('I'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('J'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
     }
 
 }

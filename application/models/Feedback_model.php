@@ -946,8 +946,31 @@ class Feedback_model extends CI_Model
 
     }
 
+    public function insert_feedback_thicuoiky($info)
+    {
+        $this->load->library('user_agent');
+        $plus = array(
+            'time_end' => time(),
+            'ip' => $this->input->ip_address(),
+            'browser' => $this->agent->browser() . ' ' . $this->agent->version()
+        );
+        $data = array_merge($info, $plus);
+        $this->db->insert('feedback_thicuoiky', $data);
 
+        // Update thêm số lượng đăng ký
+        if (isset($info['class_code'])){
+            $this->db->where('class_code', $info['class_code']);
+            $query = $this->db->get('feedback_thicuoiky');
+            $arr_res = $query->result_array();
+            $number = count($arr_res);
 
+            $this->db->set('number_thicuoiky', $number);
+            $this->db->where('class_code', $info['class_code']);
+            $this->db->update('feedback_class');
+        }
+
+    }
+    
     public function get_list_feedback_paper($class_code = '', $type = '', $order = '')
     {
         $this->_tracking_func(__FUNCTION__);

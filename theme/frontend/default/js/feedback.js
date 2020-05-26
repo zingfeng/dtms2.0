@@ -153,6 +153,7 @@ function load_get_link_class(event) {
     var link_feedback_homthugopy = 'https://dtms.aland.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
     var link_feedback_online = 'https://dtms.aland.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
     var link_feedback_luyende = 'https://dtms.aland.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
+    var link_thicuoiky = 'https://dtms.aland.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
 
     $('#modal_link_feedback').html(info_live.class_code);
     $('#modal_link_feedback').attr('class_id',info_live.class_id);
@@ -167,6 +168,7 @@ function load_get_link_class(event) {
 
     $('#link_feedback_online').val(link_feedback_online);
     $('#link_feedback_luyende').val(link_feedback_luyende);
+    $('#link_thicuoiky').val(link_thicuoiky);
 
     $('#modal_get_link').modal('show');
 

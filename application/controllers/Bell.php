@@ -104,6 +104,8 @@ class Bell extends CI_Controller
         $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn');
         if (count($email_to) == 0) {
             $email_to = array('lanphuong@imap.edu.vn');
+        } else {
+            $email_to = array_merge( array('lanphuong@imap.edu.vn'), $email_to);
         }
 
         // POINT CLASS

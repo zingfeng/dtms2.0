@@ -130,6 +130,23 @@
 
                 </div>
 
+                <h4>
+                    Link đăng ký thi cuối kỳ
+                </h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_thicuoiky">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_thicuoiky')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_thicuoiky')">Copy</button>
+                    </div>
+                </div>
+
 
             </div>
             <!-- Modal footer -->
@@ -381,6 +398,7 @@
                     <th class="th-sm" rowspan="2">Nội dung hòm thư</th>
                     <th class="th-sm" rowspan="2" title="Số lượng học viên trong lớp">Sĩ số lớp</th>
                     <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký lớp Luyện đề">SL HV ĐK Luyện đề</th>
+                    <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký thi cuối kỳ">SL HV ĐK Thi cuối kỳ</th>
                     <th class="th-sm" rowspan="2" style="background: red; color: white; text-align: center">Action</th>
                 </tr>
                 <tr>
@@ -446,6 +464,7 @@
                         <td><a href="//dtms.aland.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
                         <td><?php echo $mono_class_info['number_student']; ?></td>
                         <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
+                        <td><?php echo $mono_class_info['number_thicuoiky']; ?></td>
 
                         <td style="font-size: x-large; min-width: 200px;">
                             <i info='<?php echo json_encode($mono_class_info); ?>'  class="fa fa-link" aria-hidden="true" title="Lấy link làm Feedback cho học viên" onclick="load_get_link_class(event)"></i>

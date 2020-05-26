@@ -327,6 +327,22 @@ class Feedback extends CI_Controller
                 exit;
             }
 
+            // Danh sách đăng ký
+            if ($info['type'] === 'thicuoiky'){
+
+                $info = [
+                    'type' => $this->input->post('type_class'),
+                    'class_code' => $this->input->post('class_code'),
+                    'hoten' => $this->input->post('hoten'),
+                    'phone' => $this->input->post('phone'),
+                    'email' => $this->input->post('email'),
+                    'shift' => $this->input->post('shift'),
+                ];
+
+                $this->feedback->insert_feedback_thicuoiky($info);
+                exit;
+            }
+
             if ($info['type'] === 'homthugopy'){
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
             }else{
@@ -403,6 +419,7 @@ class Feedback extends CI_Controller
         $data = array(
             'get_list_bell' => $r,
         );
+
         $this->load->layout('feedback/log_send_report', $data, false, 'layout_feedback');
     }
 

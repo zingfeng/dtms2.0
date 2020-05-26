@@ -8,10 +8,8 @@ class Form extends CI_Controller
     {
         $this->load->model('Feedback_model', 'feedback');
 
-        $info_class = array();
         if (isset($_GET['my_class'])) {
             $class_code = trim(mb_strtolower($_GET['my_class']));
-//            var_dump($class_code);
             $info_class = $this->feedback->get_info_class_by_class_code($class_code);
         }else{
             echo 'Truy cập không hợp lệ';
@@ -56,6 +54,58 @@ class Form extends CI_Controller
         );
 
         $this->load->view('feedback/luyen_de', $data, false);
+    }
+
+    public function thi_cuoi_ky()
+    {
+        $this->load->model('Feedback_model', 'feedback');
+
+        if (isset($_GET['my_class'])) {
+            $class_code = trim(mb_strtolower($_GET['my_class']));
+            $info_class = $this->feedback->get_info_class_by_class_code($class_code);
+        }else{
+            echo 'Truy cập không hợp lệ';
+            return ;
+        }
+
+        $time_start = time();
+
+        $token_feedback = $this->config->item('token_feedback');
+        $token = md5($token_feedback . $time_start);
+
+        $type_info = array(
+            'ielts' => array(
+                'name' => 'IELTS FIGHTER',
+                'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
+            ),
+            'toeic' => array(
+                'name' => 'MS HOA TOEIC',
+                'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
+            ),
+            'giaotiep' => array(
+                'name' => 'MS HOA GIAO TIẾP',
+                'logo' => 'theme/frontend/default/images/images/logo/giaotiep.png',
+            ),
+            'aland' => array(
+                'name' => 'ALAND',
+                'logo' => 'theme/frontend/default/images/images/logo/aland.png',
+            ),
+        );
+        $type_class = $info_class['type'];
+        if (!isset($type_info[$type_class])){
+            echo 'Truy cập không hợp lệ - type error';
+            return ;
+        }
+
+        $data = array(
+            'type_class' => $type_class,
+            'type_detail' => $type_info[$type_class],
+            'time_start' => $time_start,
+            'token' => $token,
+            'info_class' => $info_class,
+        );
+
+        $this->load->view('feedback/thi_cuoi_ky', $data, false);
     }
 
     public function giaotiep()
