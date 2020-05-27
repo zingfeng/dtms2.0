@@ -307,8 +307,8 @@ class Feedback extends CI_Controller
             );
 
             // TH hom thu gop y la ngoai le ko can validate
-            var_dump($info['type']);
-            echo '<pre>'; print_r($_REQUEST); echo '</pre>';
+//            var_dump($info['type']);
+//            echo '<pre>'; print_r($_REQUEST); echo '</pre>';
 
             // Luyện đề tách riêng và ko liên quan đến ngày nhận feedback của lớp
             if ($info['type'] === 'luyende'){
@@ -324,12 +324,22 @@ class Feedback extends CI_Controller
                 ];
 
                 $this->feedback->insert_feedback_luyen_de($info);
+                var_dump($info['type']);
+                echo '<pre>'; print_r($_REQUEST); echo '</pre>';
                 exit;
             }
 
             // Danh sách đăng ký
             if ($info['type'] === 'thicuoiky'){
-
+                $dataCheck = array(
+                    'class_code' => $this->input->post('class_code'),
+                    'email' => $this->input->post('email'),
+                );
+                $check = $this->feedback->check_thicuoiky($dataCheck);
+                if(count($check) > 0) {
+                    echo json_encode(array('error' => true, 'message' => 'Bạn đã đăng ký trước đó'));
+                    exit();
+                }
                 $info = [
                     'type' => $this->input->post('type_class'),
                     'class_code' => $this->input->post('class_code'),
@@ -338,9 +348,9 @@ class Feedback extends CI_Controller
                     'email' => $this->input->post('email'),
                     'shift' => $this->input->post('shift'),
                 ];
-
                 $this->feedback->insert_feedback_thicuoiky($info);
-                exit;
+                echo json_encode(array('error' => false, 'message' => 'Đăng ký thành công'));
+                exit();
             }
 
             if ($info['type'] === 'homthugopy'){

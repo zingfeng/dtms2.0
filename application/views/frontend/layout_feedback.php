@@ -295,6 +295,18 @@
                     </ul>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Danh sách thi cuối kỳ <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--                        <li><a href="#">Change password</a></li>-->
+                        <li><a href="/log/export_list_thicuoiky_by_area?area=Hà%20Nội">Hà Nội</a></li>
+                        <li><a href="/log/export_list_thicuoiky_by_area?area=Đà%20Nẵng">Đà Nẵng</a></li>
+                        <li><a href="/log/export_list_thicuoiky_by_area?area=Hồ%20Chí%20Minh">Hồ Chí Minh</a></li>
+                        <li><a href="/log/export_list_thicuoiky_by_type?type=toeic">Toeic</a></li>
+                        <li><a href="/log/export_list_thicuoiky_by_type?type=ielts">Ielts</a></li>
+                        <li><a href="/log/export_list_thicuoiky_by_type?type=giaotiep">Giao tiếp</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi, <?php  if(isset($_SESSION['fullname'])) echo $_SESSION['fullname']; ?>   <span class="caret"></span></a>
                     <ul class="dropdown-menu">
 <!--                        <li><a href="#">Change password</a></li>-->

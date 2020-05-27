@@ -970,7 +970,7 @@ class Feedback_model extends CI_Model
         }
 
     }
-    
+
     public function get_list_feedback_paper($class_code = '', $type = '', $order = '')
     {
         $this->_tracking_func(__FUNCTION__);
@@ -2434,6 +2434,25 @@ class Feedback_model extends CI_Model
         } else {
             return false;
         }
+    }
+
+    public function check_thicuoiky($params)
+    {
+        if(count($params) <= 0) {
+            return false;
+        }
+        if(isset($params['class_code'])) {
+            $this->db->where('class_code', $params['class_code']);
+        }
+        if(isset($params['email'])) {
+            $this->db->where('email', $params['email']);
+        }
+        if(isset($params['phone'])) {
+            $this->db->where('phone', $params['phone']);
+        }
+        $query = $this->db->get('feedback_thicuoiky');
+        $arr_res = $query->result_array();
+        return $arr_res;
     }
 
 }

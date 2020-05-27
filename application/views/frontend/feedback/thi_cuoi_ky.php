@@ -90,7 +90,7 @@
                 </div>
                 <div class="col col-sm-12 col-md-8">
                     <div class="form-group" style="padding: 5px 20px; font-size: large;">
-                        <label for="usr">Email</label>
+                        <label for="usr">Email (*)</label>
                         <input type="text" class="form-control" id="email" placeholder="">
                     </div>
                 </div>
@@ -158,12 +158,18 @@
         if (phone.trim() === ''){
             alert('Bạn cần nhập số điện thoại !'); return false;
         }
+        if (email.trim() === ''){
+            alert('Bạn cần nhập email !'); return false;
+        }
         if (shift === null){
             alert('Bạn cần chọn ca học !'); return false;
         }
 
-        $.post("/feedback/send_feedback",
-            {
+        $.ajax({
+            url : "/feedback/send_feedback",
+            type : "post",
+            dataType:"json",
+            data : {
                 type: 'thicuoiky',
                 hoten: hoten,
                 phone: phone,
@@ -174,12 +180,17 @@
                 type_class: type_class,
                 class_code: class_code,
             },
-            function (data, status) {
-                console.log(data);
-                alert('Thank you!');
-                location.reload();
-            });
-
+            beforeSend: function(){
+                $('.btn_send_feedback').attr('disabled', true);
+            },
+            success : function (result){
+                $('.btn_send_feedback').attr('disabled', false);
+                alert(result.message);
+                if(result.error == false){
+                    location.reload();
+                }
+            }
+        });
     }
 
     function ClickChild(e) {

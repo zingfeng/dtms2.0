@@ -1059,10 +1059,9 @@ class Log extends CI_Controller
             $params['area'] = $area;
         }
 
-        $params['limit'] = 500;
         $list_fb_ld = $this->fu->get_log_thicuoiky_filter_by_class($params);
 
-        $filename = 'Feedback-LuyenDe.xlsx';
+        $filename = 'Feedback-ThiCuoiKy.xlsx';
         $this->load->library('PHPExcel');
         $objPHPExcel = new PHPExcel();
         $i = 1;
@@ -1104,6 +1103,76 @@ class Log extends CI_Controller
                 ->setCellValue('H'.$count, $number_off)
                 ->setCellValue('I'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
                 ->setCellValue('J'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle($filename);
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachement; filename="' . $filename . '"');
+        ob_end_clean();
+        return $objWriter->save('php://output');exit();
+    }
+
+    /**
+     * Hàm export log đăng ký thi cuối kỳ by type // toeic, giaotiep, ielts, ...
+     * @return .xlsx file
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     */
+    public function export_list_thicuoiky_by_type(){
+        guard();
+        guard_admin_manager();
+        $this->load->model('Feed_upgrade_model', 'fu');
+
+        $shift_text = [
+            's_04' => '09:00 Thứ 5, ngày 04/06/2020',
+            's_06' => '09:00 Thứ 7, ngày 06/06/2020',
+            'c_06' => '14:00 Thứ 7, ngày 06/06/2020',
+            'c_09' => '14:00 Thứ 3, ngày 09/06/2020',
+            's_11' => '09:00 Thứ 5, ngày 11/06/2020',
+            's_13' => '09:00 Thứ 7, ngày 13/06/2020',
+            'c_13' => '14:00 Thứ 7, ngày 13/06/2020',
+        ];
+        $params = [];
+
+        if (isset($_REQUEST['type'])) {
+            $type = $_REQUEST['type'];
+            $params['type'] = $type;
+        }
+
+        $list_fb_ld = $this->fu->get_log_thicuoiky_filter($params);
+
+        $filename = 'Feedback-ThiCuoiKy.xlsx';
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $i = 1;
+        $baseRow = 1;
+
+        foreach($list_fb_ld as $keyEX => $mono_feedback_ld){
+            $count = $baseRow + $i;
+            if($i == 1){
+                $objPHPExcel->getActiveSheet(0)
+                    ->setCellValue('A'.$i, "STT")
+                    ->setCellValue('B'.$i, "Họ và tên")
+                    ->setCellValue('C'.$i, "Số điện thoại")
+                    ->setCellValue('D'.$i, "Email")
+                    ->setCellValue('E'.$i, "Cơ sở")
+                    ->setCellValue('F'.$i, "Lớp")
+                    ->setCellValue('G'.$i, "Lịch thi");
+            }
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($count,1);
+
+            $objPHPExcel->getActiveSheet(0)
+                ->setCellValue('A'.$count, $keyEX+1 )
+                ->setCellValue('B'.$count, $mono_feedback_ld['hoten'])
+                ->setCellValue('C'.$count, $mono_feedback_ld['phone'])
+                ->setCellValue('D'.$count, $mono_feedback_ld['email'])
+                ->setCellValue('E'.$count, $mono_feedback_ld['location'].' - '.$mono_feedback_ld['area'])
+                ->setCellValue('F'.$count, $mono_feedback_ld['class_code'])
+                ->setCellValue('G'.$count, $shift_text[$mono_feedback_ld['shift']]);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
