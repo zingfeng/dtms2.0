@@ -243,11 +243,12 @@
             <table id="dtFeedbackList2" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th class="th-sm">ID                    </th>
-                    <th class="th-sm">Mã lớp                   </th>
-                    <th class="th-sm">Thời gian                    </th>
-                    <th class="th-sm">Tên                    </th>
-                    <th class="th-sm">Nội dung góp ý                    </th>
+                    <th class="th-sm">ID</th>
+                    <th class="th-sm">Mã lớp</th>
+                    <th class="th-sm">Thời gian</th>
+                    <th class="th-sm">Tên</th>
+                    <th class="th-sm">Số điện thoại</th>
+                    <th class="th-sm">Nội dung góp ý</th>
                     </th>
                 </tr>
                 </thead>
@@ -262,6 +263,7 @@
                             <td><?php echo $row['class_code'] ?></td>
                             <td><?php echo date('d/m/Y - H:i:s', $row['time_end']); ?></td>
                             <td><?php echo $row['name_feeder'] ?></td>
+                            <td><?php echo $row['phone'] ?></td>
                             <td><?php
                                 $detail = $row['detail'];
                                 $detail_live = json_decode($detail,true);

@@ -355,7 +355,17 @@ class Feedback extends CI_Controller
 
             if ($info['type'] === 'homthugopy'){
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
-            }else{
+                echo json_encode(array('error' => false, 'message' => 'Đăng ký thành công'));
+                exit();
+            }
+
+            if ($info['type'] === 'hocviengopy'){
+                $info = array_merge(array('phone' => (int)strip_tags($this->input->post('phone')), 'location' => (int)strip_tags($this->input->post('location'))), $info);
+                $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
+                echo json_encode(array('error' => false, 'message' => 'Gửi thành công'));
+                exit();
+            }
+            else{
                 if ($this->_validate()) {
                     switch($info['type']){
                         case 'slide':
@@ -438,6 +448,48 @@ class Feedback extends CI_Controller
         session_start();
         session_destroy();
         redirect('/feedback/login');
+    }
+
+    public function suggest_class_code(){
+        $keyword = $this->input->get("term");
+        $location = (int)$this->input->get("location_id");
+        $page = (int) $this->input->get('page');
+        $page = ($page > 1) ? $page : 1;
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+        $this->load->model('Feedback_model', 'fb');
+        $params = array('limit' => $limit,'keyword' => $keyword,'offset' => $offset,'id_location' => $location);
+        $arrClass = $this->fb->get_list_class_code_opening_filter($params);
+        $totalClass = $this->fb->total_list_class_code_opening_filter($params);
+        $data = $option = array();
+        if ($totalClass > $page*$limit) {
+            $option['nextpage'] = true;
+            unset($arrClass[$limit]);
+        }
+        foreach ($arrClass as $key => $class) {
+            $data[] = array('id' => $class['class_code'], 'text' => $class['class_code'],'item_id' => $class['class_code']);
+        }
+        return $this->output->set_output(json_encode(array('status' => 'success','data' => $data,'option' => $option)));
+    }
+    public function suggest_location(){
+        $keyword = $this->input->get("term");
+        $page = (int) $this->input->get('page');
+        $page = ($page > 1) ? $page : 1;
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+        $this->load->model('Feedback_model', 'fb');
+        $params = array('limit' => $limit,'keyword' => $keyword,'offset' => $offset);
+        $arrLocation = $this->fb->get_list_location_filter($params);
+        $totalLocation = $this->fb->total_list_location($params);
+        $data = $option = array();
+        if ($totalLocation > $page*$limit) {
+            $option['nextpage'] = true;
+            unset($arrLocation[$limit]);
+        }
+        foreach ($arrLocation as $key => $location) {
+            $data[] = array('id' => $location['id'], 'text' => $location['name'].' - '.$location['area'],'item_id' => $location['id']);
+        }
+        return $this->output->set_output(json_encode(array('status' => 'success','data' => $data,'option' => $option)));
     }
 
 }

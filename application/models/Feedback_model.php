@@ -152,6 +152,39 @@ class Feedback_model extends CI_Model
         return $arr_res_living;
     }
 
+    public function get_list_class_code_opening_filter($params)
+    {
+        $params = array_merge(array('limit' => 100, 'offset' => 0), $params);
+        if (isset($params['type'])) {
+            $this->db->where('type', $params['type']);
+        }
+        if (isset($params['keyword'])){
+            $this->db->like('class_code',$params['keyword']);
+        }
+        if (isset($params['id_location']) && $params['id_location'] > 0){
+            $this->db->where('id_location',$params['id_location']);
+        }
+        $this->db->where('time_end >', time());
+        $query = $this->db->get('feedback_class', $params['limit'], $params['offset']);
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
+
+    public function total_list_class_code_opening_filter($params)
+    {
+        if (isset($params['type'])) {
+            $this->db->where('type', $params['type']);
+        }
+        if ($params['keyword']){
+            $this->db->like('class_code',$params['keyword']);
+        }
+        if (isset($params['id_location']) && $params['id_location'] > 0){
+            $this->db->where('id_location',$params['id_location']);
+        }
+        $this->db->where('time_end >', time());
+        return $this->db->count_all_results('feedback_class');
+    }
+
     public function get_list_class_info($type = '', $limit = 100)
     {
         $this->_tracking_func(__FUNCTION__);
@@ -2312,6 +2345,36 @@ class Feedback_model extends CI_Model
         $query = $this->db->get('feedback_location');
         $arr_res = $query->result_array();
         return $arr_res;
+    }
+    public function get_list_location_filter($params)
+    {
+        $params = array_merge(array('limit' => 100, 'offset' => 0), $params);
+        if (isset($params['area'])) {
+            $this->db->where('area', $params['area']);
+        }
+        if ($params['keyword']){
+            $this->db->group_start();
+            $this->db->or_like('name', $params['keyword']);
+            $this->db->or_like('area', $params['keyword']);
+            $this->db->group_end();
+        }
+        $query = $this->db->get('feedback_location', $params['limit'], $params['offset']);
+        $arr_res = $query->result_array();
+        return $arr_res;
+    }
+    public function total_list_location($params)
+    {
+        if (isset($params['area'])) {
+            $this->db->where('area', $params['area']);
+        }
+        if ($params['keyword']){
+            $this->db->group_start();
+            $this->db->or_like('name', $params['keyword']);
+            $this->db->or_like('area', $params['keyword']);
+            $this->db->group_end();
+        }
+        $this->db->order_by('area', 'ASC');
+        return $this->db->count_all_results('feedback_location');
     }
 
     public function insert_location($info)

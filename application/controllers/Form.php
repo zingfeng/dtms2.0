@@ -794,6 +794,64 @@ class Form extends CI_Controller
         $this->load->view('feedback/feedback_hom_thu_gop_y', $data, false);
     }
 
+    public function hoc_vien_gop_y()
+    {
+        if (isset($_GET['type'])) {
+            $type_class = trim(mb_strtolower($_GET['type']));
+        }else{
+            echo 'Truy cập không hợp lệ';
+            return ;
+        }
+        $type_info = array(
+            'ielts' => array(
+                'name' => 'IELTS FIGHTER',
+                'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
+            ),
+            'toeic' => array(
+                'name' => 'MS HOA TOEIC',
+                'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
+            ),
+            'giaotiep' => array(
+                'name' => 'MS HOA GIAO TIẾP',
+                'logo' => 'theme/frontend/default/images/images/logo/giaotiep.png',
+            ),
+            'aland' => array(
+                'name' => 'ALAND',
+                'logo' => 'theme/frontend/default/images/images/logo/aland.png',
+            ),
+        );
+        if (!isset($type_info[$type_class])){
+            echo 'Truy cập không hợp lệ - type error';
+            return ;
+        }
+
+        $this->load->model('Feedback_model', 'feedback');
+        $location_info = $this->feedback->get_list_location();
+        $arr_location_info = array();
+        foreach ($location_info as $mono_location) {
+            $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
+        }
+        
+        $list_quest_text = array(
+            'Phản ánh chất lượng dịch vụ:'
+        );
+
+        $time_start = time();
+
+        $token_feedback = $this->config->item('token_feedback');
+        $token = md5($token_feedback . $time_start);
+
+        $data = array(
+            'type_detail' => $type_info[$type_class],
+            'type_feedback' => 'hocviengopy',
+            'time_start' => $time_start,
+            'token' => $token,
+            'list_quest_text' => $list_quest_text,
+        );
+
+        $this->load->view('feedback/hoc_vien_gop_y', $data, false);
+    }
+
     public function zoom()
     {
         $this->load->model('Feedback_model', 'feedback');

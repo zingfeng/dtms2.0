@@ -1046,7 +1046,7 @@ class Log extends CI_Controller
      * @throws PHPExcel_Reader_Exception
      * @throws PHPExcel_Writer_Exception
      */
-    public function export_list_feedback_thicuoiky_by_area(){
+    public function export_list_thicuoiky_by_area(){
         guard();
         guard_admin_manager();
 
