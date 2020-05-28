@@ -27,7 +27,7 @@ class Form extends CI_Controller
                 'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
             ),
             'toeic' => array(
-                'name' => 'MS HOA TOEIC',
+                'name' => 'ANH NGỮ MS HOA',
                 'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
             ),
             'giaotiep' => array(
@@ -79,7 +79,7 @@ class Form extends CI_Controller
                 'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
             ),
             'toeic' => array(
-                'name' => 'MS HOA TOEIC',
+                'name' => 'ANH NGỮ MS HOA',
                 'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
             ),
             'giaotiep' => array(
@@ -808,7 +808,7 @@ class Form extends CI_Controller
                 'logo' => 'theme/frontend/default/images/images/logo/ielts.png',
             ),
             'toeic' => array(
-                'name' => 'MS HOA TOEIC',
+                'name' => 'ANH NGỮ MS HOA',
                 'logo' => 'theme/frontend/default/images/images/logo/toeic.jpg',
             ),
             'giaotiep' => array(
