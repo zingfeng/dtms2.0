@@ -13,7 +13,7 @@ class Stat extends CI_Controller
 
         } else {
             if ($this->input->get('token')){
-                //        https://dtms.aland.edu.vn/feedback/statistic/Pre2570?token=abcd
+                //        https://qlcl.imap.edu.vn/feedback/statistic/Pre2570?token=abcd
                 $token = $this->input->get('token');
                 $res_check = $this->feedback->check_token_view_class_statics($class_code,$token);
                 if (! $res_check){

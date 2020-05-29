@@ -1,7 +1,7 @@
 <h1 class="my_title" style="margin-bottom: 0">Dashboard
     <i class="fa fa-info-circle fa_info_feedback" aria-hidden="true" data-toggle="modal" data-target="#modal_info"></i>
 </h1>
-<h3><a style="font-weight: bold; color: firebrick" href="https://dtms.aland.edu.vn/uploads/files/FeedbackIMAP.pdf" target="_blank">Hướng dẫn sử dụng cho người mới bắt đầu</a></h3>
+<h3><a style="font-weight: bold; color: firebrick" href="https://qlcl.imap.edu.vn/uploads/files/FeedbackIMAP.pdf" target="_blank">Hướng dẫn sử dụng cho người mới bắt đầu</a></h3>
 <div class="container-fluid" style="margin-top: 20px; border-top: 1px solid #bdbdbd;">
     <div class="row">
         <div class="col col-sm-12 col-md-6 ">

@@ -272,7 +272,7 @@ class Log extends CI_Controller
                 $point_round = 0;
             }
             $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+5].$count, $point_round);
-            $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+6].$count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
+            $objPHPExcel->getActiveSheet(0)->setCellValue($alphabet[$x+6].$count, 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?'.$classLink.$dataLink);
             $i++;
         }
 
@@ -521,7 +521,7 @@ class Log extends CI_Controller
                 ->setCellValue('H'.$count, $mono_feedback_phone['times'])
                 ->setCellValue('I'.$count, $mono_feedback_phone['point'])
                 ->setCellValue('J'.$count, $mono_feedback_phone['comment'])
-                ->setCellValue('K'.$count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
+                ->setCellValue('K'.$count, 'https://qlcl.imap.edu.vn/feedback/feedback_phone_detail?'.$classLink.$dataLink);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle($filename);
@@ -650,7 +650,7 @@ class Log extends CI_Controller
                     ->setCellValue('F' . $count, date('d/m/Y', $mono_feedback['time']))
                     ->setCellValue('G' . $count, $mono_feedback['times'])
                     ->setCellValue('H' . $count, $mono_feedback['point'])
-                    ->setCellValue('I' . $count, 'https://dtms.aland.edu.vn/feedback/feedback_phone_detail?class='.$mono_feedback['class_code']);
+                    ->setCellValue('I' . $count, 'https://qlcl.imap.edu.vn/feedback/feedback_phone_detail?class='.$mono_feedback['class_code']);
             } else {
                 switch ($mono_feedback['type']) {
                     case 'ksgv2':
@@ -671,7 +671,7 @@ class Log extends CI_Controller
                     ->setCellValue('F' . $count, date('d/m/Y', $mono_feedback['time_end']))
                     ->setCellValue('G' . $count, $mono_feedback['type'])
                     ->setCellValue('H' . $count, $mono_feedback['total_point']/$mono_feedback['count_point'])
-                    ->setCellValue('I' . $count, 'https://dtms2.aland.edu.vn/feedback/feedback_ksgv_detail?class_code='.$mono_feedback['class_code'].'&type_ksgv='.$mono_feedback['type']);
+                    ->setCellValue('I' . $count, 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$mono_feedback['class_code'].'&type_ksgv='.$mono_feedback['type']);
             }
             $i++;
         }
@@ -828,7 +828,7 @@ class Log extends CI_Controller
                 ->setCellValue('I'.$count, $mono_feedback_ld['number_student_nangcao'])
                 ->setCellValue('J'.$count, $mono_feedback_ld['number_student_giaotiep'])
                 ->setCellValue('K'.$count, $number_off)
-                ->setCellValue('L'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('L'.$count, 'https://qlcl.imap.edu.vn/log/luyen_de?'.$classLink)
                 ->setCellValue('M'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
             $i++;
         }
@@ -1101,7 +1101,7 @@ class Log extends CI_Controller
                 ->setCellValue('F'.$count, $mono_feedback_ld['number_student'])
                 ->setCellValue('G'.$count, $mono_feedback_ld['number_thicuoiky'])
                 ->setCellValue('H'.$count, $number_off)
-                ->setCellValue('I'.$count, 'https://dtms2.aland.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('I'.$count, 'https://qlcl.imap.edu.vn/log/luyen_de?'.$classLink)
                 ->setCellValue('J'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
             $i++;
         }

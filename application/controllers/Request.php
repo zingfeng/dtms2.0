@@ -325,7 +325,7 @@ class Request extends CI_Controller
             $key = 'fb_zoom_!@#';
             $my_time = time();
             $hash = hash('ripemd160', ($my_time.$key));
-            $url = 'https://dtms.aland.edu.vn/feedback/zoom?my_class='.$_POST['class_code'].'&my_time='.$my_time.'&my_token='.$hash;
+            $url = 'https://qlcl.imap.edu.vn/feedback/zoom?my_class='.$_POST['class_code'].'&my_time='.$my_time.'&my_token='.$hash;
             echo json_encode([
                 'status' => 'success',
                 'url' => $url,

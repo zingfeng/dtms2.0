@@ -7,8 +7,8 @@
     <base href="/">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://dtms.aland.edu.vn/theme/frontend/default/css/fontAwesome/css/font-awesome.min.css" media="all">
-    <link rel="stylesheet" href="https://dtms.aland.edu.vn/theme/frontend/default/css/bootstrap.min.css" media="all">
+    <link rel="stylesheet" href="https://qlcl.imap.edu.vn/theme/frontend/default/css/fontAwesome/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="https://qlcl.imap.edu.vn/theme/frontend/default/css/bootstrap.min.css" media="all">
     <link rel="stylesheet" href="theme/frontend/default/css/feedback.css" media="all">
 
     <style type="text/css">

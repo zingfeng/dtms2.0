@@ -612,7 +612,7 @@
                         <td><?php echo $mono_class_info['number_feedback_online']; ?></td>
                         <td><?php echo $mono_class_info['point_online']; ?></td>
                         <td><?php echo $mono_class_info['average_point']; ?></td>
-                        <td><a href="//dtms.aland.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
+                        <td><a href="//qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
                         <td><?php echo $mono_class_info['number_student']; ?></td>
 
                         <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
@@ -795,12 +795,12 @@
 
 
 
-        var link_feedback_ksgv1 = 'https://dtms.aland.edu.vn/feedback/ksgv_lan1?my_class=' + info_live.class_code;
-        var link_feedback_ksgv2 = 'https://dtms.aland.edu.vn/feedback/ksgv_lan2?my_class=' + info_live.class_code;
-        var link_feedback_homthugopy = 'https://dtms.aland.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
-        var link_feedback_online = 'https://dtms.aland.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
-        var link_feedback_luyende = 'https://dtms.aland.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
-        var link_thicuoiky = 'https://dtms.aland.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
+        var link_feedback_ksgv1 = 'https://qlcl.imap.edu.vn/feedback/ksgv_lan1?my_class=' + info_live.class_code;
+        var link_feedback_ksgv2 = 'https://qlcl.imap.edu.vn/feedback/ksgv_lan2?my_class=' + info_live.class_code;
+        var link_feedback_homthugopy = 'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
+        var link_feedback_online = 'https://qlcl.imap.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
+        var link_feedback_luyende = 'https://qlcl.imap.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
+        var link_thicuoiky = 'https://qlcl.imap.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
 
         $('#modal_link_feedback').html(info_live.class_code);
         $('#modal_link_feedback').attr('class_id',info_live.class_id);

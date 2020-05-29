@@ -76,11 +76,11 @@
             <br>
             <br>
 
-            <a href="https://dtms.aland.edu.vn/feedback/toeic" target="_blank" ><button class="btn btn-success">Mẫu feedback TOEIC</button></a>
-            <a href="https://dtms.aland.edu.vn/feedback/ielts" target="_blank" ><button class="btn btn-success">Mẫu feedback IELTS</button></a>
-            <a href="https://dtms.aland.edu.vn/feedback/giaotiep" target="_blank" ><button class="btn btn-success">Mẫu feedback Giao tiếp</button></a>
-            <a href="https://dtms.aland.edu.vn/feedback/aland" target="_blank" ><button class="btn btn-success">Mẫu feedback Aland</button></a>
-            <a href="https://dtms.aland.edu.vn/feedback/slide" target="_blank" ><button class="btn btn-success">Mẫu feedback Slide</button></a>
+            <a href="https://qlcl.imap.edu.vn/feedback/toeic" target="_blank" ><button class="btn btn-success">Mẫu feedback TOEIC</button></a>
+            <a href="https://qlcl.imap.edu.vn/feedback/ielts" target="_blank" ><button class="btn btn-success">Mẫu feedback IELTS</button></a>
+            <a href="https://qlcl.imap.edu.vn/feedback/giaotiep" target="_blank" ><button class="btn btn-success">Mẫu feedback Giao tiếp</button></a>
+            <a href="https://qlcl.imap.edu.vn/feedback/aland" target="_blank" ><button class="btn btn-success">Mẫu feedback Aland</button></a>
+            <a href="https://qlcl.imap.edu.vn/feedback/slide" target="_blank" ><button class="btn btn-success">Mẫu feedback Slide</button></a>
 
         </div>
 

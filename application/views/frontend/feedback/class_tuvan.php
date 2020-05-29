@@ -167,7 +167,7 @@
             }
             ?>
         </h4>
-        <h3><a style="font-weight: bold; color: firebrick" href="https://dtms.aland.edu.vn/uploads/files/FeedbackIMAP.pdf" target="_blank">Hướng dẫn sử dụng cho người mới bắt đầu</a></h3>
+        <h3><a style="font-weight: bold; color: firebrick" href="https://qlcl.imap.edu.vn/uploads/files/FeedbackIMAP.pdf" target="_blank">Hướng dẫn sử dụng cho người mới bắt đầu</a></h3>
         <div class="menu" id="menu_teacher">
             <button type="button" data-toggle="modal" data-target="#insert_class_modal" style="border-radius: 0" class="btn btn-primary">
                 <i class="fa fa-plus" aria-hidden="true"></i> Thêm lớp học
@@ -461,7 +461,7 @@
                         <td><?php echo $mono_class_info['number_feedback_phone_2']; ?></td>
                         <td><?php echo $mono_class_info['point_phone2']; ?></td>
                         <td><?php echo $mono_class_info['average_point']; ?></td>
-                        <td><a href="//dtms.aland.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
+                        <td><a href="//qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
                         <td><?php echo $mono_class_info['number_student']; ?></td>
                         <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
                         <td><?php echo $mono_class_info['number_thicuoiky']; ?></td>

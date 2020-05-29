@@ -101,11 +101,11 @@ class Bell extends CI_Controller
         if(isset($teacher_info['manager_email'])){
             $email_to = array($teacher_info['manager_email']);
         }
-        $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn');
+        $email_bcc = array('thanhdat.it@imap.edu.vn','huyhieu.it@imap.edu.vn','minhhai@imap.edu.vn');
         if (count($email_to) == 0) {
             $email_to = array('lanphuong@imap.edu.vn');
         } else {
-            $email_to = array_merge( array('lanphuong@imap.edu.vn'), $email_to);
+            $email_to = array_merge(array('lanphuong@imap.edu.vn','minhhai@imap.edu.vn'), $email_to);
         }
 
         // POINT CLASS
@@ -210,7 +210,7 @@ class Bell extends CI_Controller
             <p>&#8226; Điểm Feedback Form: ' . $info_class['point'] . '</p>'.$detail_feedback_form_text.'
             <p>&#8226; Điểm trung bình Feedback: ' . $info_class['average_point'] . '</p>
 
-            <h3>Báo cáo chi tiết vui lòng xem tại <a href="https://dtms.aland.edu.vn/feedback/statistic/' . $info_class['class_code'] . '?token='.$token_view.'" target="_blank">https://dtms.aland.edu.vn</a>.</h3>
+            <h3>Báo cáo chi tiết vui lòng xem tại <a href="https://qlcl.imap.edu.vn/feedback/statistic/' . $info_class['class_code'] . '?token='.$token_view.'" target="_blank">https://qlcl.imap.edu.vn</a>.</h3>
             </div>
             
             <p><i>Email này được hệ thống tạo và gửi tự động dưới yêu cầu của nhân viên tư vấn <b>' . $name_request_send_email['fullname'] . '</b>.</i></p>
