@@ -2066,12 +2066,6 @@ class Feedback_model extends CI_Model
         $this->db->set('number_feedback_online', $count_feedback_online, FALSE); // feedback form
         $this->db->set('number_feedback_homthugopy', $number_feedback_homthugopy, FALSE); // feedback form
 
-
-
-
-
-
-
         $this->db->where('class_code', $class_code);
         $this->db->update('feedback_class');
 
@@ -2133,11 +2127,11 @@ class Feedback_model extends CI_Model
         return $full_times_info;
     }
 
-    public function get_mark_point_feedback_form_all_time($class_code)
+    public function get_mark_point_feedback_form_all_time($class_code , $type = '')
     {
         $this->_tracking_func(__FUNCTION__);
 
-        $data_ksgv = $this->get_list_feedback_ksgv($class_code);
+        $data_ksgv = $this->get_list_feedback_ksgv($class_code, $type);
         $arr_times_val = array();
         $feedback_ksgv = array();
         foreach ($data_ksgv as $keyKSGV => $mono) {

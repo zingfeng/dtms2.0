@@ -51,20 +51,32 @@ function load_edit_class(event) {
     // var array_convert = [];
 }
 
-function ringthebell() {
+function ringthebell(event) {
     var obj = event.target;
     var info = obj.getAttribute('info');
     var info_live = JSON.parse(info);
     console.log("info_live");
     console.log(info_live);
 
-    var class_id = info_live.class_id;
+    $('#modal-bell-title').text(info_live.class_code);
+    $('#modal-bell-title').attr('data-query-class_id', info_live.class_id);
+    $('#modal-bell-title').attr('data-query-class_code', info_live.class_code);
 
-    var r = confirm("Bạn muốn gửi thông báo về lớp học " + info_live.class_code +" qua Email cho Ms Hoa không ?");
+    $('#ringthebelltype').modal('show');
+}
+
+function ringthebelltype(event) {
+    var class_id = $('#modal-bell-title').attr('data-query-class_id');
+    var class_code = $('#modal-bell-title').attr('data-query-class_code');
+    var obj = event.target;
+    var type = obj.getAttribute('data-query-type');
+
+    var r = confirm("Bạn muốn gửi thông báo về lớp học " + class_code +" qua Email cho Ms Hoa không ?");
     if (r === true) {
         $.post("/feedback/request",{
                 optcod: 'ringthebell', // có thể include optcode này vào đâu ko ?
                 token: 'abcd',
+                type: type,
                 class_id: class_id,
             },
             function (data, status) {

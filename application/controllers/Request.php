@@ -306,6 +306,7 @@ class Request extends CI_Controller
                     // ring_the_bell
                     $info = array(
                         'class_id' => $_REQUEST['class_id'],
+                        'type' => $_REQUEST['type'],
                         'user_id_creat' => $_SESSION['id'],
                         'status' => 0,
                     );

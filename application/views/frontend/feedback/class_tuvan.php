@@ -277,6 +277,32 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="ringthebelltype">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Ring The Bell <b><span id="modal-bell-title" data-query-class_id=""></span></b></h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <button class="btn btn-blue-grey" data-query-type="phone" onclick="ringthebelltype(event)">Phone</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-blue-grey" data-query-type="dao_tao_online" onclick="ringthebelltype(event)">Giữa kỳ</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-blue-grey" data-query-type="ksgv_lan2" onclick="ringthebelltype(event)">Cuối kỳ</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-blue-grey" data-query-type="all" onclick="ringthebelltype(event)">Tổng hợp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-dialog -->
+        </div>
         <div class="modal fade" id="insert_class_modal">
             <div class="modal-dialog">
                 <div class="modal-content">
