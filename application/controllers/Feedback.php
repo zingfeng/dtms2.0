@@ -306,10 +306,6 @@ class Feedback extends CI_Controller
                 'name_feeder' => strip_tags($this->input->post('name_feeder')),
             );
 
-            // TH hom thu gop y la ngoai le ko can validate
-//            var_dump($info['type']);
-//            echo '<pre>'; print_r($_REQUEST); echo '</pre>';
-
             // Luyện đề tách riêng và ko liên quan đến ngày nhận feedback của lớp
             if ($info['type'] === 'luyende'){
 
@@ -322,8 +318,19 @@ class Feedback extends CI_Controller
                     'level' => $this->input->post('level'),
                     'shift' => $this->input->post('shift'),
                 ];
+                $info_gg_sheets = [
+                    'type' => strip_tags($this->input->post('type')),
+                    'type_class' => $this->input->post('type_class'),
+                    'class_code' => $this->input->post('class_code'),
+                    'hoten' => $this->input->post('hoten'),
+                    'phone' => $this->input->post('phone'),
+                    'email' => $this->input->post('email'),
+                    'level' => $this->input->post('level'),
+                    'shift' => $this->input->post('shift'),
+                ];
 
                 $this->feedback->insert_feedback_luyen_de($info);
+                $this->input_gg_sheets($info_gg_sheets);
                 var_dump($info['type']);
                 echo '<pre>'; print_r($_REQUEST); echo '</pre>';
                 exit;
@@ -348,13 +355,24 @@ class Feedback extends CI_Controller
                     'email' => $this->input->post('email'),
                     'shift' => $this->input->post('shift'),
                 ];
+                $info_gg_sheets = [
+                    'type' => strip_tags($this->input->post('type')),
+                    'type_class' => $this->input->post('type_class'),
+                    'class_code' => $this->input->post('class_code'),
+                    'hoten' => $this->input->post('hoten'),
+                    'phone' => $this->input->post('phone'),
+                    'email' => $this->input->post('email'),
+                    'shift' => $this->input->post('shift'),
+                ];
                 $this->feedback->insert_feedback_thicuoiky($info);
+                $this->input_gg_sheets($info_gg_sheets);
                 echo json_encode(array('error' => false, 'message' => 'Đăng ký thành công'));
                 exit();
             }
 
             if ($info['type'] === 'homthugopy'){
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
+                $this->input_gg_sheets($info);
                 echo json_encode(array('error' => false, 'message' => 'Đăng ký thành công'));
                 exit();
             }
@@ -376,6 +394,7 @@ class Feedback extends CI_Controller
                         case 'dao_tao_onl':
                             $info['age'] = strip_tags($this->input->post('age'));
                             $this->feedback->insert_feedback_paper_ksgv($info);
+                            $this->input_gg_sheets($info);
                             break;
                         case 'zoom':
                             $this->feedback->insert_feedback_zoom($info);
@@ -491,5 +510,234 @@ class Feedback extends CI_Controller
         }
         return $this->output->set_output(json_encode(array('status' => 'success','data' => $data,'option' => $option)));
     }
+    public function input_gg_sheets($info)
+    {
+        $this->load->model('Feed_upgrade_model','fu');
+        $client = getClientGoogle();
+        $service = new Google_Service_Sheets($client);
+        switch($info['type']){
+            case 'luyende':
+                $shift_text = [
+                    's_t7' => 'Sáng thứ 7',
+                    'c_t7' => 'Chiều thứ 7',
+                    's_cn' => 'Sáng CN',
+                ];
+                $location = $this->fu->get_location_by_class_code($info['class_code']);
+                $spreadsheetId = '1jGJmYnSkkuwNNs9cYbokywzLQkOGMvCjYzy8smnHVD0';
+                $arr_insert = array($info['hoten'], $info['phone'], $info['email'], $location['name'].' - '.$location['area'], $info['class_code'], $shift_text[$info['shift']]);
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
+            case 'thicuoiky':
+                $shift_text = [
+                    's_04' => '09:00 Thứ 5, ngày 04/06/2020',
+                    's_06' => '09:00 Thứ 7, ngày 06/06/2020',
+                    'c_06' => '14:00 Thứ 7, ngày 06/06/2020',
+                    'c_09' => '14:00 Thứ 3, ngày 09/06/2020',
+                    's_11' => '09:00 Thứ 5, ngày 11/06/2020',
+                    's_13' => '09:00 Thứ 7, ngày 13/06/2020',
+                    'c_13' => '14:00 Thứ 7, ngày 13/06/2020',
+                ];
+                $location = $this->fu->get_location_by_class_code($info['class_code']);
+                $spreadsheetId = '1kDEtnNqqh4BvagIRXhM8uFthU35yo9Cxlf8AK7rwClg';
+                $arr_insert = array($info['hoten'], $info['phone'], $info['email'], $location['name'].' - '.$location['area'], $info['class_code'], $shift_text[$info['shift']]);
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
+            case 'homthugopy':
+                $spreadsheetId = '1dqHV1M0s1fw5LgYCmrTgZOKAuK8BD1VMO2lANPhbW0k';
+                $detail_live = json_decode($info['detail']);
+                $comment = $detail_live[0][3];
+                $arr_insert = array($info['class_code'], date('d/m/Y - H:i:s', time()), $info['name_feeder'], $comment);
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
+            case 'ksgv2':
+                $spreadsheetId = '1ODlEKHavL4xLGRqZA_xFM_qsI5uL2ovDN2cqQQq1jtk';
+                $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
+                $arr_insert = [$info['type'],$info['class_code']];
+                $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
+                $arr_insert = array_merge($arr_insert, array($teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
+                $detail_live = json_decode($info['detail']);
+                $mono__sum = 0;
+                $mono__count = 0;
+                foreach ($detail_live as $keyDetail => $detail) {
+                    if(count($detail_live) > 9) {
+                        // Bỏ câu hỏi số 4 và số 8
+                        if ( ($keyDetail == 3) || ($keyDetail == 7)){
+                            continue;
+                        }
+                    }
 
+                    $type = $detail[1];
+                    if ($type === 'select'){
+                        $mono_point = $detail[3];
+                        if ($mono_point >0){
+                            $mono__sum += $mono_point;
+                            $mono__count ++;
+                        }
+                    }elseif($type === 'ruler'){
+                        $mono_point = (int)$detail[3]*2;
+                        if ($mono_point >0){
+                            $mono__sum += $mono_point;
+                            $mono__count ++;
+                        }
+                    }else{
+                        $content = $detail[3];
+                        $mono_point = $content;
+                    }
+                    $arr_insert = array_merge($arr_insert, array($mono_point));
+                    // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
+                    if(count($detail_live) > 9 && $keyDetail == 9) {
+                        if($keyDetail == 9){
+                            $arr_insert = array_merge($arr_insert, array(''));
+                        }
+                    }
+                    $x++;
+                }
+                if ($mono__count > 0){
+                    $point_round = round($mono__sum / $mono__count,2);
+                }else{
+                    $point_round = 0;
+                }
+                $arr_insert = array_merge($arr_insert, array($point_round, $classLink));
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
+            case 'dao_tao_onl':
+                $spreadsheetId = '1UehwKmNe5U7v5RkAX0suplh-5o_iCwrVSYMH2OzcI3s';
+                $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
+                $arr_insert = [$info['type'],$info['class_code']];
+                $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
+                $arr_insert = array_merge($arr_insert, array($teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
+                $detail_live = json_decode($info['detail']);
+                $mono__sum = 0;
+                $mono__count = 0;
+                foreach ($detail_live as $keyDetail => $detail) {
+                    if(count($detail_live) > 9) {
+                        // Bỏ câu hỏi số 4 và số 8
+                        if ( ($keyDetail == 3) || ($keyDetail == 7)){
+                            continue;
+                        }
+                    }
+
+                    $type = $detail[1];
+                    if ($type === 'select'){
+                        $mono_point = $detail[3];
+                        if ($mono_point >0){
+                            $mono__sum += $mono_point;
+                            $mono__count ++;
+                        }
+                    }elseif($type === 'ruler'){
+                        $mono_point = (int)$detail[3]*2;
+                        if ($mono_point >0){
+                            $mono__sum += $mono_point;
+                            $mono__count ++;
+                        }
+                    }else{
+                        $content = $detail[3];
+                        $mono_point = $content;
+                    }
+                    $arr_insert = array_merge($arr_insert, array($mono_point));
+                    // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
+                    if(count($detail_live) > 9 && $keyDetail == 9) {
+                        if($keyDetail == 9){
+                            $arr_insert = array_merge($arr_insert, array(''));
+                        }
+                    }
+                    $x++;
+                }
+                if ($mono__count > 0){
+                    $point_round = round($mono__sum / $mono__count,2);
+                }else{
+                    $point_round = 0;
+                }
+                $arr_insert = array_merge($arr_insert, array($point_round, $classLink));
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
+
+            default:
+                return true;
+                break;
+        }
+
+        // data update
+        /*
+        $values_insert_true = array(
+            array(
+                'Y',
+            ),
+        );
+        $body_true = new Google_Service_Sheets_ValueRange([
+            'values' => $values_insert_true
+        ]);
+
+        $values_insert_false = array(
+            array(
+                'N',
+            ),
+        );
+        $body_false = new Google_Service_Sheets_ValueRange([
+            'values' => $values_insert_false
+        ]);
+
+        $params = [
+            'valueInputOption' => 'RAW'
+        ];
+        // end data update
+
+        // get from google sheet
+        $range = 'Sheet1';
+        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+        $values = $response->getValues();
+//        var_dump($values); die;
+        foreach ($values as $key => $value){
+            if($value[14] && $value[14] == 'Y'){ // update Column O = N if data column O = Y
+                $r[$key] = $service->spreadsheets_values->update($spreadsheetId,$range.'!O'.($key+1),$body_false,$params);
+            } else { // update Column O = Y if data column O = N or = null
+                $r[$key] = $service->spreadsheets_values->update($spreadsheetId,$range.'!O'.($key+1),$body_true,$params);
+            }
+        }
+        var_dump($r,$values); die;
+        */
+        // import to google sheet
+
+        $range_insert= "Sheet1"; // cái này để chọn khu vực ghi mới, update full: 'LadiPage!A1:N1'
+        $body = new Google_Service_Sheets_ValueRange([
+            'values' => $values_insert
+        ]);
+        $params = [
+            'valueInputOption' => 'RAW'
+        ];
+        $insert = [ // cái này dành cho ghi mới
+            'insertDataOption' => 'INSERT_ROWS'
+        ];
+        try {
+            $result = $service->spreadsheets_values->append($spreadsheetId,$range_insert,$body,$params,$insert); // cái này ghi mới dữ liệu
+//            $result = $service->spreadsheets_values->update($spreadsheetId,$range_insert,$body,$params); // cái này update dữ liệu
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+        return $result;
+        // end import to google sheet
+
+        //get from google sheet
+        /*
+        if (empty($values)) {
+            print "No data found.\n";
+        } else {
+            print "Name, Major:\n";
+            foreach ($values as $row) {
+                // Print columns A and E, which correspond to indices 0 and 4.
+                printf("%s, %s\n", $row[0], $row[4]);
+            }
+        } */
+        // end get from google sheet
+    }
 }

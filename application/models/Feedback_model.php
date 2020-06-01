@@ -988,7 +988,7 @@ class Feedback_model extends CI_Model
             'browser' => $this->agent->browser() . ' ' . $this->agent->version()
         );
         $data = array_merge($info, $plus);
-        $this->db->insert('feedback_thicuoiky', $data);
+        $r = $this->db->insert('feedback_thicuoiky', $data);
 
         // Update thêm số lượng đăng ký
         if (isset($info['class_code'])){
@@ -1001,7 +1001,7 @@ class Feedback_model extends CI_Model
             $this->db->where('class_code', $info['class_code']);
             $this->db->update('feedback_class');
         }
-
+        return $r;
     }
 
     public function get_list_feedback_paper($class_code = '', $type = '', $order = '')

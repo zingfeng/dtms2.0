@@ -81,6 +81,7 @@ function ringthebelltype(event) {
             },
             function (data, status) {
                 console.log(data);
+                $('#ringthebelltype').modal('hide');
                 // make_effect_submit_done('btn_ok_class');
             });
     }

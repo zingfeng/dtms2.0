@@ -183,7 +183,7 @@ class Feed_upgrade_model extends CI_Model{
         }
 
         $this->db->group_by('fb.class_code');
-        $this->db->select('MAX(fb.times) as times,MAX(fb.time) as time, MAX(ft.name) as teacher_name, fc.class_code, fl.name, fl.area, AVG(fb.point) AS point');
+        $this->db->select('MAX(fb.times) as times,MAX(fb.time) as time, MAX(ft.name) as teacher_name, ft.manager_email as manager_email, fc.class_code, fl.name, fl.area, AVG(fb.point) AS point');
         $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
         if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("fc.id_location",$params['location']);
@@ -221,7 +221,7 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['limit'])){
             $this->db->limit($params['limit']);
         }
-        $this->db->select('fb.times as times, fb.time as time, fb.comment, ft.name as teacher_name, fc.class_code, fl.name, fl.area, fb.point, fb.name_feeder');
+        $this->db->select('fb.times as times, fb.time as time, fb.comment, ft.name as teacher_name, ft.manager_email as manager_email, fc.class_code, fl.name, fl.area, fb.point, fb.name_feeder');
         $this->db->join("feedback_class as fc","fb.class_code = fc.class_code");
         if (isset($params['location']) && count($params['location']) > 0){
             $this->db->where_in("fc.id_location",$params['location']);
@@ -268,7 +268,7 @@ class Feed_upgrade_model extends CI_Model{
             $this->db->where('fk.class_code',$params['class_code']);
         }
         $this->db->join('feedback_teacher as ft', 'fc.main_teacher=ft.teacher_id');
-        $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name");
+        $this->db->select("fk.*, fl.name, fl.area, ft.name as teacher_name, ft.manager_email as manager_email");
         if (isset($params['manager_email'])){
             $this->db->where_in('ft.manager_email', $params['manager_email']);
         }
@@ -453,6 +453,24 @@ class Feed_upgrade_model extends CI_Model{
         $this->db->order_by("ftck.id","desc");
         $r = $this->db->get('feedback_thicuoiky as ftck');
         return $r->result_array();
+    }
+
+    public function get_teacher_by_class_code($class_code)
+    {
+        $this->db->join("feedback_teacher as ft","fc.main_teacher = ft.teacher_id");
+        $this->db->where("fc.class_code",$class_code);
+        $this->db->select("ft.*");
+        $r = $this->db->get('feedback_class as fc');
+        return $r->row_array();
+    }
+
+    public function get_location_by_class_code($class_code)
+    {
+        $this->db->join("feedback_location as fl","fc.id_location = fl.id");
+        $this->db->where("fc.class_code",$class_code);
+        $this->db->select("fl.*");
+        $r = $this->db->get('feedback_class as fc');
+        return $r->row_array();
     }
 
 }
