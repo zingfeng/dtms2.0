@@ -550,7 +550,7 @@ class Feedback extends CI_Controller
                 $spreadsheetId = '1dqHV1M0s1fw5LgYCmrTgZOKAuK8BD1VMO2lANPhbW0k';
                 $detail_live = json_decode($info['detail']);
                 $comment = $detail_live[0][3];
-                $arr_insert = array($info['class_code'], date('d/m/Y - H:i:s', time()), $info['name_feeder'], $comment);
+                $arr_insert = array($info['class_code'], date('d/m/Y', time()), $info['name_feeder'], $comment);
                 $values_insert = [
                     $arr_insert
                 ];
