@@ -464,7 +464,8 @@ class Request extends CI_Controller
         $spreadsheetId = '1nlWc1N8RFE5RJk2NmQSuyMVWL_VsgYh9kstoLQLMZLI';
         $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
         $location = $this->fu->get_location_by_class_code($info['class_code']);
-        $arr_insert = array($info['type'], $info['class_code'], $teacher['manage_email'], $teacher['name'], $info['name_feeder'], $location['name'].' - '.$location['area'], date('d/m/Y - H:i:s', time()), $info['times'], $info['point'], $info['comment'], 'https://qlcl.imap.edu.vn/feedback/feedback_phone_detail&class='.$info['class_code']);
+        $arr_insert = array('Phone', $info['class_code'], $teacher['manager_email'], $teacher['name'], $info['name_feeder'], $location['name'].' - '.$location['area'], date('d/m/Y - H:i:s', time()), $info['times'], $info['point'], $info['comment'], 'https://qlcl.imap.edu.vn/feedback/feedback_phone_detail&class='.$info['class_code']);
+
         $values_insert = [
             $arr_insert
         ];
