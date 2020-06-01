@@ -560,7 +560,7 @@ class Feedback extends CI_Controller
                 $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
                 $arr_insert = [$info['type'],$info['class_code']];
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
-                $arr_insert = array_merge($arr_insert, array($teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
+                $arr_insert = array_merge($arr_insert, array($teacher['manager_email'],$teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
                 $detail_live = json_decode($info['detail']);
                 $mono__sum = 0;
                 $mono__count = 0;
@@ -613,7 +613,7 @@ class Feedback extends CI_Controller
                 $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
                 $arr_insert = [$info['type'],$info['class_code']];
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
-                $arr_insert = array_merge($arr_insert, array($teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
+                $arr_insert = array_merge($arr_insert, array($teacher['manager_email'],$teacher['name'],$info['name_feeder'], date('d/m/Y - H:i:s', time())));
                 $detail_live = json_decode($info['detail']);
                 $mono__sum = 0;
                 $mono__count = 0;
