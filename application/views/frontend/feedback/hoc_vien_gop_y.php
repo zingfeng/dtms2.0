@@ -64,18 +64,16 @@
                         }
                         switch ($__type){
                             case 'aland':
-                                $content = '<p>Gửi Ba Mẹ cùng các bạn học viên thân yêu,</p>
-                                    <p>Cảm ơn Ba Mẹ cùng các con đã tin tưởng và lựa chọn ALAND ENGLISH là nơi đồng hành trong chặng đường chinh phục tiếng Anh.</p>
-                                    <p>Nhằm thấu hiểu những khó khăn mà các con đang gặp phải, những mong muốn, kỳ vọng của các con về một môi trường học tiếng Anh hiệu quả, tràn đầy cảm hứng, ALAND ENGLISH mong muốn nhận được những ý kiến đóng góp của ba mẹ cùng các con để trung tâm ngày một hoàn thiện hơn, trở thành ngôi nhà thứ hai mang lại nhiều giá trị về ngôn ngữ cho các con hơn.</p>
-                                    <p>Ba Mẹ cùng các con vui lòng điền ý kiến của mình vào form dưới đây cho trung tâm nhé ạ.</p>
-                                    <p>Một lần nữa cảm ơn Ba Mẹ cùng các con!</p>';
+                                $content = '<p>Trân trọng gửi Quý phụ huynh,</p>
+                                    <p>Để nâng cao chất lượng dịch vụ tại hệ thống ALAND ENGLISH, chúng tôi rất mong nhận được những đóng góp ý kiến của quý Phụ huynh.</p>
+                                    <p>Và chúng tôi sẽ nỗ lực hết sức để giải quyết những phản án của bạn nhanh nhất.</p>
+                                    <p>Trân trọng cảm ơn!</p>';
                                 break;
                             default:
-                                $content = '<p>Gửi các bạn học viên thân yêu,</p>
-                                    <p>Cảm ơn các bạn đã tin tưởng và lựa chọn <b>'.$brand.'</b> là nơi đồng hành trong chặng đường chinh phục tiếng Anh của mình.</p>
-                                    <p>Nhằm thấu hiểu những khó khăn mà các bạn đang gặp phải, những mong muốn, kỳ vọng của các bạn về một môi trường học tiếng Anh hiệu quả, tràn đầy cảm hứng, các bạn hãy đừng ngại ngần chia sẻ với <b>'.$brand.'</b> những ý kiến đóng góp của mình nhé. </p>
-                                    <p>Bạn vui lòng điền ý kiến của mình vào form dưới đây. Những ý kiến vô cùng quý báu của các bạn sẽ giúp <b>'.$brand.'</b> ngày càng hoàn thiện, mang đến nhiều giá trị hơn nữa cho học viên.</p>
-                                    <p>Một lần nữa cảm ơn các bạn!</p>';
+                                $content = '<p>Gửi quý học viên thân mến,</p>
+                                    <p>Để nâng cao chất lượng dịch vụ tại hệ thống <b>'.$brand.'</b>, chúng tôi rất trân trọng những đóng góp ý kiến của quý học viên.</p>
+                                    <p>Và chúng tôi sẽ nỗ lực hết sức để giải quyết những phản án của bạn nhanh nhất nhé.</p>
+                                    <p>Trân trọng cảm ơn!</p>';
                         }
                         echo $content;
                         ?>

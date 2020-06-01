@@ -84,6 +84,7 @@ class Request extends CI_Controller
 
                     $res = $this->feedback->insert_phone_paper($info);
                     if ($res === true ){
+                        $this->input_gg_sheets($info);
                         echo 'ok';
                     }else{
                         echo 'Thông tin không hợp lệ do nội dung nhận xét trùng !';
@@ -455,5 +456,34 @@ class Request extends CI_Controller
 
         return '';
     }
-
+    public function input_gg_sheets($info)
+    {
+        $this->load->model('Feed_upgrade_model','fu');
+        $client = getClientGoogle();
+        $service = new Google_Service_Sheets($client);
+        $spreadsheetId = '1nlWc1N8RFE5RJk2NmQSuyMVWL_VsgYh9kstoLQLMZLI';
+        $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
+        $location = $this->fu->get_location_by_class_code($info['class_code']);
+        $arr_insert = array($info['type'], $info['class_code'], $teacher['manage_email'], $teacher['name'], $info['name_feeder'], $location['name'].' - '.$location['area'], date('d/m/Y - H:i:s', time()), $info['times'], $info['point'], $info['comment'], 'https://qlcl.imap.edu.vn/feedback/feedback_phone_detail&class='.$info['class_code']);
+        $values_insert = [
+            $arr_insert
+        ];
+        // import to google sheet
+        $range_insert= "Sheet1"; // cái này để chọn khu vực ghi mới, update full: 'LadiPage!A1:N1'
+        $body = new Google_Service_Sheets_ValueRange([
+            'values' => $values_insert
+        ]);
+        $params = [
+            'valueInputOption' => 'RAW'
+        ];
+        $insert = [ // cái này dành cho ghi mới
+            'insertDataOption' => 'INSERT_ROWS'
+        ];
+        try {
+            $result = $service->spreadsheets_values->append($spreadsheetId,$range_insert,$body,$params,$insert); // cái này ghi mới dữ liệu
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+        return $result;
+    }
 }
