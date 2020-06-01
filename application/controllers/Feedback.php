@@ -642,7 +642,7 @@ class Feedback extends CI_Controller
                         $content = $detail[3];
                         $mono_point = $content;
                     }
-                    $arr_insert = array_merge($arr_insert, array($mono_point));
+                    $arr_insert = array_merge($arr_insert, array((int)$mono_point));
                     // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
                     if(count($detail_live) > 9 && $keyDetail == 9) {
                         if($keyDetail == 9){
@@ -656,7 +656,7 @@ class Feedback extends CI_Controller
                 }else{
                     $point_round = 0;
                 }
-                $arr_insert = array_merge($arr_insert, array($point_round, $classLink));
+                $arr_insert = array_merge($arr_insert, array((int)$point_round, $classLink));
                 $values_insert = [
                     $arr_insert
                 ];
