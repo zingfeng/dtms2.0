@@ -473,4 +473,13 @@ class Feed_upgrade_model extends CI_Model{
         return $r->row_array();
     }
 
+    public function get_type_class_by_class_code($class_code)
+    {
+        $this->db->where('class_code', $class_code);
+        $this->db->select('type');
+        $query = $this->db->get('feedback_class');
+        $arr_res = $query->row_array();
+        return $arr_res;
+    }
+
 }

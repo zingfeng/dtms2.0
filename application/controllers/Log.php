@@ -289,8 +289,14 @@ class Log extends CI_Controller
     public function hom_thu_gop_y_detail(){
         guard();
         $this->load->model('Feedback_model', 'feedback');
-        $list_fb_homthu = $this->feedback->get_list_feedback_hom_thu_gop_y('');
+        $params['class_code'] = '';
+        if (isset($_REQUEST['class'])) {
+            $class_code = strip_tags($_REQUEST['class']);
+            $params['class_code'] = $class_code;
+        }
+        $list_fb_homthu = $this->feedback->get_list_feedback_hom_thu_gop_y($params['class_code']);
         $location_info = $this->feedback->get_list_location();
+
         $arr_location_info = array();
         foreach ($location_info as $mono_location) {
             $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];

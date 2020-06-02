@@ -380,6 +380,7 @@ class Feedback extends CI_Controller
             if ($info['type'] === 'hocviengopy'){
                 $info = array_merge(array('phone' => (int)strip_tags($this->input->post('phone')), 'location' => (int)strip_tags($this->input->post('location'))), $info);
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
+                $this->input_gg_sheets($info);
                 echo json_encode(array('error' => false, 'message' => 'Gửi thành công'));
                 exit();
             }
@@ -555,6 +556,19 @@ class Feedback extends CI_Controller
                     $arr_insert
                 ];
                 break;
+            case 'hocviengopy':
+                $spreadsheetId = '1dqHV1M0s1fw5LgYCmrTgZOKAuK8BD1VMO2lANPhbW0k';
+                $detail_live = json_decode($info['detail']);
+                $comment = $detail_live[0][3];
+                $location = $this->fu->get_location_by_class_code($info['class_code']);
+                $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
+                $type_class = $this->fu->get_type_class_by_class_code($info['class_code']);
+                $arr_insert = array($location['name'].' - '.$location['area'], $info['class_code'], $teacher['manager_email'],$teacher['name'],$info['name_feeder'],$info['phone'], date('d/m/Y', time()), $info['name_feeder'], $comment,'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail?class='.$info['class_code']);
+                $range_insert = $type_class['type'];
+                $values_insert = [
+                    $arr_insert
+                ];
+                break;
             case 'ksgv2':
                 $spreadsheetId = '1ODlEKHavL4xLGRqZA_xFM_qsI5uL2ovDN2cqQQq1jtk';
                 $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
@@ -707,8 +721,9 @@ class Feedback extends CI_Controller
         var_dump($r,$values); die;
         */
         // import to google sheet
-
-        $range_insert= "Sheet1"; // cái này để chọn khu vực ghi mới, update full: 'LadiPage!A1:N1'
+        if(empty($range_insert)) {
+            $range_insert= "Sheet1"; // cái này để chọn khu vực ghi mới, update full: 'LadiPage!A1:N1'
+        }
         $body = new Google_Service_Sheets_ValueRange([
             'values' => $values_insert
         ]);
