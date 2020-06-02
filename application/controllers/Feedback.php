@@ -574,7 +574,7 @@ class Feedback extends CI_Controller
 
                     $type = $detail[1];
                     if ($type === 'select'){
-                        $mono_point = $detail[3];
+                        $mono_point = (int)$detail[3];
                         if ($mono_point >0){
                             $mono__sum += $mono_point;
                             $mono__count ++;
@@ -589,7 +589,7 @@ class Feedback extends CI_Controller
                         $content = $detail[3];
                         $mono_point = $content;
                     }
-                    $arr_insert = array_merge($arr_insert, array((int)$mono_point));
+                    $arr_insert = array_merge($arr_insert, array($mono_point));
                     // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
                     if(count($detail_live) > 9 && $keyDetail == 9) {
                         if($keyDetail == 9){
@@ -627,7 +627,7 @@ class Feedback extends CI_Controller
 
                     $type = $detail[1];
                     if ($type === 'select'){
-                        $mono_point = $detail[3];
+                        $mono_point = (int)$detail[3];
                         if ($mono_point >0){
                             $mono__sum += $mono_point;
                             $mono__count ++;
@@ -642,7 +642,7 @@ class Feedback extends CI_Controller
                         $content = $detail[3];
                         $mono_point = $content;
                     }
-                    $arr_insert = array_merge($arr_insert, array((int)$mono_point));
+                    $arr_insert = array_merge($arr_insert, array($mono_point));
                     // check nếu k có câu trả lời dạng text thì hiển thị cột rỗng tránh lỗi bảng
                     if(count($detail_live) > 9 && $keyDetail == 9) {
                         if($keyDetail == 9){
