@@ -1107,7 +1107,7 @@ class Log extends CI_Controller
                 ->setCellValue('F'.$count, $mono_feedback_ld['number_student'])
                 ->setCellValue('G'.$count, $mono_feedback_ld['number_thicuoiky'])
                 ->setCellValue('H'.$count, $number_off)
-                ->setCellValue('I'.$count, 'https://qlcl.imap.edu.vn/log/luyen_de?'.$classLink)
+                ->setCellValue('I'.$count, 'https://qlcl.imap.edu.vn/log/thi_cuoi_ky?'.$classLink)
                 ->setCellValue('J'.$count, ($number_off > 0 && (int)$mono_feedback_ld['number_student'] > 0) ? ((($mono_feedback_ld['number_student'] - $number_off) / (int)$mono_feedback_ld['number_student'])*100).'%' : 0);
             $i++;
         }
@@ -1147,6 +1147,11 @@ class Log extends CI_Controller
         if (isset($_REQUEST['type'])) {
             $type = $_REQUEST['type'];
             $params['type'] = $type;
+        }
+
+        if (isset($_REQUEST['class'])) {
+            $class_code = strip_tags($_REQUEST['class']);
+            $params['class_code'] = $class_code;
         }
 
         $list_fb_ld = $this->fu->get_log_thicuoiky_filter($params);
@@ -1189,6 +1194,39 @@ class Log extends CI_Controller
         header('Content-Disposition: attachement; filename="' . $filename . '"');
         ob_end_clean();
         return $objWriter->save('php://output');exit();
+    }
+
+    function thi_cuoi_ky(){
+        guard();
+        $this->load->model('Feed_upgrade_model', 'fu');
+        $shift_text = [
+            's_04' => '09:00 Thứ 5, ngày 04/06/2020',
+            's_06' => '09:00 Thứ 7, ngày 06/06/2020',
+            'c_06' => '14:00 Thứ 7, ngày 06/06/2020',
+            'c_09' => '14:00 Thứ 3, ngày 09/06/2020',
+            's_11' => '09:00 Thứ 5, ngày 11/06/2020',
+            's_13' => '09:00 Thứ 7, ngày 13/06/2020',
+            'c_13' => '14:00 Thứ 7, ngày 13/06/2020',
+        ];
+        $params = [];
+        if (isset($_REQUEST['class'])) {
+            if (isset($_REQUEST['class'])) {
+                $class_code = strip_tags($_REQUEST['class']);
+                $params['class_code'] = $class_code;
+            }else{
+                echo 'Truy cập không hợp lệ'; exit;
+            }
+        }
+
+        $list_fb_ld = $this->fu->get_log_thicuoiky_filter($params);
+
+        $data = array(
+            'rows' => $list_fb_ld,
+            'shift_text' => $shift_text,
+        );
+
+        $this->load->layout('feedback/thicuoiky_detail', $data, false, 'layout_feedback');
+
     }
 
 }

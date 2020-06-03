@@ -430,6 +430,9 @@ class Feed_upgrade_model extends CI_Model{
         if (isset($params['area'])){
             $this->db->where("flo.area",$params['area']);
         }
+        if (isset($params['class_code'])){
+            $this->db->where("fc.class_code",$params['class_code']);
+        }
         $this->db->join("feedback_location as flo","fc.id_location = flo.id");
         $this->db->join("feedback_teacher as ft","ft.teacher_id = fc.main_teacher");
         $this->db->group_by('fc.class_code');
@@ -446,6 +449,9 @@ class Feed_upgrade_model extends CI_Model{
     public function get_log_thicuoiky_filter($params = array()){
         if (isset($params['type'])){
             $this->db->where("ftck.type",$params['type']);
+        }
+        if (isset($params['class_code'])){
+            $this->db->where("fc.class_code",$params['class_code']);
         }
         $this->db->select("ftck.class_code, ftck.hoten, ftck.phone, ftck.email, ftck.shift, flo.name as location, flo.area");
         $this->db->join("feedback_class as fc","fc.class_code = ftck.class_code");
