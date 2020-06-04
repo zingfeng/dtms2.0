@@ -282,7 +282,7 @@ class Request extends CI_Controller
                     $info = array(
                         'name' => strip_tags($_POST['name_location_insert']),
                         'area' => strip_tags($_POST['area']),
-                        'brand' => strip_tags($_POST['brand'])
+                        'brand' => strip_tags(json_encode($_POST['brand']))
                     );
                     $this->feedback->insert_location($info);
                     break;
@@ -291,7 +291,7 @@ class Request extends CI_Controller
                         'id' => strip_tags($_POST['id']),
                         'name' => strip_tags($_POST['name_location_insert']),
                         'area' => strip_tags($_POST['area']),
-                        'brand' => strip_tags($_POST['brand'])
+                        'brand' => strip_tags(json_encode($_POST['brand']))
                     );
                     $this->feedback->edit_location($info);
                     break;
