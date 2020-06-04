@@ -433,9 +433,10 @@ function edit_location(){
             id: location_id,
             name_location_insert: my_info.name_location_insert,
             area: my_info.area,
+            brand: my_info.brand,
         },
         function (data, status) {
-            console.log(data);
+            console.log(my_info.brand, data);
             make_effect_submit_done('btn_ok_location');
         });
 }
@@ -454,6 +455,7 @@ function insert_location(){
             id: my_info.location_id,
             name_location_insert: my_info.name_location_insert,
             area: my_info.area,
+            brand: my_info.brand,
         },
         function (data, status) {
             console.log(data);

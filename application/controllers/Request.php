@@ -281,7 +281,8 @@ class Request extends CI_Controller
                 case 'insert_location':
                     $info = array(
                         'name' => strip_tags($_POST['name_location_insert']),
-                        'area' => strip_tags($_POST['area'])
+                        'area' => strip_tags($_POST['area']),
+                        'brand' => strip_tags($_POST['brand'])
                     );
                     $this->feedback->insert_location($info);
                     break;
@@ -289,7 +290,8 @@ class Request extends CI_Controller
                     $info = array(
                         'id' => strip_tags($_POST['id']),
                         'name' => strip_tags($_POST['name_location_insert']),
-                        'area' => strip_tags($_POST['area'])
+                        'area' => strip_tags($_POST['area']),
+                        'brand' => strip_tags($_POST['brand'])
                     );
                     $this->feedback->edit_location($info);
                     break;

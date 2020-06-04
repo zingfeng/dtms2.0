@@ -11,10 +11,16 @@ class Location extends CI_Controller
         $this->load->model('Feedback_model', 'feedback');
         $location_info = $this->feedback->get_list_location();
 
+        $brands = [
+            'aland' => 'Aland',
+            'ielts' => 'IELTS Fighter',
+            'toeic' => 'TOEIC',
+            'giaotiep' => 'Giao tiếp'
+        ];
+
         $data = array(
             'location_info' => $location_info,
-//            'teacher_info' => $teacher_info,
-//            'teacher_id_to_name' => $teacher_id_to_name,
+            'brands' => $brands
         );
         $this->load->layout('feedback/location', $data, false, 'layout_feedback');
     }

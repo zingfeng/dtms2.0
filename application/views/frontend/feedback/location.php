@@ -32,6 +32,16 @@
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="brand">Thương hiệu</label>
+                            <select class="form-control" id="brand" name="brand" multiple="multiple">
+                                <option value="aland">Aland</option>
+                                <option value="giaotiep">Giao tiếp</option>
+                                <option value="ielts">IELTS Fighter</option>
+                                <option value="toeic">TOEIC</option>
+                            </select>
+                        </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" status="insert" onclick="click_ok_location()" id="btn_ok_location">OK</button>
                     </div>
@@ -45,14 +55,11 @@
             <table id="dtClassList" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th class="th-sm">ID
-                    </th>
-                    <th class="th-sm">Tên
-                    </th>
-                    <th class="th-sm">Khu vực
-                    </th>
-                    <th class="th-sm">Action
-                    </th>
+                    <th class="th-sm">ID</th>
+                    <th class="th-sm">Tên</th>
+                    <th class="th-sm">Khu vực</th>
+                    <th class="th-sm">Thương hiệu</th>
+                    <th class="th-sm">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -62,6 +69,16 @@
                         <td><?php echo $mono_location_info['id']; ?></td>
                         <td><?php echo $mono_location_info['name']; ?></td>
                         <td><?php echo $mono_location_info['area']; ?></td>
+                        <td>
+                            <?php
+                            $detail_brand = json_decode($mono_location_info['brand']);
+                            if(count($detail_brand) > 0) {
+                                foreach ($detail_brand as $brand) {
+                                    echo $brands[$brand];
+                                }
+                            }
+                            ?>
+                        </td>
                         <td style="font-size: x-large">
                             <i info='<?php echo json_encode($mono_location_info); ?>' onclick="load_edit_location(event)" class="fa fa-pencil-square-o" aria-hidden="true" title="Chỉnh sửa"></i>
                             <i info='<?php echo json_encode($mono_location_info); ?>' onclick="load_del_location(event)"  class="fa fa-trash" aria-hidden="true" title="Xóa"></i>
