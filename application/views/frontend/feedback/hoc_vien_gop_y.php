@@ -51,7 +51,7 @@
                                 $brand = 'Ms Hoa Giao Tiếp';
                                 break;
                             case 'ielts':
-                                $brand = 'Ielts Fighter';
+                                $brand = 'IELTS Fighter';
                                 break;
                             case 'toeic':
                                 $brand = 'Anh ngữ Ms Hoa';

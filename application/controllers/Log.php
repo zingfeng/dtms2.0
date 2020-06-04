@@ -147,7 +147,7 @@ class Log extends CI_Controller
             }
         }
 
-        $params['limit'] = 100;
+        $params['limit'] = 1000;
         $params['type_ksgv'] = $type_ksgv;
         $list_fb = $this->fu->get_feedback_ksgv($params);  // zfdev Viết lại phần filter trong model
 
@@ -242,14 +242,14 @@ class Log extends CI_Controller
 
                 $type = $detail[1];
                 if ($type === 'select'){
-                    $mono_point = $detail[3];
-                    if ($mono_point >0){
+                    $mono_point = (int)$detail[3];
+                    if ($mono_point > 0){
                         $mono__sum += $mono_point;
                         $mono__count ++;
                     }
                 }elseif($type === 'ruler'){
                     $mono_point = (int)$detail[3]*2;
-                    if ($mono_point >0){
+                    if ($mono_point > 0){
                         $mono__sum += $mono_point;
                         $mono__count ++;
                     }
@@ -616,11 +616,15 @@ class Log extends CI_Controller
             foreach ($list_fb as $keyfb => $fb){
                 $data_fb = json_decode($fb['detail'], true);
                 if($fb['type'] == 'ksgv2'){
-                    $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[6][3];
-                    $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+                    if((int)$data_fb[6][3] > 0) {
+                        $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[6][3];
+                        $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+                    }
                 }else{
-                    $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[9][3];
-                    $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+                    if((int)$data_fb[9][3] > 0) {
+                        $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[9][3];
+                        $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+                    }
                 }
                 $point_by_class[$fb['class_code']]['class_code'] = $fb['class_code'];
                 $point_by_class[$fb['class_code']]['teacher_name'] = $fb['teacher_name'];

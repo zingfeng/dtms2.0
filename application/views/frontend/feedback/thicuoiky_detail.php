@@ -40,6 +40,7 @@
                     <th class="th-sm">Cơ sở</th>
                     <th class="th-sm">Lớp</th>
                     <th class="th-sm">Lịch thi</th>
+                    <th class="th-sm">Thời gian đăng ký</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,7 @@
                             <td><?php echo $row['location'].' - '.$row['area'] ?></td>
                             <td><?php echo $row['class_code'] ?></td>
                             <td><?php echo $shift_text[$row['shift']]?></td>
+                            <td><?php echo date('d/m/Y - H:i:s', $row['time_end'])?></td>
                         </tr>
                         <?php
                     }
