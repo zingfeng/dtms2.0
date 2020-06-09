@@ -378,7 +378,7 @@ class Feedback extends CI_Controller
             }
 
             if ($info['type'] === 'hocviengopy'){
-                $info = array_merge(array('phone' => (int)strip_tags($this->input->post('phone')), 'location' => (int)strip_tags($this->input->post('location'))), $info);
+                $info = array_merge(array('teacher_name' => strip_tags($this->input->post('teacher_name')), 'phone' => (int)strip_tags($this->input->post('phone')), 'location' => (int)strip_tags($this->input->post('location'))), $info);
                 $this->feedback->insert_feedback_paper_hom_thu_gop_y($info);
                 $this->input_gg_sheets($info);
                 echo json_encode(array('error' => false, 'message' => 'Gửi thành công'));
@@ -563,7 +563,7 @@ class Feedback extends CI_Controller
                 $location = $this->fu->get_location_by_class_code($info['class_code']);
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
                 $type_class = $this->fu->get_type_class_by_class_code($info['class_code']);
-                $arr_insert = array($location['name'].' - '.$location['area'], $info['class_code'], $teacher['manager_email'],$teacher['name'],$info['name_feeder'],$info['phone'], date('d/m/Y', time()), $info['name_feeder'], $comment,'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail?class='.$info['class_code']);
+                $arr_insert = array($location['name'].' - '.$location['area'], $info['class_code'], ($teacher['manager_email'])?$teacher['manager_email']:'',($info['teacher_name'])?$info['teacher_name']:$teacher['name'],$info['name_feeder'],$info['phone'], date('d/m/Y', time()), $comment,'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail?class='.$info['class_code']);
                 $range_insert = $type_class['type'];
                 $values_insert = [
                     $arr_insert
@@ -574,7 +574,7 @@ class Feedback extends CI_Controller
                 $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
                 $arr_insert = [$info['type'],$info['class_code']];
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
-                $arr_insert = array_merge($arr_insert, array($teacher['manager_email'],$teacher['name'],$info['name_feeder'], date('d/m/Y', time())));
+                $arr_insert = array_merge($arr_insert, array(($teacher['manager_email']) ? $teacher['manager_email'] : '',$teacher['name'],$info['name_feeder'], date('d/m/Y', time())));
                 $detail_live = json_decode($info['detail']);
                 $mono__sum = 0;
                 $mono__count = 0;
@@ -737,7 +737,7 @@ class Feedback extends CI_Controller
             $result = $service->spreadsheets_values->append($spreadsheetId,$range_insert,$body,$params,$insert); // cái này ghi mới dữ liệu
 //            $result = $service->spreadsheets_values->update($spreadsheetId,$range_insert,$body,$params); // cái này update dữ liệu
         } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            var_dump( 'Caught exception: ',  $e->getMessage(), "\n");
         }
         return $result;
         // end import to google sheet

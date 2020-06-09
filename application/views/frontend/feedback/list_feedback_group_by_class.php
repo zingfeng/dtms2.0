@@ -21,6 +21,7 @@
     <div class="row" id="body_filter" style="display: none">
         <form action="/log/list_feedback_group_by_class" method="get">
             <input type="hidden" name="fb_type" id="fb_type" value="<?php echo ($fb_type) ? $fb_type : 'ksgv'?>">
+            <input type="hidden" name="type_ksgv" id="type_ksgv" value="<?php echo ($type_ksgv) ? $type_ksgv : 'phone'?>">
             <div class="col col-sm-1">
                 <div class="form-group">
                     <label>Mã lớp :</label>
@@ -301,6 +302,12 @@
 
         if (fb_type !== ''){
             query_string += '&fb_type=' + fb_type;
+        }
+
+        var type_ksgv = $('#type_ksgv').val();
+
+        if (type_ksgv !== ''){
+            query_string += '&type_ksgv=' + type_ksgv;
         }
 
         var teacher = $('#teacher_name').val();

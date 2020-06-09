@@ -566,6 +566,7 @@ class Log extends CI_Controller
             if (isset($_REQUEST['type_ksgv'])) {
                 $type_ksgv = strip_tags($_REQUEST['type_ksgv']);
                 $params_ksgv['type_ksgv'] = $type_ksgv;
+                $params['type_ksgv'] = $type_ksgv;
             }
 
             if (isset($_REQUEST['class'])) {
@@ -597,7 +598,9 @@ class Log extends CI_Controller
         foreach ($location_info as $keyLoca => $location) {
             $arrLocation[$location['id']] = $location;
         }
-        $params['limit'] = 500;
+        if(count($params) == 0) {
+            $params['limit'] = 500;
+        }
         $params = array_merge(array('fb_type' => 'phone'), $params);
 
         $filename = 'Feedback-Group-By-Class.xlsx';
@@ -620,7 +623,8 @@ class Log extends CI_Controller
                         $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[6][3];
                         $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
                     }
-                }else{
+                }
+                if ($fb['type'] == 'dao_tao_onl'){
                     if((int)$data_fb[9][3] > 0) {
                         $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[9][3];
                         $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
@@ -966,6 +970,7 @@ class Log extends CI_Controller
             if (isset($_REQUEST['type_ksgv'])) { // type ksgv: ksgv1, ksgv2, dao_tao_onl,...
                 $type_ksgv = strip_tags($_REQUEST['type_ksgv']);
                 $params_ksgv['type_ksgv'] = $type_ksgv;
+                $params['type_ksgv'] = $type_ksgv;
             }
 
             if (isset($_REQUEST['class'])) {
