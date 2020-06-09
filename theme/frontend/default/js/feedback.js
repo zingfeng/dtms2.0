@@ -193,6 +193,11 @@ function load_get_link_class(event) {
     // alert('Link feedback: ' + link_feedback + '\nĐã copy vào Clipboard !');
 }
 
+function get_qrcode(event) {
+    var url = 'http://imap.test/genqr.html?url='+encodeURIComponent($('#' + event).val());
+    window.open(url, '_blank');
+}
+
 function SaveFromDateToDateLink() {
     $("#btn_save_change_date").attr("disabled", true);
     var my_info = captain.getForm('box_edit_date');

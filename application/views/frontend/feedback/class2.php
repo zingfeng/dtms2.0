@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <h4>Link Feedback Form khảo sát online giữa kỳ</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_feedback_online">
                         </div>
@@ -17,13 +17,16 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_online')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_online')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_feedback_online')">QR Code</button>
                     </div>
                 </div>
                 <h4>Link Feedback Form khảo sát offline giữa kỳ</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_feedback_offline">
                         </div>
@@ -31,13 +34,16 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_offline')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_offline')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_feedback_offline')">QR Code</button>
                     </div>
                 </div>
                 <h4>Link Feedback Form khảo sát cuối kỳ</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_feedback_lan2">
                         </div>
@@ -45,13 +51,16 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan2')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan2')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_feedback_lan2')">QR Code</button>
                     </div>
                 </div>
                 <h4>Link hòm thư góp ý</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_feedback_homthugopy">
                         </div>
@@ -59,13 +68,16 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_homthugopy')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_homthugopy')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_feedback_homthugopy')">QR Code</button>
                     </div>
                 </div>
                 <h4>Link đăng ký lớp luyện đề</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_feedback_luyende">
                         </div>
@@ -73,13 +85,16 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_luyende')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_luyende')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_feedback_luyende')">QR Code</button>
                     </div>
                 </div>
                 <h4>Link đăng ký thi cuối kỳ</h4>
                 <div class="row">
-                    <div class="col col-sm-12 col-md-8">
+                    <div class="col col-sm-12 col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" id="link_thicuoiky">
                         </div>
@@ -87,8 +102,11 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_thicuoiky')" >Xem mẫu</button>
                     </div>
-                    <div class="col col-sm-12 col-md-2">
+                    <div class="col col-sm-12 col-md-2" style="text-align: right">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_thicuoiky')">Copy</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" onclick="get_qrcode('link_thicuoiky')">QR Code</button>
                     </div>
                 </div>
             </div>
