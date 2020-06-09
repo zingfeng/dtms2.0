@@ -74,7 +74,7 @@
                             $detail_brand = json_decode($mono_location_info['brand']);
                             if(count($detail_brand) > 0) {
                                 foreach ($detail_brand as $brand) {
-                                    echo $brands[$brand];
+                                    echo $brands[$brand].', ';
                                 }
                             }
                             ?>
