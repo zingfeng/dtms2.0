@@ -59,6 +59,22 @@ class Log extends CI_Controller
                     '9. Bạn có đóng góp gì cho giáo viên và trung tâm không?',
                 );
                 break;
+            case 'giua_ky_off':
+                $type_ksgv = 'giua_ky_off';
+                $list_quest_ruler = array(
+                    '1. TỐC ĐỘ giảng dạy có phù hợp không?',
+                    '2. Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?',
+                    '3. Giảng viên có MỞ RỘNG thêm kiến thức không?',
+                    '4. Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?',
+                    '5. Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?',
+                );
+                $list_quest_select = array(
+                    '6. Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?',
+                )
+                ;$list_quest_text = array(
+                    '7. Bạn có đóng góp gì cho giáo viên và trung tâm không?',
+                );
+                break;
             default:
                 $type_ksgv = 'ksgv1';
                 $list_quest_select = array(
@@ -161,10 +177,11 @@ class Log extends CI_Controller
 
         switch($_GET['type_ksgv']){
             case 'ksgv2':
-                $filename = 'Feedback-KSGV-Lan2.xlsx';
+                $filename = 'Feedback-Cuoi_ky.xlsx';
                 break;
             case 'dao_tao_onl':
-                $filename = 'Feedback-Dao-Tao-Online.xlsx';
+            case 'giua_ky_off':
+                $filename = 'Feedback-Giua_ky.xlsx';
                 break;
             default:
                 $filename = 'Feedback-KSGV-Lan1.xlsx';
@@ -181,10 +198,11 @@ class Log extends CI_Controller
             }
             switch ($mono_feedback['type']) {
                 case 'ksgv2':
-                    $type = 'Online cuối kỳ';
+                    $type = 'Cuối kỳ';
                     break;
                 case 'dao_tao_onl':
-                    $type = 'Online giữa kỳ';
+                case 'giua_ky_off':
+                    $type = 'Giữa kỳ';
                     break;
                 default:
                     $type = '';
@@ -630,6 +648,12 @@ class Log extends CI_Controller
                         $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
                     }
                 }
+                if ($fb['type'] == 'giua_ky_off'){
+                    if((int)$data_fb[7][3] > 0) {
+                        $point_by_class[$fb['class_code']]['total_point'] = (int)$point_by_class[$fb['class_code']]['total_point']+(int)$data_fb[7][3];
+                        $point_by_class[$fb['class_code']]['count_point'] = (int)$point_by_class[$fb['class_code']]['count_point']+1;
+                    }
+                }
                 $point_by_class[$fb['class_code']]['class_code'] = $fb['class_code'];
                 $point_by_class[$fb['class_code']]['teacher_name'] = $fb['teacher_name'];
                 $point_by_class[$fb['class_code']]['time_end'] = $fb['time_end'];
@@ -668,10 +692,11 @@ class Log extends CI_Controller
             } else {
                 switch ($mono_feedback['type']) {
                     case 'ksgv2':
-                        $type = 'Online cuối kỳ';
+                        $type = 'Cuối kỳ';
                         break;
+                    case 'giua_ky_off':
                     case 'dao_tao_onl':
-                        $type = 'Online giữa kỳ';
+                        $type = 'Giữa kỳ';
                         break;
                     default:
                         $type = '';
@@ -1016,7 +1041,7 @@ class Log extends CI_Controller
             $list_total = $this->fu->get_total_fb_phone_by_class($params_phone);
         }else {
             $params_ksgv = array_merge(array('class_id' => $list_class_ids), $params_ksgv);
-            $params_ksgv = array_merge(array('type_ksgv' => 'dao_tao_onl'), $params_ksgv);
+            $params_ksgv = array_merge(array('type_ksgv' => $fb_type), $params_ksgv);
             $list_total = $this->fu->get_total_fb_ksgv_by_class($params_ksgv);
         }
 

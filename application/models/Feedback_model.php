@@ -909,6 +909,7 @@ class Feedback_model extends CI_Model
         $data = array_merge($info, $plus);
         $this->db->insert('feedback_ksgv', $data);
         $this->mark_point_class($info['class_code']);
+        return $this->db->insert_id();
     }
 
     public function insert_feedback_paper_hom_thu_gop_y($info)

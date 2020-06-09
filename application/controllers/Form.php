@@ -990,4 +990,62 @@ class Form extends CI_Controller
         $this->load->view('feedback/feedback_dao_tao_online', $data, false);
     }
 
+    public function giua_ky_offline()
+    {
+        $this->load->model('Feedback_model', 'feedback');
+
+        $location_info = $this->feedback->get_list_location();
+        $arr_location_info = array();
+        foreach ($location_info as $mono_location) {
+            $arr_location_info[$mono_location['id']] = $mono_location['name'] . ' - Khu vực ' . $mono_location['area'];
+        }
+
+        $info_class = array();
+        $list_info_class = array();
+        if (isset($_GET['my_class'])) {
+            $class_code = mb_strtolower($_GET['my_class']);
+            $info_class = $this->feedback->get_info_class_by_class_code($class_code);
+        } else {
+            $list_info_class = $this->feedback->get_list_class_code_opening('toeic');
+        }
+
+        $list_quest_ruler = array(
+            'Về Giảng viên' => array(
+                'TỐC ĐỘ giảng dạy có phù hợp không?',
+                'Giảng viên có TƯƠNG TÁC nhiều với cá nhân không?',
+                'Giảng viên có MỞ RỘNG thêm kiến thức không?',
+                'Giảng viên có CUNG CẤP LƯỢNG TỪ VỰNG (glossary) mỗi buổi học hay không?',
+                'Giảng viên có GIAO BÀI TẬP về nhà và KIỂM TRA đầy đủ hay không?'
+            )
+        );
+
+
+        $list_quest_select = array(
+            'Bạn sẽ đánh giá giáo viên của mình bao nhiêu điểm?'
+        );
+
+        $list_quest_text = array(
+            'Bạn có đóng góp gì cho giáo viên và trung tâm không?'
+        );
+
+        $time_start = time();
+
+        $token_feedback = $this->config->item('token_feedback');
+        $token = md5($token_feedback . $time_start);
+
+        $data = array(
+            'type_class' => 'giua_ky_off',
+            'time_start' => $time_start,
+            'token' => $token,
+            'info_class' => $info_class,
+            'list_info_class' => $list_info_class,
+            'list_quest_ruler' => $list_quest_ruler,
+            'list_quest_select' => $list_quest_select,
+            'list_quest_text' => $list_quest_text,
+            'arr_location_info' => $arr_location_info,
+        );
+
+        $this->load->view('feedback/feedback_dao_tao_online', $data, false);
+    }
+
 }

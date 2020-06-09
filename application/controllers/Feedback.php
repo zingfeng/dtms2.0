@@ -331,7 +331,6 @@ class Feedback extends CI_Controller
 
                 $this->feedback->insert_feedback_luyen_de($info);
                 $this->input_gg_sheets($info_gg_sheets);
-                var_dump($info['type']);
                 echo '<pre>'; print_r($_REQUEST); echo '</pre>';
                 exit;
             }
@@ -393,9 +392,24 @@ class Feedback extends CI_Controller
                         case 'ksgv1':
                         case 'ksgv2':
                         case 'dao_tao_onl':
-                            $info['age'] = strip_tags($this->input->post('age'));
-                            $this->feedback->insert_feedback_paper_ksgv($info);
-                            $this->input_gg_sheets($info);
+                        case 'giua_ky_off':
+                            $this->load->library('form_validation');
+                            $valid = array(
+                                array(
+                                    'field'   => 'name_feeder',
+                                    'label'   => 'Họ tên',
+                                    'rules'   => 'required'
+                                )
+                            );
+                            $this->form_validation->set_rules($valid);
+                            if ($this->form_validation->run() == true) {
+                                $info['age'] = strip_tags($this->input->post('age'));
+                                $result = $this->feedback->insert_feedback_paper_ksgv($info);
+                                $this->input_gg_sheets($info);
+                                return $this->output->set_output(json_encode(array('status' => 'success', 'result' => $result, 'message' => 'Gửi thành công')));
+                            } else {
+                                return $this->output->set_output(json_encode(array('status' => 'error','valid_rule' => $this->form_validation->error_array(), 'message' => $this->lang->line("common_update_validator_error"))));
+                            }
                             break;
                         case 'zoom':
                             $this->feedback->insert_feedback_zoom($info);
@@ -514,7 +528,7 @@ class Feedback extends CI_Controller
     public function input_gg_sheets($info)
     {
         $this->load->model('Feed_upgrade_model','fu');
-        $client = getClientGoogle();
+        $client =  ();
         $service = new Google_Service_Sheets($client);
         switch($info['type']){
             case 'luyende':
@@ -623,11 +637,15 @@ class Feedback extends CI_Controller
                 ];
                 break;
             case 'dao_tao_onl':
+            case 'giua_ky_off':
+                if($info['type'] == 'giua_ky_off') {
+                    $range_insert = 'Sheet2';
+                }
                 $spreadsheetId = '1UehwKmNe5U7v5RkAX0suplh-5o_iCwrVSYMH2OzcI3s';
                 $classLink = 'https://qlcl.imap.edu.vn/feedback/feedback_ksgv_detail?class_code='.$info['class_code'].'&type_ksgv='.$info['type'];
                 $arr_insert = [$info['type'],$info['class_code']];
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
-                $arr_insert = array_merge($arr_insert, array($teacher['manager_email'],$teacher['name'],$info['name_feeder'], date('d/m/Y', time())));
+                $arr_insert = array_merge($arr_insert, array(($teacher['manager_email']) ? $teacher['manager_email'] : '',$teacher['name'],$info['name_feeder'], date('d/m/Y', time())));
                 $detail_live = json_decode($info['detail']);
                 $mono__sum = 0;
                 $mono__count = 0;

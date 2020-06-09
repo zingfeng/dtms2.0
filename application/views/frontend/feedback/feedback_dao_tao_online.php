@@ -49,8 +49,10 @@
             <!--            <hr>-->
 
             <div class="form-group" style="padding: 5px 20px; font-size: large;">
-                <label for="usr">Họ tên</label>
-                <input type="text" class="form-control" id="name_feeder" placeholder="Không bắt buộc">
+                <label for="usr" style="margin-bottom: 0;">Họ tên (Bắt buộc)</label> <br>
+                <small>Trung tâm cam kết mọi thông tin của bạn sẽ được bảo mật</small>
+                <input type="text" class="form-control" id="name_feeder" placeholder="Họ và tên">
+                <span class="invalid-feedback" style="font-size: 12px; color: darkred;" id="fb_name_validation"></span>
             </div>
             <div class="form-group" style="display: none">
                 <label for="usr">Time start</label>
@@ -142,14 +144,9 @@
                         value,
                         text,
                     ]);
-
                     break;
-
             }
-
         });
-
-        console.log(list_feedback);
 
         var class_code = $('#class_info_feedback ').val();
         var type = $('#type_feedback').val();
@@ -158,6 +155,14 @@
         var token = $('#token').val();
 
         var detail = JSON.stringify(list_feedback);
+
+        if(!$.trim(name_feeder)) {
+            $('#fb_name_validation').text('Bạn chưa nhập tên');
+            $('#name_feeder').focus();
+            return;
+        } else {
+            $('#fb_name_validation').text('');
+        }
 
         $.post("/feedback/send_feedback",
             {
@@ -169,9 +174,8 @@
                 detail: detail,
             },
             function (data, status) {
-                console.log(data);
                 alert('Thank you!');
-                // location.reload();
+                location.reload();
             });
 
     }

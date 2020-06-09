@@ -276,6 +276,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="/log/list_feedback_group_by_class?fb_type=phone">Lịch sử Feedback Phone</a></li>
                         <li><a href="/log/list_feedback_group_by_class?fb_type=ksgv&type_ksgv=dao_tao_onl">Lịch sử Feedback Online giữa kỳ</a></li>
+                        <li><a href="/log/list_feedback_group_by_class?fb_type=ksgv&type_ksgv=giua_ky_off">Lịch sử Feedback Offline giữa kỳ</a></li>
                         <li><a href="/log/list_feedback_group_by_class?fb_type=ksgv&type_ksgv=ksgv2">Lịch sử Feedback Online cuối kỳ</a></li>
                         <li><a href="/feedback/hom_thu_gop_y_detail">Lịch sử Hòm thư góp ý</a></li>
                     </ul>

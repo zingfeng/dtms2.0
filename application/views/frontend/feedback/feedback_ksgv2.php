@@ -35,12 +35,8 @@
                         <h2 class="title_top">PHIẾU KHẢO SÁT ĐỘ HÀI LÒNG VỀ CHẤT LƯỢNG ĐÀO TẠO TẠI IMAP LẦN 2
                         </h2>
                     </div>
-                    
                 </div>
-               
-                <p class="description">
-                    Với mong muốn không ngừng năng cao chất lượng đào tạo tại IMAP, bạn vui lòng dành chút thời gian hoàn thành "" PHIẾU KHẢO SÁT CHẤT LƯỢNG"" dưới đây. Sự đóng góp ý kiến của bạn sẽ giúp IMAP ngày một hoàn thiện và nỗ lực hết sức để mang đến cho bạn trải nghiệm tốt nhất.
-                    </p>
+                <p class="description">Với mong muốn không ngừng năng cao chất lượng đào tạo tại IMAP, bạn vui lòng dành chút thời gian hoàn thành "" PHIẾU KHẢO SÁT CHẤT LƯỢNG"" dưới đây. Sự đóng góp ý kiến của bạn sẽ giúp IMAP ngày một hoàn thiện và nỗ lực hết sức để mang đến cho bạn trải nghiệm tốt nhất.</p>
             </div>
 
             <?php  if (count($info_class) > 0 ){ ?>
@@ -67,24 +63,22 @@
                 </div><?php
             }
             ?>
-            <!--            <hr>-->
-
             <div class="row">
                 <div class="col col-sm-12 col-md-8">
                     <div class="form-group" style="padding: 5px 20px; font-size: large;">
-                        <label for="usr">Họ tên</label>
-                        <input type="text" class="form-control" id="name_feeder" placeholder="">
+                        <label for="usr" style="margin-bottom: 0;">Họ tên (Bắt buộc)</label> <br>
+                        <small>Trung tâm cam kết mọi thông tin của bạn sẽ được bảo mật</small>
+                        <input type="text" class="form-control" id="name_feeder" placeholder="Họ và tên">
+                        <span class="invalid-feedback" style="font-size: 12px; color: darkred;" id="fb_name_validation"></span>
                     </div>
                 </div>
                 <div class="col col-sm-12 col-md-4">
                     <div class="form-group" style="padding: 5px 20px; font-size: large;">
                         <label for="usr">Độ tuổi học viên</label>
                         <input type="number" class="form-control" id="age" placeholder="">
-
                     </div>
                 </div>
             </div>
-
 
             <div class="form-group" style="display: none">
                 <label for="usr">Time start</label>
@@ -102,12 +96,9 @@
             </div>
 
             <h3 class="title_group_quest"> Vui lòng chọn mức điểm tương ứng với câu hỏi</h3>
-            <br><?php
+            <br>
+            <?php
             creat_feedback_list_question_select_fast2($list_quest_select,200);
-            ?>
-
-<!--             <h3 class="title_group_quest">Đóng góp ý kiến</h3> --><?php
-//            var_dump($list_quest_text);
             creat_feedback_list_question_text2($list_quest_text,300);
             ?>
 
@@ -118,18 +109,14 @@
     font-style: italic;
 ">Chân thành cảm ơn những ý kiến đóng góp quý báu của Bạn, IMAP sẽ không ngừng nỗ lực để thực hiện sứ mệnh của mình !</p>
                 </div>
-
             </div>
             <div style="padding: 10px; text-align: center">
                 <button class="btn btn-lg btn-success mx-auto btn_send_feedback" onclick="Send_feedback()">Gửi</button>
             </div>
         </div>
-
         <div class="col-sm-0 col-md-2 col-lg-2 col-xl-3" ></div>
     </div>
-
 </div>
-
 
 <div class="container">
     <h5>. </h5>
@@ -188,14 +175,9 @@
                         value,
                         text,
                     ]);
-
                     break;
-
             }
-
         });
-
-        console.log(list_feedback);
 
         var class_code = $('#class_info_feedback ').val();
         var age = $('#age ').val();
@@ -205,6 +187,14 @@
         var token = $('#token').val();
 
         var detail = JSON.stringify(list_feedback);
+
+        if(!$.trim(name_feeder)) {
+            $('#fb_name_validation').text('Bạn chưa nhập tên');
+            $('#name_feeder').focus();
+            return;
+        } else {
+            $('#fb_name_validation').text('');
+        }
 
         $.post("/feedback/send_feedback",
             {
@@ -217,11 +207,9 @@
                 detail: detail,
             },
             function (data, status) {
-                console.log(data);
                 alert('Thank you!');
                 location.reload();
             });
-
     }
 
     function ClickChild(e) {
