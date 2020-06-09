@@ -194,7 +194,7 @@ function load_get_link_class(event) {
 }
 
 function get_qrcode(event) {
-    var url = 'http://imap.test/genqr.html?url='+encodeURIComponent($('#' + event).val());
+    var url = 'https://imap.edu.vn/genqr.html?url='+encodeURIComponent($('#' + event).val());
     window.open(url, '_blank');
 }
 
