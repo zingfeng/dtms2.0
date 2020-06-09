@@ -563,7 +563,7 @@ class Feedback extends CI_Controller
                 $location = $this->fu->get_location_by_class_code($info['class_code']);
                 $teacher = $this->fu->get_teacher_by_class_code($info['class_code']);
                 $type_class = $this->fu->get_type_class_by_class_code($info['class_code']);
-                $arr_insert = array($location['name'].' - '.$location['area'], $info['class_code'], ($teacher['manager_email'])?$teacher['manager_email']:'',($info['teacher_name'])?$info['teacher_name']:$teacher['name'],$info['name_feeder'],$info['phone'], date('d/m/Y', time()), $comment,'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail?class='.$info['class_code']);
+                $arr_insert = array($location['name'].' - '.$location['area'], $info['class_code'], ($teacher['manager_email'])?$teacher['manager_email']:'',$teacher['name'].' - '.$info['teacher_name'],$info['name_feeder'],$info['phone'], date('d/m/Y', time()), $comment,'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail?class='.$info['class_code']);
                 $range_insert = $type_class['type'];
                 $values_insert = [
                     $arr_insert
