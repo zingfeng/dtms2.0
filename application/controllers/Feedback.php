@@ -528,7 +528,7 @@ class Feedback extends CI_Controller
     public function input_gg_sheets($info)
     {
         $this->load->model('Feed_upgrade_model','fu');
-        $client =  ();
+        $client = getClientGoogle();
         $service = new Google_Service_Sheets($client);
         switch($info['type']){
             case 'luyende':

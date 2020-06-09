@@ -1,7 +1,3 @@
-<?php
-//var_dump($class_info);
-//var_dump($teacher_info);
-?>
 <div class="modal" id="modal_get_link">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -40,27 +36,8 @@
                     </div>
                 </div>
                 <hr>
-<!--                <h4>-->
-<!--                    Link Feedback Form khảo sát lớp lần 1-->
-<!--                </h4>-->
-<!--                <div class="row">-->
-<!--                    <div class="col col-sm-12 col-md-8">-->
-<!--                        <div class="form-group">-->
-<!--                            <input type="text" class="form-control" id="link_feedback_lan1">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col col-sm-12 col-md-2">-->
-<!--                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>-->
-<!--                    </div>-->
-<!--                    <div class="col col-sm-12 col-md-2">-->
-<!--                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>-->
-<!--                    </div>-->
-<!---->
-<!--                </div>-->
 
-                <h4>
-                    Link hòm thư góp ý
-                </h4>
+                <h4>Link hòm thư góp ý</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -75,10 +52,7 @@
                     </div>
                 </div>
 
-                <h4>
-<!--                    Link Feedback đào tạo online-->
-                    Link Feedback Form khảo sát giữa kỳ
-                </h4>
+                <h4>Link Feedback Form khảo sát online giữa kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -91,12 +65,23 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_online')">Copy</button>
                     </div>
-
                 </div>
-                <h4>
-                    <!--                    Link Feedback Form khảo sát lớp lần 2-->
-                    Link Feedback Form khảo sát cuối kỳ
-                </h4>
+
+                <h4>Link Feedback Form khảo sát offline giữa kỳ</h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_feedback_offline">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_offline')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_offline')">Copy</button>
+                    </div>
+                </div>
+                <h4>Link Feedback Form khảo sát cuối kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -109,12 +94,8 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan2')">Copy</button>
                     </div>
-
                 </div>
-
-                <h4>
-                    Link đăng ký lớp luyện đề
-                </h4>
+                <h4>Link đăng ký lớp luyện đề</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -127,12 +108,8 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_luyende')">Copy</button>
                     </div>
-
                 </div>
-
-                <h4>
-                    Link đăng ký thi cuối kỳ
-                </h4>
+                <h4>Link đăng ký thi cuối kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -146,8 +123,6 @@
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_thicuoiky')">Copy</button>
                     </div>
                 </div>
-
-
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -158,7 +133,6 @@
 </div>
 <div class="container-fluid area" id="class">
     <div class="row" id="insert_class" style="padding: 15px">
-
         <h4  class="">Danh sách lớp học tại cơ sở <?php
             foreach ($location_info as $mono_location_info){
                 if ($_SESSION['id_location'] == $mono_location_info['id']){
@@ -232,7 +206,6 @@
                 </div>
                 <div class="col col-sm-6 col-md-3">
                     <p class="title_filter">by point</p>
-
                     <div class="row">
                         <div class="col col-sm-6">
                             <div class="form-group">
@@ -254,8 +227,7 @@
                         <div class="checkbox">
                             <label><input  id="filter-teacher-anchor" type="checkbox" onchange="ClickSelectLabel('teacher')" checked > Select All </label>
                         </div>
-                        <?php
-                        foreach ($teacher_info as $item_teacher) {
+                        <?php foreach ($teacher_info as $item_teacher) {
                             if (isset($_GET['teacher'])){
                                 $teacher_live = json_decode($_GET['teacher'],true);
                                 if ( in_array($item_teacher['teacher_id'], $teacher_live)){
@@ -265,14 +237,11 @@
                                 }
                             }else{
                                 $checked_teacher = ' checked ';
-                            }
-                                ?>
+                            } ?>
                             <div class="checkbox">
                                 <label><input class="filter-teacher" type="checkbox" value="<?php echo $item_teacher['teacher_id']; ?>" <?php echo $checked_teacher; ?> ><?php echo $item_teacher['name']; ?></label>
                             </div>
-                        <?php
-                            }
-                        ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -307,8 +276,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Class</h4>
                     </div>
                     <div class="modal-body">
@@ -369,11 +337,7 @@
                                         foreach ($location_info as $mono_location_info){
                                             $location_access[$mono_location_info['id']] =  $mono_location_info['name'] .' - Khu vực '.$mono_location_info['area'];
                                             ?>
-                                            <option <?php
-                                                if ($_SESSION['id_location'] == $mono_location_info['id']){
-                                                    echo 'selected="selected"';
-                                                }
-                                            ?> value="<?php echo $mono_location_info['id'];?>"><?php echo $mono_location_info['name'];?> - Khu vực <?php echo $mono_location_info['area'];?></option>
+                                            <option <?php if ($_SESSION['id_location'] == $mono_location_info['id']){echo 'selected="selected"';} ?> value="<?php echo $mono_location_info['id'];?>"><?php echo $mono_location_info['name'];?> - Khu vực <?php echo $mono_location_info['area'];?></option>
                                         <?php }
                                     ?>
                                 </select>
@@ -386,11 +350,9 @@
                         <div class="form-group">
                             <label for="usr">Danh sách giảng viên</label>
                             <select class="js-example-basic-multiple select2_input" id="class_teacher" name="states[]" multiple="multiple">
-                                <?php
-                                    foreach ($teacher_info as $mono_teacher){ ?>
-                                        <option value="<?php echo $mono_teacher['teacher_id'] ?>"><?php echo $mono_teacher['name'] ?></option>
-                                    <?php }
-                                ?>
+                                <?php foreach ($teacher_info as $mono_teacher){ ?>
+                                    <option value="<?php echo $mono_teacher['teacher_id'] ?>"><?php echo $mono_teacher['name'] ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -400,7 +362,6 @@
                 </div>
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <!--            class_id	type	class_code	list_teacher	more_info	time_start	time_end  -->
         <div class="list_in_table container-fluid" id="list_class">
             <table id="dtClassList" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <style>

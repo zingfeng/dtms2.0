@@ -165,6 +165,7 @@ function load_get_link_class(event) {
     var link_feedback_slide = 'https://qlcl.imap.edu.vn/feedback/slide?my_class=' + info_live.class_code;
     var link_feedback_homthugopy = 'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
     var link_feedback_online = 'https://qlcl.imap.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
+    var link_feedback_offline = 'https://qlcl.imap.edu.vn/form/giua_ky_offline?type=' + info_live.type +'&my_class='+ info_live.class_code;
     var link_feedback_luyende = 'https://qlcl.imap.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
     var link_thicuoiky = 'https://qlcl.imap.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
 
@@ -180,6 +181,7 @@ function load_get_link_class(event) {
     $('#link_feedback_homthugopy').val(link_feedback_homthugopy);
 
     $('#link_feedback_online').val(link_feedback_online);
+    $('#link_feedback_offline').val(link_feedback_offline);
     $('#link_feedback_luyende').val(link_feedback_luyende);
     $('#link_thicuoiky').val(link_thicuoiky);
 

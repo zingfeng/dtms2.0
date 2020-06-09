@@ -1,43 +1,13 @@
-<?php
-//var_dump($class_info);
-//var_dump($teacher_info);
-?>
-
 <div class="modal" id="modal_get_link">
     <div class="modal-dialog">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title"> Link feedback lớp <span id="modal_link_feedback" style="font-weight: bold"></span></h4>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body">
-<!--                <h4>-->
-<!--                    Link Feedback Form khảo sát lớp lần 1-->
-<!--                </h4>-->
-<!--                <div class="row">-->
-<!--                    <div class="col col-sm-12 col-md-8">-->
-<!--                        <div class="form-group">-->
-<!--                            <input type="text" class="form-control" id="link_feedback_lan1">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col col-sm-12 col-md-2">-->
-<!---->
-<!--                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_lan1')" >Xem mẫu</button>-->
-<!--                    </div>-->
-<!--                    <div class="col col-sm-12 col-md-2">-->
-<!--                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan1')">Copy</button>-->
-<!--                    </div>-->
-<!---->
-<!--                </div>-->
-
-                <h4>
-                    <!--                    Link Feedback đào tạo online-->
-                    Link Feedback Form khảo sát giữa kỳ
-
-                </h4>
+                <h4>Link Feedback Form khảo sát online giữa kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -50,12 +20,22 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_online')">Copy</button>
                     </div>
-
                 </div>
-
-                <h4>
-                    Link Feedback Form khảo sát cuối kỳ
-                </h4>
+                <h4>Link Feedback Form khảo sát offline giữa kỳ</h4>
+                <div class="row">
+                    <div class="col col-sm-12 col-md-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="link_feedback_offline">
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-warning" id="btn_copy" onclick="ClickOpenLink__('link_feedback_offline')" >Xem mẫu</button>
+                    </div>
+                    <div class="col col-sm-12 col-md-2">
+                        <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_offline')">Copy</button>
+                    </div>
+                </div>
+                <h4>Link Feedback Form khảo sát cuối kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -68,12 +48,8 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_lan2')">Copy</button>
                     </div>
-
                 </div>
-
-                <h4>
-                    Link hòm thư góp ý
-                </h4>
+                <h4>Link hòm thư góp ý</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -86,12 +62,8 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_homthugopy')">Copy</button>
                     </div>
-
                 </div>
-
-                <h4>
-                    Link đăng ký lớp luyện đề
-                </h4>
+                <h4>Link đăng ký lớp luyện đề</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -104,11 +76,8 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_feedback_luyende')">Copy</button>
                     </div>
-
                 </div>
-                <h4>
-                    Link đăng ký thi cuối kỳ
-                </h4>
+                <h4>Link đăng ký thi cuối kỳ</h4>
                 <div class="row">
                     <div class="col col-sm-12 col-md-8">
                         <div class="form-group">
@@ -121,18 +90,13 @@
                     <div class="col col-sm-12 col-md-2">
                         <button class="btn btn-primary" id="btn_copy" onclick="ClickCopy__('link_thicuoiky')">Copy</button>
                     </div>
-
                 </div>
-
-
-
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -140,24 +104,17 @@
 
 <div class="container-fluid area" id="class">
     <div class="row" id="insert_class" style="padding: 15px">
-
         <h4  class="">Quản trị danh sách lớp học </h4>
-
         <div class="menu" id="menu_teacher">
             <button id="add_feedback_class" type="button" data-toggle="modal" data-target="#insert_class_modal" style="border-radius: 0" class="btn btn-primary">
                 <i class="fa fa-plus" aria-hidden="true"></i> Thêm lớp học
             </button>
-
             <br>
         </div>
-
         <div class="filter_div">
             <div class="hover-point" onclick="$('#body_filter').toggle();">
                 <h4 class="text-primary" style="display: inline-block">Tìm kiếm</h4>
             </div>
-            
-           
-
             <div class="row" id="body_filter" style="<?php
             if ( (isset($_GET['type'])) || (isset($_GET['min'])) || (isset($_GET['max'])) || (isset($_GET['location'])) || (isset($_GET['area'])) || (isset($_GET['teacher']))  ){
 
@@ -165,8 +122,6 @@
                 echo ' display:none; ';
             }
             ?>" >
-
-
                 <div class="col col-sm-6 col-md-2">
                     <p class="title_filter">Lọc bằng mã lớp </p>
                     <div>
@@ -216,15 +171,10 @@
                             <?php
                         }
                         ?>
-
-
-
                     </div>
                 </div>
-
                 <div class="col col-sm-6 col-md-2">
                     <p class="title_filter">Lọc theo điểm</p>
-
                     <div class="row">
                         <div class="col col-sm-6">
                             <div class="form-group">
@@ -239,7 +189,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col col-sm-6 col-md-2">
                     <p class="title_filter">Lọc theo chi nhánh  </p>
@@ -248,9 +197,7 @@
                         <div class="checkbox">
                             <label><input  id="filter-branch-anchor" type="checkbox" onchange="ClickSelectLabel('branch')" checked > Select All </label>
                         </div>
-
-                        <?php
-                        foreach ($location_info as $_mono_location_info){
+                        <?php foreach ($location_info as $_mono_location_info){
                             if (isset($_GET['location'])){
                                 $location_live = json_decode($_GET['location'],true);
                                 if (in_array($_mono_location_info['id'],$location_live)){
@@ -265,9 +212,7 @@
                             <div class="checkbox">
                                 <label><input class="filter-branch" type="checkbox" value="<?php echo $_mono_location_info['id']?>" <?php echo $checked; ?> ><?php echo $_mono_location_info['name']?> - Khu vực <?php echo $_mono_location_info['area']?></label>
                             </div>
-                        <?php
-                        }
-                        ?>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -277,7 +222,6 @@
                         <div class="checkbox">
                             <label><input  id="filter-area-anchor" type="checkbox" onchange="ClickSelectLabel('area')" checked > Select All </label>
                         </div>
-
                         <div class="checkbox">
                             <?php
                                 if(isset($_GET['area'])){
@@ -340,20 +284,15 @@
                             ?>
                             <label><input class="filter-area"  type="checkbox" value="Tỉnh thành khác" <?php echo $checked_area; ?>>Tỉnh thành khác</label>
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col col-sm-6 col-md-2">
                     <p class="title_filter">Lọc theo giáo viên</p>
                     <div style="    max-height: 500px; overflow: auto;">
-
                         <div class="checkbox">
                             <label><input  id="filter-teacher-anchor" type="checkbox" onchange="ClickSelectLabel('teacher')" checked > Select All </label>
                         </div>
-
-                        <?php
-                        foreach ($teacher_info as $item_teacher) {
+                        <?php foreach ($teacher_info as $item_teacher) {
 
                             if (isset($_GET['teacher'])){
                                 $teacher_live = json_decode($_GET['teacher'],true);
@@ -364,28 +303,20 @@
                                 }
                             }else{
                                 $checked_teacher = ' checked ';
-                            }
-
-                                ?>
+                            } ?>
                             <div class="checkbox">
                                 <label><input class="filter-teacher" type="checkbox" value="<?php echo $item_teacher['teacher_id']; ?>" <?php echo $checked_teacher; ?> ><?php echo $item_teacher['name']; ?></label>
                             </div>
-                        <?php
-                            }
-                        ?>
+                        <?php } ?>
                     </div>
                 </div>
-
                 <div class="col col-sm-6">
                     <div style="padding: 20px">
                         <button class="btn btn-primary btn-sm" style="float: left;padding-left: 120px; padding-right: 120px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Filter - lọc</button>
                         <a href="/feedback/class_"><button class="btn btn-danger btn-sm" style="float: left;margin-left: 20px; padding-right: 20px; margin-right: 20px;" onclick="clickFilter()"><i class="fa fa-filter"></i> Reset</button></a>
-
                     </div>
                 </div>
-
             </div>
-
         </div>
         <div class="modal fade" id="ringthebelltype">
             <div class="modal-dialog">
@@ -417,8 +348,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Class</h4>
                     </div>
                     <div class="modal-body">
@@ -453,7 +383,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -487,10 +416,8 @@
                             <label for="comment">Thông tin thêm</label>
                             <textarea class="form-control" rows="3" id="class_more_info"></textarea>
                         </div>
-
                         <div class="form-group">
                             <label for="usr">Danh sách giảng viên</label>
-
                             <select class="js-example-basic-multiple select2_input" id="class_teacher" name="states[]" multiple="multiple">
                                 <?php
                                     foreach ($teacher_info as $mono_teacher){ ?>
@@ -500,24 +427,18 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" id="btn_ok_class" class="btn btn-primary" status="insert" onclick="click_ok_class()">OK</button>
                     </div>
                 </div>
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
-        <!--            class_id	type	class_code	list_teacher	more_info	time_start	time_end  -->
-
         <style>
             th{
                 vertical-align: middle;
                 text-align: center;
             }
-
         </style>
-
         <div class="list_in_table container-fluid" id="list_class">
             <table id="dtClassList" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
@@ -539,26 +460,15 @@
                     <th class="th-sm" rowspan="2">Điểm TB</th>
                     <th class="th-sm" rowspan="2">Nội dung hòm thư</th>
                     <th class="th-sm" rowspan="2" title="Số lượng học viên trong lớp">Sĩ số lớp</th>
-
                     <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký lớp luyện đề">SL HV ĐK Luyện đề</th>
                     <th class="th-sm" rowspan="2" title="Số lượng học viên đăng ký thi cuối kỳ">SL HV ĐK Thi cuối kỳ</th>
-
-                    <th class="th-sm" rowspan="2">Action
-                    </th>
-
+                    <th class="th-sm" rowspan="2">Action</th>
                 </tr>
                 <tr>
-
-
-
-                    <th class="th-sm">Số lượng
-                    </th>
-                    <th class="th-sm">Điểm
-                    </th>
-                    <th class="th-sm">Số lượng
-                    </th>
-                    <th class="th-sm">Điểm
-                    </th>
+                    <th class="th-sm">Số lượng</th>
+                    <th class="th-sm">Điểm</th>
+                    <th class="th-sm">Số lượng</th>
+                    <th class="th-sm">Điểm</th>
 <!--                    <th class="th-sm">Số lượng</th>-->
 <!--                    <th class="th-sm">Điểm </th>-->
                     <th class="th-sm">Số lượng</th>
@@ -571,7 +481,6 @@
                     <th class="th-sm">Điểm </th>
                     <th class="th-sm">Số lượng</th>
                     <th class="th-sm">Điểm </th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -596,7 +505,6 @@
                                 default:
                                     echo '';
                             }
-
                         ?></td>
                         <td><?php echo $mono_class_info['class_code']; ?></td>
                         <td>
@@ -639,11 +547,8 @@
                         <td><?php echo $mono_class_info['average_point']; ?></td>
                         <td><a href="//qlcl.imap.edu.vn/feedback/hom_thu_gop_y_detail" target="_blank"><?php echo $mono_class_info['number_feedback_homthugopy']; ?></a></td>
                         <td><?php echo $mono_class_info['number_student']; ?></td>
-
                         <td><?php echo $mono_class_info['number_luyen_de']; ?></td>
                         <td><?php echo $mono_class_info['number_thicuoiky']; ?></td>
-
-
                         <td style="font-size: x-large; min-width: 250px;">
                             <i info='<?php echo json_encode($mono_class_info); ?>'  class="fa fa-link" aria-hidden="true" title="Link Feedback Form" onclick="load_get_link_class2(event)"></i>
                             <a href="/feedback/phone?class_code=<?php echo $mono_class_info['class_code']; ?>" target="_blank" ><i class="fa fa-phone" aria-hidden="true" title="Nhập phản hồi điện thoại" ></i></a>
@@ -657,9 +562,6 @@
 
                     <?php
                 } ?>
-
-
-
 
                 </tbody>
 <!--                <tfoot>-->
@@ -824,6 +726,7 @@
         var link_feedback_ksgv2 = 'https://qlcl.imap.edu.vn/feedback/ksgv_lan2?my_class=' + info_live.class_code;
         var link_feedback_homthugopy = 'https://qlcl.imap.edu.vn/feedback/hom_thu_gop_y?type=' + info_live.type +'&my_class='+ info_live.class_code;
         var link_feedback_online = 'https://qlcl.imap.edu.vn/feedback/dao_tao_online?type=' + info_live.type +'&my_class='+ info_live.class_code;
+        var link_feedback_offline = 'https://qlcl.imap.edu.vn/form/giua_ky_offline?type=' + info_live.type +'&my_class='+ info_live.class_code;
         var link_feedback_luyende = 'https://qlcl.imap.edu.vn/form/luyen_de?my_class='+ info_live.class_code;
         var link_thicuoiky = 'https://qlcl.imap.edu.vn/form/thi_cuoi_ky?my_class='+ info_live.class_code;
 
@@ -837,6 +740,7 @@
         $('#link_feedback_homthugopy').val(link_feedback_homthugopy);
 
         $('#link_feedback_online').val(link_feedback_online);
+        $('#link_feedback_offline').val(link_feedback_offline);
 
         $('#link_feedback_luyende').val(link_feedback_luyende);
         $('#link_thicuoiky').val(link_thicuoiky);
